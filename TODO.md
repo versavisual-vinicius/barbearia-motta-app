@@ -38,3 +38,11 @@
   - Logotipos Club Motta e Club Black integrados
   - Favicon atualizado com o isótipo oficial
   - Aplicação na home, planos (Gold vs Black), clube, login, boas-vindas, tabela e voucher (#/novo/5)
+- [x] Bateria de testes E2E executada via Chrome DevTools Protocol (CDP) em viewport mobile (390x844):
+  - 0 erros de console, 0 falhas de requisição de rede (4xx/5xx)
+  - Home Page (#/inicio): isótipos Dark, Gold e Club Motta aprovados
+  - Tabela Oficial (#/tabela): 20 serviços renderizados com preços Cashbarber validados
+  - Agendamento (#/novo/1): 20 cards renderizados, filtragem por categorias validada
+  - Planos (#/planos): 6 planos com logos Club Black e Club Gold validados
+  - Boas-Vindas (#/boas_vindas) e Login (#/login): verificados com sucesso
+  - 6 screenshots capturados e armazenados em app/assets/screenshots/
