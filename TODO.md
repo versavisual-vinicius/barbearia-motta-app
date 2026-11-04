@@ -23,3 +23,7 @@
 - [x] Fotos reais dos barbeiros integradas na seleção de profissionais (#/novo/2)
 - [x] Validação E2E no Playwright aprovada pelo usuário
 - [x] Servidor ativo em segundo plano na porta 5180 (http://0.0.0.0:5180)
+- [x] Repositório Git local inicializado (branch main)
+- [x] Repositório GitHub remoto criado e commit inicial enviado:
+  - URL: https://github.com/versavisual-vinicius/barbearia-motta-app
+  - Status: Privado, branch main configurada
