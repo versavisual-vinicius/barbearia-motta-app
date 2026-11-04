@@ -65,6 +65,26 @@ Arquivos oficiais localizados em `app/assets/logos/`:
 | **Club Motta Logo** | `club-motta-transparent.png` | Header principal, tela de login, voucher digital |
 | **Club Black Logo** | `club-black-transparent.png` | Cards de planos Clube Black e Clube Black Prime |
 
+---
+
+## 🏛️ Posicionamento Canônico & Pilares do Clube MOTTA
+
+O **Clube MOTTA** é o modelo de assinatura recorrente da **Barbearia Motta** em Macaé, estruturado para fidelização de clientes e manutenção contínua do visual.
+
+1. **Modelo por Assinatura (Membro/Club)**:
+   - Posicionamento de pioneirismo: o primeiro clube por assinatura de barbearia em Macaé.
+   - Planos mensais fixos com frequência programada (semanal ou quinzenal), eliminando cobranças avulsas por visita.
+2. **Segmentação em Categorias (Club Motta & Club Black)**:
+   - *Club Motta:* foco no visual impecável constante (corte, barba ou ambos).
+   - *Club Black:* nível VIP para homens que buscam atendimento prioritário, tratamentos de linha profissional (hidratação capilar, selagem) e barboterapia integral.
+3. **Posicionamento Exclusivo ("Clube para homens exigentes")**:
+   - Transcende o serviço tradicional de corte e atua como ecossistema contínuo de conveniência, autocuidado masculino e produtos homologados.
+4. **Canais Oficiais & Localização**:
+   - **Endereço:** Av. Carlos Augusto T. Garcia, 2040 – Sol e Mar, Macaé/RJ.
+   - **WhatsApp / Concierge:** (22) 99838-9803 (`https://wa.me/5522998389803`).
+
+---
+
 ## Componentes
 
 - **Eyebrow + título**: eyebrow forest + ponto gold 4px + legenda muted; título serif.

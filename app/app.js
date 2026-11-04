@@ -32,12 +32,12 @@ const perks = [
   ["Prioridade na lista de espera", "Vaga automática em caso de desistências"],
 ];
 const plans = [
-  { id: "gold3", tier: "gold", dark: true, tag: "Mais vendido", eyebrow: "Clube Gold", name: "Clube Gold 3", sub: "Corte & Barba ilimitado", desc: "O plano mais completo do Clube Gold, com a melhor economia para sua rotina.", price: "229,99", per: "por mês via recorrência", feats: ["Corte ilimitado", "Barba ilimitada", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Assinar agora" },
-  { id: "gold2", tier: "gold", name: "Clube Gold 2", sub: "Barba ilimitada", desc: "Ideal para quem quer a barba sempre alinhada e impecável.", price: "129,99", per: "por mês", feats: ["Barba ilimitada", "Vigência indeterminada", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Comprar" },
-  { id: "gold1", tier: "gold", name: "Clube Gold 1", sub: "Corte ilimitado", desc: "Cortes ilimitados para manter o degradê fresco toda semana.", price: "125,99", per: "por mês", feats: ["Corte ilimitado", "Vigência indeterminada", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Comprar" },
-  { id: "black1", tier: "black", dark: true, tag: "Vagas limitadas", eyebrow: "Clube Black", name: "Corte Ilimitado Black", sub: "Exclusivo", desc: "Corte sempre em dia, com atendimento prioritário e lavagem especial.", price: "159,99", per: "por mês", scarce: "Resta 4 vaga(s)", feats: ["Corte ilimitado", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Garantir vaga" },
-  { id: "black2", tier: "black", dark: true, tag: "Vagas limitadas", eyebrow: "Clube Black", name: "Barba Ilimitada Black", sub: "Exclusivo", desc: "Alinhamento, toalha quente e produtos premium da linha Black.", price: "159,99", per: "por mês", scarce: "Resta 1 vaga(s)", feats: ["Barba ilimitada", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Garantir vaga" },
-  { id: "prime", tier: "black", dark: true, tag: "Poucas vagas", eyebrow: "Clube Black Prime", name: "Corte & Barba Black", sub: "O mais completo", desc: "Total liberdade para barba e corte, bebidas de cortesia e horário flexível.", price: "299,99", per: "por mês na assinatura", scarce: "Resta 14 vaga(s)", feats: ["Corte livre", "Barba livre", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Garantir vaga" },
+  { id: "gold3", tier: "gold", dark: true, tag: "Mais vendido", eyebrow: "Club Motta", name: "Club Motta — Corte & Barba", sub: "Corte & Barba ilimitado", desc: "O plano mais completo do Club Motta, ideal para manutenção contínua semanal sem cobrança avulsa por visita.", price: "229,99", per: "por mês via recorrência", feats: ["Corte com frequência programada", "Barba com frequência programada", "Sem taxa avulsa por visita", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Assinar agora" },
+  { id: "gold2", tier: "gold", name: "Club Motta — Barba", sub: "Barba alinhada sempre", desc: "Ideal para quem quer a barba sempre desenhada e alinhada toda semana sem cobrança avulsa.", price: "129,99", per: "por mês", feats: ["Barba com frequência programada", "Barboterapia com toalha quente", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Comprar" },
+  { id: "gold1", tier: "gold", name: "Club Motta — Corte", sub: "Corte na frequência ideal", desc: "Cortes com frequência programada para manter o visual impecável sem pagar a cada visita.", price: "125,99", per: "por mês", feats: ["Corte com frequência programada", "Manutenção contínua do visual", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Comprar" },
+  { id: "black1", tier: "black", dark: true, tag: "Vagas limitadas", eyebrow: "Club Black", name: "Club Black — Corte VIP", sub: "Para homens exigentes", desc: "Corte sempre em dia, atendimento prioritário, lavagem especial e produtos da linha profissional.", price: "159,99", per: "por mês", scarce: "Resta 4 vaga(s)", feats: ["Atendimento prioritário", "Corte com frequência programada", "Linha profissional homologada", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Garantir vaga" },
+  { id: "black2", tier: "black", dark: true, tag: "Vagas limitadas", eyebrow: "Club Black", name: "Club Black — Barba VIP", sub: "Autocuidado premium", desc: "Alinhamento de precisão, toalha quente e tratamentos capilares e de pele com produtos premium.", price: "159,99", per: "por mês", scarce: "Resta 1 vaga(s)", feats: ["Barba com atendimento prioritário", "Toalha quente e barboterapia", "Produtos da linha profissional", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Garantir vaga" },
+  { id: "prime", tier: "black", dark: true, tag: "Poucas vagas", eyebrow: "Club Black Prime", name: "Club Black — Prime Total", sub: "Experiência definitiva", desc: "Total liberdade para barba e corte, cobertura ampliada com tratamentos e bebidas cortesia.", price: "299,99", per: "por mês na assinatura", scarce: "Resta 14 vaga(s)", feats: ["Corte e Barba prioritários", "Cobertura de tratamentos e cuidados", "Sem cobrança avulsa por visita", "Taxa de ativação R$ 7,00 (1º mês)"], cta: "Garantir vaga" },
 ];
 const upcoming = [
   { id: "a1", day: "24", mon: "Out", time: "15:30", barber: "Michel Nogueira", role: "Barbeiro Master & Visagista", svc: "Corte Masculino + Barba", note: "Em 3 dias", total: "R$ 32,30" },
@@ -200,16 +200,16 @@ const screens = {
       </div>
     </article>
     <section class="hero">
-      <span class="eyebrow" style="letter-spacing:1.2px;">Assinatura Mensal</span>
-      <h2>Cortes Ilimitados?</h2>
-      <p>Faça parte do Clube Motta e cuide do seu estilo toda semana com comodidade.</p>
-      <a class="btn" style="text-decoration:none;text-align:center;background:#fff;color:var(--ink);" href="#/planos">Conhecer planos</a>
+      <span class="eyebrow" style="letter-spacing:1.2px;">Clube por Assinatura</span>
+      <h2>Clube MOTTA — Pioneira em Macaé</h2>
+      <p>Planos mensais fixos para manter corte e barba com frequência programada, sem cobrança avulsa por visita.</p>
+      <a class="btn" style="text-decoration:none;text-align:center;background:#fff;color:var(--ink);font-weight:600;" href="#/planos">Conhecer planos</a>
     </section>
     <section class="card">
-      <div class="item" style="color:var(--ink)">Por que agendar pelo aplicativo?</div>
-      <div class="legend"><b>Pontualidade e Praticidade:</b> Sem filas. Horário reservado exclusivamente.</div>
-      <div class="legend"><b>Barbeiros Especialistas:</b> Visagismo sob medida e consultoria de estilo.</div>
-      <div class="legend"><b>Vantagens Clube Motta:</b> Membros acumulam créditos e desfrutam de bebidas premium cortesia.</div>
+      <div class="item" style="color:var(--ink)">Por que fazer parte do Clube MOTTA?</div>
+      <div class="legend"><b>Pioneirismo em Macaé:</b> Modelo inovador de assinatura recorrente com planos mensais fixos.</div>
+      <div class="legend"><b>Manutenção Contínua:</b> Atendimento semanal ou quinzenal para homens exigentes que prezam pelo visual impecável.</div>
+      <div class="legend"><b>Categorias Sob Medida:</b> Club Motta e Club Black com produtos homologados e visagismo exclusivo.</div>
     </section>`;
   },
   agendamentos() {
@@ -241,16 +241,16 @@ const screens = {
   planos() {
     const f = state.planFilter;
     const list = plans.filter((p) => f === "todos" || p.tier === f);
-    return `${header("Planos e assinaturas", "Motta Club", "Escolha o seu plano ideal! ✂️")}
-    <p class="body">Faça parte do Clube Motta e tenha mais praticidade, economia e benefícios exclusivos para cuidar do seu estilo o mês todo.</p>
-    ${tabs([["todos", "Todos"], ["gold", "Clube Gold"], ["black", "Clube Black"]], f, "pf")}
-    <div class="row between"><h2 class="h-section">Planos Clube ${f === "black" ? "Black" : f === "gold" ? "Gold" : "Motta"}</h2><span class="legend">${list.length} opções</span></div>
+    return `${header("Planos e assinaturas", "Pioneira em Macaé", "Clube MOTTA — Assinatura Recorrente ✂️")}
+    <p class="body">Pioneira no modelo de assinatura na cidade de Macaé. Planos mensais fixos com frequência programada (semanal ou quinzenal) para manutenção contínua do visual, sem cobrança avulsa por visita. Um clube para homens exigentes.</p>
+    ${tabs([["todos", "Todos"], ["gold", "Club Motta"], ["black", "Club Black"]], f, "pf")}
+    <div class="row between"><h2 class="h-section">${f === "black" ? "Categoria Club Black (VIP)" : f === "gold" ? "Categoria Club Motta" : "Planos do Clube MOTTA"}</h2><span class="legend">${list.length} opções</span></div>
     <div class="col gap16">${list.map((p) => `
       <article class="card ${p.dark ? "dark" : ""}">
         <div class="row between">
           <div class="row" style="gap:8px;align-items:center;">
             <img src="${p.tier === 'black' ? 'assets/logos/club-black-transparent.png' : 'assets/logos/motta-symbol-green.png'}" alt="" style="height:22px;object-fit:contain;">
-            <span class="eyebrow" style="color:${p.dark ? "var(--gold)" : "var(--muted)"}">${p.eyebrow || "Clube Gold"}</span>
+            <span class="eyebrow" style="color:${p.dark ? "var(--gold)" : "var(--muted)"}">${p.eyebrow || "Club Motta"}</span>
           </div>
           ${p.tag ? `<span class="badge" style="${p.scarce ? "background:transparent;color:var(--gold-soft);padding:0" : ""}">${p.tag}</span>` : ""}
         </div>
@@ -258,25 +258,25 @@ const screens = {
         <p class="body">${p.desc}</p>
         <div><span class="legend">R$</span> <span class="price">${p.price}</span><div class="legend">${p.per}</div>${p.scarce ? `<div class="scarce">${p.scarce}</div>` : ""}</div>
         <ul>${p.feats.map((x) => `<li>${x}</li>`).join("")}</ul>
-        <button class="btn ${p.dark ? "gold" : "primary"} block" data-toast="${p.name}: checkout (demo)">${p.cta}</button>
+        <button class="btn ${p.dark ? "gold" : "primary"} block" data-toast="${p.name}: assinatura digital via link da bio / app">${p.cta}</button>
       </article>`).join("")}</div>
-    <section class="card"><div class="item" style="color:var(--text-strong)">Sem carência ou multas</div><div class="legend">Cancele ou pause sua assinatura quando quiser através do aplicativo.</div></section>`;
+    <section class="card"><div class="item" style="color:var(--text-strong)">Recorrência &amp; Gestão Digital</div><div class="legend">Contratação via plataforma integrada, sem carência ou multas. Pause ou altere seu plano quando quiser pelo aplicativo.</div></section>`;
   },
 
   boas_vindas() {
     return `<header class="col gap4">
       <div class="row between" style="align-items:center;">
-        <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Seja Bem-vindo</span></div>
+        <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Pioneira em Macaé</span></div>
         <img src="assets/logos/motta-symbol-green.png" alt="Motta" style="width:26px;height:26px;object-fit:contain;">
       </div>
-      <h1 class="h-display" style="font-size:28px;line-height:34px;">O seu novo ritual de estilo começa aqui.</h1>
-      <p class="body">Cuidado masculino elevado a outro patamar. Atendimento com hora marcada, visagismo exclusivo e hospitalidade premium na unidade Sol &amp; Mar.</p>
+      <h1 class="h-display" style="font-size:28px;line-height:34px;">Clube para homens exigentes.</h1>
+      <p class="body">Cuidado masculino contínuo na unidade Sol &amp; Mar. Frequência programada, visagismo exclusivo, produtos da linha profissional e hospitalidade de excelência.</p>
     </header>
 
     <section class="hero" aria-label="Boas-vindas">
       <div class="row between"><span class="eyebrow">Primeira Experiência</span><span class="pill">Cortesia VIP</span></div>
       <h2>Primeira Visita com Chopp &amp; Café</h2>
-      <p>Chegue 15 minutos antes para relaxar no lounge. Seu atendimento inclui café espresso gourmet ou chopp artesanal gelado cortesia.</p>
+      <p>Chegue 15 minutos antes para relaxar no lounge climatizado. Seu atendimento inclui café espresso gourmet ou chopp artesanal gelado cortesia.</p>
       <div class="row" style="gap:16px;padding-top:8px">
         <div class="meta">Unidade Sol &amp; Mar<b>Av. Carlos Augusto T. Garcia, 2040</b></div>
         <span style="width:1px;height:24px;background:var(--forest-800)"></span>
@@ -307,13 +307,13 @@ const screens = {
       <article class="card">
         <div class="row between">
           <div>
-            <span class="badge" style="background:var(--warn-bg);color:var(--warn-text);margin-bottom:6px;display:inline-block;">Economia Real</span>
-            <div class="item" style="font-size:16px;color:var(--text-strong)">Entrar para o Clube Motta</div>
-            <div class="legend" style="color:var(--text-2);margin-top:2px;">Cortes ou barbas ilimitados a partir de R$ 125,99/mês sem fidelidade.</div>
+            <span class="badge" style="background:var(--warn-bg);color:var(--warn-text);margin-bottom:6px;display:inline-block;">Economia &amp; Recorrência</span>
+            <div class="item" style="font-size:16px;color:var(--text-strong)">Assinar o Clube MOTTA</div>
+            <div class="legend" style="color:var(--text-2);margin-top:2px;">Planos mensais fixos com cortes e barbas semanais/quinzenais sem taxa avulsa por visita.</div>
           </div>
         </div>
         <div class="row between" style="padding-top:4px;">
-          <span class="legend" style="color:var(--text);">Até 100% OFF nos serviços</span>
+          <span class="legend" style="color:var(--text);">Categorias Club Motta e Club Black</span>
           <a class="btn" style="text-decoration:none;text-align:center;" href="#/planos">Conhecer planos</a>
         </div>
       </article>
@@ -321,40 +321,40 @@ const screens = {
 
     <section class="col gap16">
       <div>
-        <h2 class="h-section">Os 4 Pilares da Barbearia Motta</h2>
-        <p class="legend">Por que somos a barbearia referência em Macaé</p>
+        <h2 class="h-section">Pilares do Conceito Clube MOTTA</h2>
+        <p class="legend">Por que somos pioneiros no modelo de assinatura em Macaé</p>
       </div>
       <div class="card">
         <div>
-          <div class="item" style="color:var(--ink)">1. Pontualidade e Precisão</div>
-          <div class="legend" style="color:var(--text-2)">Seu tempo é sagrado. Horário reservado exclusivamente sem atrasos.</div>
+          <div class="item" style="color:var(--ink)">1. Modelo por Assinatura (Membro/Club)</div>
+          <div class="legend" style="color:var(--text-2)">Pioneira na cidade, a Barbearia Motta oferece planos mensais fixos que permitem realizar cortes, barba e manutenções com frequência programada, sem cobrança avulsa por visita.</div>
         </div>
         <div style="height:1px;background:var(--surface-soft);"></div>
         <div>
-          <div class="item" style="color:var(--ink)">2. Consultoria de Visagismo</div>
-          <div class="legend" style="color:var(--text-2)">Análise anatômica para harmonizar corte e barba com seus traços.</div>
+          <div class="item" style="color:var(--ink)">2. Segmentação em Categorias (Club Motta &amp; Club Black)</div>
+          <div class="legend" style="color:var(--text-2)">Membros divididos em níveis de benefícios, variando a cobertura de procedimentos (ex.: apenas corte, corte + barba/barboterapia, sobrancelha e tratamentos capilares como hidratação ou selagem).</div>
         </div>
         <div style="height:1px;background:var(--surface-soft);"></div>
         <div>
-          <div class="item" style="color:var(--ink)">3. Barboterapia Tradicional</div>
-          <div class="legend" style="color:var(--text-2)">Toalha quente aromatizada, óleos essenciais e navalhete esterilizado.</div>
+          <div class="item" style="color:var(--ink)">3. Posicionamento Exclusivo ("Clube para homens exigentes")</div>
+          <div class="legend" style="color:var(--text-2)">Transcende o corte tradicional e opera como um espaço de conveniência e autocuidado masculino contínuo, reduzindo o atrito de agendamento e garantindo padronização de atendimento e produtos da linha profissional.</div>
         </div>
         <div style="height:1px;background:var(--surface-soft);"></div>
         <div>
-          <div class="item" style="color:var(--ink)">4. Hospitalidade Confraria</div>
-          <div class="legend" style="color:var(--text-2)">Chopp artesanal estupidamente gelado, café Nespresso e Wi-Fi dedicado.</div>
+          <div class="item" style="color:var(--ink)">4. Hospitalidade &amp; Confraria Sol &amp; Mar</div>
+          <div class="legend" style="color:var(--text-2)">Chopp artesanal estupidamente gelado, café Nespresso gourmet, valet cortesia no local e atendimento focado em clientes semanais ou quinzenais.</div>
         </div>
       </div>
     </section>
 
     <section class="hero">
-      <span class="eyebrow" style="letter-spacing:1.2px;">Atendimento Humano</span>
+      <span class="eyebrow" style="letter-spacing:1.2px;">Atendimento Humano &amp; Agendamento</span>
       <h2>Ficou com alguma dúvida?</h2>
       <p>Nosso Concierge está pronto para ajudar a escolher o melhor serviço ou profissional para você.</p>
-      <a class="btn" style="text-decoration:none;text-align:center;background:#fff;color:var(--ink);" href="https://wa.me/5522997624631" target="_blank" rel="noopener">Falar no WhatsApp</a>
+      <a class="btn" style="text-decoration:none;text-align:center;background:#fff;color:var(--ink);font-weight:600;" href="https://wa.me/5522998389803" target="_blank" rel="noopener">Falar no WhatsApp: (22) 99838-9803</a>
     </section>
 
-    <p class="legend" style="text-align:center;">Barbearia Motta Macaé • Ateliê &amp; Estética Masculina</p>`;
+    <p class="legend" style="text-align:center;">Barbearia Motta Macaé • Av. Carlos Augusto T. Garcia, 2040 – Sol e Mar, Macaé/RJ</p>`;
   },
   login() {
     return `<header class="col gap4" style="align-items:center;text-align:center;">
@@ -379,7 +379,7 @@ const screens = {
 
       <label class="col" style="gap:4px">
         <span class="legend" style="font-weight:600;color:var(--text-strong)">Telefone (WhatsApp) *</span>
-        <input id="auth-phone" type="tel" value="(22) 99762-4631" placeholder="(22) 99999-9999" required style="min-height:44px;padding:10px 12px;border-radius:var(--r-md);border:1px solid #d4dad4;background:#fff;font:400 14px var(--sans);color:#171B18">
+        <input id="auth-phone" type="tel" value="(22) 99838-9803" placeholder="(22) 99838-9803" required style="min-height:44px;padding:10px 12px;border-radius:var(--r-md);border:1px solid #d4dad4;background:#fff;font:400 14px var(--sans);color:#171B18">
       </label>
 
       <label class="col" style="gap:4px">
@@ -405,27 +405,27 @@ const screens = {
           <img src="assets/logos/motta-symbol-dark.png" alt="Barbearia Motta" style="width:34px;height:34px;object-fit:contain;">
           <div>
             <div class="eyebrow" style="color:var(--gold);letter-spacing:1.5px;font-size:11px;">Barbearia Motta</div>
-            <div class="legend" style="font-size:11px;">Macaé • Sol &amp; Mar</div>
+            <div class="legend" style="font-size:11px;">Pioneira em Assinatura • Sol &amp; Mar</div>
           </div>
         </div>
         <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:32px;object-fit:contain;">
       </div>
-      <h1 class="h-display" style="font-size:28px;line-height:34px;color:var(--ink);margin-top:2px;">Ateliê &amp; Estética Masculina</h1>
-      <p class="body" style="color:var(--text);">O seu ritual de cuidado com hora marcada, visagismo e atendimento de excelência.</p>
+      <h1 class="h-display" style="font-size:28px;line-height:34px;color:var(--ink);margin-top:2px;">Clube para homens exigentes.</h1>
+      <p class="body" style="color:var(--text);">Manutenção contínua do visual sem atrito de agendamento, produtos da linha profissional e hospitalidade de excelência em Macaé.</p>
     </header>
 
     <!-- Card Central: Novo por aqui? -->
     <section class="hero" style="border:2px solid var(--gold);box-shadow:0 10px 28px rgba(7,30,19,0.22);padding:20px;text-align:center;align-items:center;gap:12px;">
       <div class="row" style="gap:8px;justify-content:center;align-items:center;">
         <img src="assets/logos/motta-symbol-gold.png" alt="" style="width:22px;height:22px;object-fit:contain;">
-        <span class="pill" style="background:rgba(199,165,102,0.2);color:var(--gold-soft);">✦ Novo por aqui?</span>
+        <span class="pill" style="background:rgba(199,165,102,0.2);color:var(--gold-soft);">✦ Clube MOTTA • Pioneira em Macaé</span>
       </div>
       <h2 style="font-size:24px;line-height:30px;color:#fff;">Crie sua conta e viva a experiência Motta</h2>
-      <p class="body" style="color:var(--on-dark);max-width:320px;margin:0 auto;">Agende seu horário com os melhores barbeiros da cidade. Atendimento com ou sem assinatura de planos.</p>
+      <p class="body" style="color:var(--on-dark);max-width:320px;margin:0 auto;">Agende seu horário com os melhores barbeiros da cidade. Planos mensais fixos com frequência programada ou agendamento avulso direto.</p>
       
       <div class="col gap8" style="width:100%;padding-top:4px;">
         <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-align:center;text-decoration:none;min-height:46px;display:flex;align-items:center;justify-content:center;" href="#/login">Criar Conta / Entrar</a>
-        <a class="btn" style="background:rgba(255,255,255,0.12);color:#fff;text-align:center;text-decoration:none;min-height:42px;display:flex;align-items:center;justify-content:center;" href="#/boas_vindas">Conhecer a Barbearia &amp; Hospitalidade</a>
+        <a class="btn" style="background:rgba(255,255,255,0.12);color:#fff;text-align:center;text-decoration:none;min-height:42px;display:flex;align-items:center;justify-content:center;" href="#/boas_vindas">Conhecer o Conceito &amp; Hospitalidade</a>
       </div>
     </section>
 
@@ -455,9 +455,9 @@ const screens = {
       <article class="card" style="border:1.5px solid var(--gold);background:linear-gradient(180deg, #FFFFFF 0%, #F9F7F2 100%);">
         <div class="row between">
           <div>
-            <span class="badge" style="background:var(--warn-bg);color:var(--warn-text);margin-bottom:6px;display:inline-block;">★ Maior Economia</span>
-            <div class="item" style="font-size:16px;color:var(--text-strong)">Clube Motta — Assinatura</div>
-            <div class="legend" style="color:var(--text-2);margin-top:2px;">Cortes ou barbas ilimitados o mês todo com atendimento prioritário e chopp artesanal liberado.</div>
+            <span class="badge" style="background:var(--warn-bg);color:var(--warn-text);margin-bottom:6px;display:inline-block;">★ Manutenção Contínua</span>
+            <div class="item" style="font-size:16px;color:var(--text-strong)">Clube MOTTA — Assinatura Recorrente</div>
+            <div class="legend" style="color:var(--text-2);margin-top:2px;">Planos mensais fixos com frequência semanal ou quinzenal programada, sem cobrança avulsa por visita. Categorias Club Motta e Club Black.</div>
           </div>
         </div>
         <div class="row between" style="padding-top:6px;border-top:1px solid #EBE5D8;margin-top:6px;">
@@ -481,6 +481,10 @@ const screens = {
         </div>
       </div>
       <div class="legend" style="color:var(--text-2);line-height:18px;">Lounge climatizado com Café Nespresso e Chopp Artesanal inclusos em todos os atendimentos.</div>
+      <div class="row between" style="padding-top:6px;border-top:1px solid var(--surface-soft);">
+        <span class="legend" style="color:var(--forest);font-weight:600;">WhatsApp Oficial: (22) 99838-9803</span>
+        <a class="link" style="font-size:12px;color:var(--forest);font-weight:700;text-decoration:none;" href="https://wa.me/5522998389803" target="_blank" rel="noopener">Falar agora →</a>
+      </div>
     </section>
 
     <div class="row" style="gap:8px;">

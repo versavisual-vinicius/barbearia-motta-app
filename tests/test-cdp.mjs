@@ -1,8 +1,9 @@
 const WS = globalThis.WebSocket;
 
 async function run() {
-  console.log('Fetching Chrome DevTools target...');
-  const res = await fetch('http://localhost:9222/json');
+  const port = process.env.CDP_PORT || 9225;
+  console.log(`Fetching Chrome DevTools target on port ${port}...`);
+  const res = await fetch(`http://localhost:${port}/json`);
   const targets = await res.json();
   const pageTarget = targets.find(t => t.type === 'page' && t.url.includes('5180'));
   if (!pageTarget) {
@@ -95,11 +96,13 @@ async function run() {
     hasDarkSymbol: !!document.querySelector('img[src*="motta-symbol-dark.png"]'),
     hasClubMotta: !!document.querySelector('img[src*="club-motta-transparent.png"]'),
     hasGoldSymbol: !!document.querySelector('img[src*="motta-symbol-gold.png"]'),
-    basePriceText: document.querySelector('.card .legend')?.textContent || ''
+    hasWhatsApp: !!document.querySelector('a[href*="wa.me/5522998389803"]'),
+    hasPioneira: document.body.textContent.includes('Pioneira em Macaé') || document.body.textContent.includes('Pioneira em Assinatura'),
+    hasExigentes: document.body.textContent.includes('homens exigentes')
   })`);
   console.log('Title:', homeTitle);
-  console.log('Logos na Home:', homeLogos);
-  results.push({ test: 'Home Page', ok: homeLogos.hasDarkSymbol && homeLogos.hasClubMotta });
+  console.log('Home Data:', homeLogos);
+  results.push({ test: 'Home Page & WhatsApp Oficial (22) 99838-9803', ok: homeLogos.hasDarkSymbol && homeLogos.hasClubMotta && homeLogos.hasWhatsApp && homeLogos.hasExigentes });
   await captureScreenshot('01-home-inicio');
 
   // TEST 2: Tabela de Preços (#/tabela)
@@ -170,10 +173,13 @@ async function run() {
   const bvData = await evaluate(`({
     title: document.title,
     hasSymbol: !!document.querySelector('img[src*="motta-symbol-green.png"]'),
-    hasPilares: !!document.querySelector('.card')
+    hasPilares: !!document.querySelector('.card'),
+    hasWhatsApp: !!document.querySelector('a[href*="wa.me/5522998389803"]'),
+    hasEndereco: document.body.textContent.includes('Carlos Augusto T. Garcia, 2040'),
+    hasPilaresConceito: document.body.textContent.includes('Modelo por Assinatura') && document.body.textContent.includes('homens exigentes')
   })`);
   console.log('Boas-vindas Data:', bvData);
-  results.push({ test: 'Tela Boas-Vindas', ok: bvData.hasSymbol });
+  results.push({ test: 'Tela Boas-Vindas & Pilares do Clube MOTTA', ok: bvData.hasSymbol && bvData.hasWhatsApp && bvData.hasPilaresConceito && bvData.hasEndereco });
   await captureScreenshot('05-boas-vindas');
 
   // TEST 6: Login (#/login)

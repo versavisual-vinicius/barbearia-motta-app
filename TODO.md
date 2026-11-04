@@ -46,3 +46,10 @@
   - Planos (#/planos): 6 planos com logos Club Black e Club Gold validados
   - Boas-Vindas (#/boas_vindas) e Login (#/login): verificados com sucesso
   - 6 screenshots capturados e armazenados em app/assets/screenshots/
+- [x] Atualização Institucional do Clube MOTTA & Canais Oficiais:
+  - Pilares do Conceito integrados: Pioneirismo no modelo de assinatura em Macaé, sem cobrança avulsa por visita.
+  - Segmentação em Categorias: Club Motta (essencial/manutenção contínua) e Club Black (VIP, atendimento prioritário, linha profissional).
+  - Posicionamento Exclusivo: "Clube para homens exigentes", reduzindo atrito de agendamento e garantindo padronização técnica.
+  - WhatsApp oficial canônico atualizado em todas as telas e links: (22) 99838-9803 (https://wa.me/5522998389803).
+  - Endereço canônico confirmado: Av. Carlos Augusto T. Garcia, 2040 – Sol e Mar, Macaé/RJ.
+  - Documentação sincronizada em README.md e DESIGN_SYSTEM.md.

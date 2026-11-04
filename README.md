@@ -8,6 +8,28 @@ Aplicação web mobile-first de agendamento de serviços, gestão de assinaturas
 
 O projeto foi construído com base na identidade visual oficial e nas 14 telas do Figma, oferecendo uma experiência premium com foco em hospitalidade, agilidade e visagismo masculino.
 
+### O Clube MOTTA
+
+O **Clube MOTTA** é o modelo de assinatura recorrente da **Barbearia Motta** em Macaé, estruturado para fidelização de clientes e manutenção contínua do visual.
+
+#### Pilares do Conceito
+
+* **Modelo por Assinatura (Membro/Club):** Posicionada como pioneira no modelo de assinatura na cidade de Macaé, a barbearia oferece planos mensais fixos que permitem ao membro realizar cortes, barba e manutenções com frequência programada, sem cobrança avulsa por visita.
+* **Segmentação em Categorias (Club Motta & Club Black):** Divide os membros em níveis de serviço e benefícios:
+  - *Club Motta:* foco no alinhamento contínuo (apenas corte, apenas barba ou combo corte + barba).
+  - *Club Black:* nível VIP com atendimento prioritário, linha profissional de tratamentos (hidratação capilar, selagem) e barboterapia completa.
+* **Posicionamento Exclusivo ("Clube para homens exigentes"):** O formato transcende o corte tradicional e opera como um espaço de conveniência e autocuidado masculino contínuo, reduzindo o atrito de agendamento e garantindo padronização de atendimento e produtos da linha profissional.
+
+#### Funcionamento Operacional & Contato
+
+1. **Recorrência & Gestão:** Contratação via plataforma de assinatura/agendamento digital integrada (via link da bio ou aplicativo).
+2. **Atendimento Prioritário/Frequente:** Foco em clientes que mantêm a barba e o corte alinhados semanal ou quinzenalmente.
+3. **Localização & Contato Oficial:**
+   - **Endereço:** Av. Carlos Augusto T. Garcia, 2040 – Sol e Mar, Macaé/RJ.
+   - **WhatsApp / Agendamentos:** (22) 99838-9803 (`https://wa.me/5522998389803`).
+
+---
+
 ### Principais Funcionalidades
 
 - **Onboarding e Conversão de Novos Clientes**: Tela inicial com chamada dedicada para agendamento avulso (a partir de R$ 49,99) ou com assinatura do Clube Motta.
