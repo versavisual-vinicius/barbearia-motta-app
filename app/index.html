@@ -9,6 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="assets/logos/motta-symbol-green.png">
 <link rel="apple-touch-icon" href="assets/logos/motta-symbol-green.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#071E13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Barbearia Motta">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -32,5 +37,12 @@
   </dialog>
 </div>
 <script src="app.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    });
+  }
+</script>
 </body>
 </html>

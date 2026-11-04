@@ -53,3 +53,9 @@
   - WhatsApp oficial canônico atualizado em todas as telas e links: (22) 99838-9803 (https://wa.me/5522998389803).
   - Endereço canônico confirmado: Av. Carlos Augusto T. Garcia, 2040 – Sol e Mar, Macaé/RJ.
   - Documentação sincronizada em README.md e DESIGN_SYSTEM.md.
+- [x] Otimização Comercial para Pitch de Apresentação ao Cliente:
+  - PWA completo (manifest.json, Service Worker sw.js, apple-touch-icon, standalone para instalação como app na tela inicial).
+  - Persistência com LocalStorage (login, agendamentos e cotas não resetam ao recarregar a tela).
+  - Simulação de envio para recepção via WhatsApp no Voucher da Etapa 5 (botão direto com mensagem completa formatada e número oficial).
+  - Deploy em produção na Vercel ativo: https://barbearia-motta-app.vercel.app
+  - Suíte de 8 testes automatizados CDP aprovada com 0 erros.

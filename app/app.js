@@ -95,7 +95,33 @@ const pros = [
   { id: "matheus", name: "Matheus Ferreira", role: "Barbeiro Estilista", rate: "4.8", next: "Amanhã às 11:30", photo: "assets/barbeiros/Matheus Ferreira.png" },
   { id: "wanderson", name: "Wanderson Mota", role: "Barbeiro Sênior", rate: "4.9", next: "Amanhã às 14:00", photo: "assets/barbeiros/Wanderson Mota.png" },
 ];
-const state = { isLoggedIn: false, user: null, book:{svc:["corte"],pro:"michel",day:28,time:"15:00",agree:false}, agTab: "agendados", planFilter: "todos", appts: [...upcoming] };
+const STORAGE_KEY = "motta_app_state_v1";
+function loadSavedState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return null;
+}
+function savePersistentState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      isLoggedIn: state.isLoggedIn,
+      user: state.user,
+      appts: state.appts
+    }));
+  } catch (e) {}
+}
+
+const saved = loadSavedState();
+const state = {
+  isLoggedIn: saved?.isLoggedIn ?? false,
+  user: saved?.user ?? null,
+  book: { svc: ["corte"], pro: "michel", day: 28, time: "15:00", agree: false },
+  agTab: "agendados",
+  planFilter: "todos",
+  appts: saved?.appts && Array.isArray(saved.appts) && saved.appts.length ? saved.appts : [...upcoming]
+};
 
 /* ---------- telas ---------- */
 const screens = {
@@ -618,6 +644,19 @@ const screens = {
     }
 
     const pro = pros.find((p) => p.id === B.pro) || pros[0];
+    const svcNames = services.filter((x) => B.svc.includes(x.id)).map((x) => x.name).join(" + ");
+    const waText = encodeURIComponent(
+      `Olá, Barbearia Motta! Acabei de agendar pelo aplicativo:\n\n` +
+      `✂️ Procedimento(s): ${svcNames}\n` +
+      `👤 Profissional: ${pro.name}\n` +
+      `📅 Data: Quarta, ${B.day} de Outubro de 2026 às ${B.time}h\n` +
+      `📍 Unidade Sol & Mar — Av. Carlos Augusto T. Garcia, 2040\n` +
+      `🎫 Voucher: #MOTTA-2026-8849\n` +
+      `💰 Total: ${fmt(total)}\n\n` +
+      `Favor confirmar o recebimento na recepção!`
+    );
+    const waUrl = `https://wa.me/5522998389803?text=${waText}`;
+
     return `<header class="col gap4" style="text-align:center;align-items:center"><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">MOTTA CLUB PRIORITY • #MOTTA-2026-8849</span><h1 class="h-display" style="font-size:30px;line-height:37.5px;color:var(--text-strong)">Agendamento Confirmado!</h1><p class="body">Sua reserva foi processada. Apresente seu voucher digital ao chegar no balcão da unidade Sol &amp; Mar.</p></header>${bar}
       <section class="hero"><div class="row between"><span class="eyebrow">Unidade Macaé</span><img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:24px;height:24px;object-fit:contain;"></div><h2>Barbearia Motta — Sol &amp; Mar</h2><div class="meta">Quarta, ${B.day} de Outubro, 2026<b>${B.time}h (comparecimento pontual)</b></div><div class="meta">Profissional<b>${pro.name}</b></div><div class="meta">A pagar no local<b style="color:var(--mint-on-dark);font-size:16px">${fmt(total)}</b></div></section>
       <section class="card" style="align-items:center;text-align:center;padding:20px;gap:12px;border:1px solid #E6F1E5;">
@@ -655,8 +694,14 @@ const screens = {
         </svg>
         <span style="font-size:12px;font-family:Liberation Mono,monospace;font-weight:700;color:#071E13;">#MOTTA-2026-8849</span>
       </section>
+
+      <!-- Botão de Demonstração / Envio WhatsApp -->
+      <a class="btn" style="background:#25D366;color:#fff;text-align:center;text-decoration:none;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;box-shadow:0 4px 14px rgba(37,211,102,0.35);" href="${waUrl}" target="_blank" rel="noopener">
+        <span>📲 Enviar Confirmação para o WhatsApp</span>
+      </a>
+
       <section class="card"><div class="h-section" style="font:400 16px/24px var(--serif)">Diretrizes do Seu Atendimento</div><div class="legend" style="color:var(--text-2)"><b>1. Chegue com 10 min de antecedência.</b> Aproveite o lounge.<br><b>2. Tolerância de 15 minutos.</b><br><b>3. Reagendamento sem multas</b> pelo app até 2 horas antes.</div></section>
-      <div class="col gap8"><a class="btn primary" style="text-align:center;text-decoration:none" href="#/agendamentos">Ver Meus Agendamentos</a><a class="btn" style="text-align:center;text-decoration:none" href="#/clube">Voltar ao Início</a></div>`;
+      <div class="col gap8"><a class="btn primary" style="text-align:center;text-decoration:none" href="#/agendamentos">Ver Meus Agendamentos</a><a class="btn" style="text-align:center;text-decoration:none" href="#/inicio">Voltar ao Início</a></div>`;
   },
 
   perfil() {
@@ -743,6 +788,7 @@ document.addEventListener("click", (e) => {
   } else if (t.id === "logout-btn") {
     state.isLoggedIn = false;
     state.user = null;
+    savePersistentState();
     showToast("Você saiu da conta.");
     location.hash = "#/inicio";
     render();
@@ -762,6 +808,7 @@ document.addEventListener("click", (e) => {
     if (!$("#agree").checked) { showToast("Aceite os termos para confirmar"); return; }
     const B = state.book, pro = pros.find((p) => p.id === B.pro);
     state.appts.push({ id: "a" + Date.now(), day: String(B.day).padStart(2, "0"), mon: "Out", time: B.time, barber: pro.name, role: pro.role, svc: services.filter((x) => B.svc.includes(x.id)).map((x) => x.name).join(" + "), note: "Confirmado", total: "R$ " + services.filter((x) => B.svc.includes(x.id)).reduce((a, x) => a + x.price, 0).toFixed(2).replace(".", ","), when: `Quarta-feira, ${B.day} de Outubro` });
+    savePersistentState();
     B.done = true;
     location.hash = "#/novo/5";
   }
@@ -778,6 +825,7 @@ if (!("closedBy" in HTMLDialogElement.prototype)) {
 dlg.addEventListener("close", () => {
   if (dlg.returnValue === "cancel") {
     state.appts = state.appts.filter((a) => a.id !== cancelId);
+    savePersistentState();
     showToast("Agendamento cancelado. Cota devolvida.");
     render();
   }
@@ -790,6 +838,7 @@ document.addEventListener("submit", (e) => {
     e.preventDefault();
     state.isLoggedIn = true;
     state.user = { name: $("#auth-name")?.value || "Vinícius Cunha", phone: $("#auth-phone")?.value };
+    savePersistentState();
     showToast("Bem-vindo! Login realizado com sucesso.");
     location.hash = "#/agendamentos";
     return;

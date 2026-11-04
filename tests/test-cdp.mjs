@@ -194,6 +194,38 @@ async function run() {
   results.push({ test: 'Tela Login', ok: loginData.hasLogo });
   await captureScreenshot('06-login');
 
+  // TEST 7: Voucher Digital com Envio no WhatsApp (Etapa 5)
+  console.log('\n--- TESTE 7: Voucher Digital & Envio WhatsApp (#/novo/4 -> #/novo/5) ---');
+  await evaluate('location.hash = "#/novo/4"');
+  await new Promise(r => setTimeout(r, 500));
+  // Marcar checkbox de termos e clicar em confirmar
+  await evaluate(`(() => {
+    const chk = document.querySelector('#agree');
+    if (chk) chk.checked = true;
+    document.querySelector('#confirm-book')?.click();
+  })()`);
+  await new Promise(r => setTimeout(r, 600));
+
+  const voucherData = await evaluate(`({
+    hash: location.hash,
+    hasQrCode: !!document.querySelector('svg rect[fill="#071E13"]'),
+    hasVoucherCode: document.body.textContent.includes('#MOTTA-2026-8849'),
+    hasWhatsAppSendBtn: !!document.querySelector('a[href*="wa.me/5522998389803"][href*="MOTTA-2026-8849"]')
+  })`);
+  console.log('Voucher Data:', voucherData);
+  results.push({ test: 'Voucher Digital & Botão WhatsApp (#/novo/5)', ok: voucherData.hasQrCode && voucherData.hasWhatsAppSendBtn });
+  await captureScreenshot('07-voucher-whatsapp');
+
+  // TEST 8: PWA & Manifest Check
+  console.log('\n--- TESTE 8: PWA & Manifest Check ---');
+  const pwaData = await evaluate(`({
+    hasManifest: !!document.querySelector('link[rel="manifest"]'),
+    hasAppleTouchIcon: !!document.querySelector('link[rel="apple-touch-icon"]'),
+    hasThemeColor: !!document.querySelector('meta[name="theme-color"]')
+  })`);
+  console.log('PWA Data:', pwaData);
+  results.push({ test: 'PWA Manifest & Apple Touch Icon', ok: pwaData.hasManifest && pwaData.hasAppleTouchIcon && pwaData.hasThemeColor });
+
   console.log('\n=========================================');
   console.log('RELATÓRIO DE AUDITORIA CHROME DEVTOOLS:');
   console.log('Erros de console:', consoleMessages.filter(m => m.type === 'error').length);

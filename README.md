@@ -99,10 +99,14 @@ Acesse em seu navegador:
 
 ---
 
-## 🌐 Deploy na Vercel
+## 🌐 Deploy na Vercel & PWA Instalável
 
-O projeto está configurado para deploy imediato como site estático na Vercel apontando para a pasta raiz `app`:
+A aplicação está publicada em produção na Vercel com suporte completo a PWA (Progressive Web App):
 
+- **URL de Produção**: [https://barbearia-motta-app.vercel.app](https://barbearia-motta-app.vercel.app)
+- **Instalação no Celular**: ao abrir no Safari (iOS) ou Chrome (Android), toque em *"Compartilhar / Opções"* → *"Adicionar à Tela de Início"* para abrir como aplicativo nativo em tela cheia sem barras de navegação.
+
+Comando para atualizações de deploy:
 ```bash
 vercel --prod
 ```
