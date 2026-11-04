@@ -33,3 +33,8 @@
   - Filtros por categoria e suporte a valores base ("A partir de")
   - Tabela responsiva semântica `#/tabela` segundo modern-web-guidance (responsive-table, sticky headers, captions, scopes)
   - Valores de entrada ajustados na home (Cortes a partir de R$ 49,99), cotas e benefícios
+- [x] Integração da identidade visual oficial da Barbearia Motta:
+  - Isótipos gerados com transparência alfa (Dark, Green, Gold, White) em PNG e SVG
+  - Logotipos Club Motta e Club Black integrados
+  - Favicon atualizado com o isótipo oficial
+  - Aplicação na home, planos (Gold vs Black), clube, login, boas-vindas, tabela e voucher (#/novo/5)

@@ -104,7 +104,13 @@ const screens = {
     <p class="body">Aproveite descontos exclusivos em marcas parceiras e privilégios desenhados para elevar o seu ritual de cuidado.</p>
     <div class="chips"><a class="chip on" href="#/clube" style="text-decoration:none">Produtos e benefícios</a><a class="chip" href="#/plano" style="text-decoration:none">Meu plano</a><a class="chip" href="#/agendamentos" style="text-decoration:none">Agendamentos</a><a class="chip" href="#/perfil" style="text-decoration:none">Editar perfil</a></div>
     <section class="hero" aria-label="Seu plano">
-      <div class="row between"><span class="eyebrow">Seu plano</span><span class="pill">Ativo</span></div>
+      <div class="row between">
+        <div class="row" style="gap:8px;align-items:center;">
+          <img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:22px;height:22px;object-fit:contain;">
+          <span class="eyebrow">Seu plano</span>
+        </div>
+        <span class="pill">Ativo</span>
+      </div>
       <h2>Clube Motta Master</h2>
       <p>Descontos automáticos aplicados no caixa e atendimento com prioridade absoluta.</p>
       <div class="row" style="gap:16px;padding-top:8px"><div class="meta">Próxima renovação<b>05 de Novembro, 2026</b></div><span style="width:1px;height:24px;background:var(--forest-800)"></span><div class="meta">Economia acumulada<b style="color:var(--gold)">R$ 148,00</b></div></div>
@@ -153,7 +159,13 @@ const screens = {
     return `${header("Assinatura premium", "Meu plano", "Meu Plano & Benefícios")}
     <p class="body">Acompanhe o saldo mensal de suas cotas, utilize cortes inclusos e desfrute de privilégios exclusivos.</p>
     <section class="hero" aria-label="Plano ativo">
-      <div class="row between"><span class="pill">Plano ativo</span><span class="item" style="color:var(--gold-soft)">Nível Ouro</span></div>
+      <div class="row between">
+        <div class="row" style="gap:8px;align-items:center;">
+          <img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:22px;height:22px;object-fit:contain;">
+          <span class="pill">Plano ativo</span>
+        </div>
+        <span class="item" style="color:var(--gold-soft)">Nível Ouro</span>
+      </div>
       <h2>Clube Gold 3 — Corte &amp; Barba</h2>
       <p class="meta">Membro assíduo desde Out/2023 • Renovação automática em 05/11/2026</p>
       <div class="row between" style="padding-top:8px"><span class="meta">Mensalidade:</span><span style="font-weight:700;font-size:20px;color:var(--mint-on-dark)">R$ 229,99<small class="meta">/mês</small></span></div>
@@ -235,7 +247,13 @@ const screens = {
     <div class="row between"><h2 class="h-section">Planos Clube ${f === "black" ? "Black" : f === "gold" ? "Gold" : "Motta"}</h2><span class="legend">${list.length} opções</span></div>
     <div class="col gap16">${list.map((p) => `
       <article class="card ${p.dark ? "dark" : ""}">
-        <div class="row between"><span class="eyebrow" style="color:${p.dark ? "var(--gold)" : "var(--muted)"}">${p.eyebrow || "Clube Gold"}</span>${p.tag ? `<span class="badge" style="${p.scarce ? "background:transparent;color:var(--gold-soft);padding:0" : ""}">${p.tag}</span>` : ""}</div>
+        <div class="row between">
+          <div class="row" style="gap:8px;align-items:center;">
+            <img src="${p.tier === 'black' ? 'assets/logos/club-black-transparent.png' : 'assets/logos/motta-symbol-green.png'}" alt="" style="height:22px;object-fit:contain;">
+            <span class="eyebrow" style="color:${p.dark ? "var(--gold)" : "var(--muted)"}">${p.eyebrow || "Clube Gold"}</span>
+          </div>
+          ${p.tag ? `<span class="badge" style="${p.scarce ? "background:transparent;color:var(--gold-soft);padding:0" : ""}">${p.tag}</span>` : ""}
+        </div>
         <div><h3 class="h-section" ${p.dark ? "" : ""}>${p.name}</h3><div class="item" style="color:${p.dark ? "var(--gold)" : "var(--forest)"}">${p.sub}</div></div>
         <p class="body">${p.desc}</p>
         <div><span class="legend">R$</span> <span class="price">${p.price}</span><div class="legend">${p.per}</div>${p.scarce ? `<div class="scarce">${p.scarce}</div>` : ""}</div>
@@ -247,7 +265,10 @@ const screens = {
 
   boas_vindas() {
     return `<header class="col gap4">
-      <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Seja Bem-vindo</span></div>
+      <div class="row between" style="align-items:center;">
+        <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Seja Bem-vindo</span></div>
+        <img src="assets/logos/motta-symbol-green.png" alt="Motta" style="width:26px;height:26px;object-fit:contain;">
+      </div>
       <h1 class="h-display" style="font-size:28px;line-height:34px;">O seu novo ritual de estilo começa aqui.</h1>
       <p class="body">Cuidado masculino elevado a outro patamar. Atendimento com hora marcada, visagismo exclusivo e hospitalidade premium na unidade Sol &amp; Mar.</p>
     </header>
@@ -336,9 +357,9 @@ const screens = {
     <p class="legend" style="text-align:center;">Barbearia Motta Macaé • Ateliê &amp; Estética Masculina</p>`;
   },
   login() {
-    return `<header class="col gap4">
-      <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Acesso do Cliente</span></div>
-      <h1 class="h-display" style="font-size:28px;line-height:34px;color:var(--ink);">Entre ou Cadastre-se</h1>
+    return `<header class="col gap4" style="align-items:center;text-align:center;">
+      <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:52px;object-fit:contain;margin-bottom:8px;">
+      <h1 class="h-display" style="font-size:26px;line-height:32px;color:var(--ink);">Entre ou Cadastre-se</h1>
       <p class="body">Acesse seus agendamentos, cotas do Clube Motta e histórico de atendimento.</p>
     </header>
 
@@ -378,15 +399,25 @@ const screens = {
     </section>`;
   },
   inicio() {
-    return `<header class="col gap4">
-      <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Macaé • Sol &amp; Mar</span></div>
-      <h1 class="h-display" style="font-size:30px;line-height:36px;color:var(--ink);">Ateliê &amp; Estética Masculina</h1>
+    return `<header class="col gap8">
+      <div class="row between" style="align-items:center;">
+        <div class="row" style="gap:10px;align-items:center;">
+          <img src="assets/logos/motta-symbol-dark.png" alt="Barbearia Motta" style="width:34px;height:34px;object-fit:contain;">
+          <div>
+            <div class="eyebrow" style="color:var(--gold);letter-spacing:1.5px;font-size:11px;">Barbearia Motta</div>
+            <div class="legend" style="font-size:11px;">Macaé • Sol &amp; Mar</div>
+          </div>
+        </div>
+        <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:32px;object-fit:contain;">
+      </div>
+      <h1 class="h-display" style="font-size:28px;line-height:34px;color:var(--ink);margin-top:2px;">Ateliê &amp; Estética Masculina</h1>
       <p class="body" style="color:var(--text);">O seu ritual de cuidado com hora marcada, visagismo e atendimento de excelência.</p>
     </header>
 
     <!-- Card Central: Novo por aqui? -->
     <section class="hero" style="border:2px solid var(--gold);box-shadow:0 10px 28px rgba(7,30,19,0.22);padding:20px;text-align:center;align-items:center;gap:12px;">
-      <div class="row" style="gap:6px;justify-content:center;">
+      <div class="row" style="gap:8px;justify-content:center;align-items:center;">
+        <img src="assets/logos/motta-symbol-gold.png" alt="" style="width:22px;height:22px;object-fit:contain;">
         <span class="pill" style="background:rgba(199,165,102,0.2);color:var(--gold-soft);">✦ Novo por aqui?</span>
       </div>
       <h2 style="font-size:24px;line-height:30px;color:#fff;">Crie sua conta e viva a experiência Motta</h2>
@@ -461,7 +492,10 @@ const screens = {
   },
   tabela() {
     return `<header class="col gap4">
-      <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Tabela Oficial</span></div>
+      <div class="row between" style="align-items:center;">
+        <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Tabela Oficial</span></div>
+        <img src="assets/logos/motta-symbol-green.png" alt="Motta" style="width:26px;height:26px;object-fit:contain;">
+      </div>
       <h1 class="h-display" style="font-size:26px;line-height:32px;">Tabela de Serviços e Preços</h1>
       <p class="body">Valores extraídos diretamente do sistema oficial de agendamento Cashbarber da Barbearia Motta.</p>
     </header>
@@ -581,8 +615,9 @@ const screens = {
 
     const pro = pros.find((p) => p.id === B.pro) || pros[0];
     return `<header class="col gap4" style="text-align:center;align-items:center"><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">MOTTA CLUB PRIORITY • #MOTTA-2026-8849</span><h1 class="h-display" style="font-size:30px;line-height:37.5px;color:var(--text-strong)">Agendamento Confirmado!</h1><p class="body">Sua reserva foi processada. Apresente seu voucher digital ao chegar no balcão da unidade Sol &amp; Mar.</p></header>${bar}
-      <section class="hero"><span class="eyebrow">Unidade Macaé</span><h2>Barbearia Motta — Sol &amp; Mar</h2><div class="meta">Quarta, ${B.day} de Outubro, 2026<b>${B.time}h (comparecimento pontual)</b></div><div class="meta">Profissional<b>${pro.name}</b></div><div class="meta">A pagar no local<b style="color:var(--mint-on-dark);font-size:16px">${fmt(total)}</b></div></section>
+      <section class="hero"><div class="row between"><span class="eyebrow">Unidade Macaé</span><img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:24px;height:24px;object-fit:contain;"></div><h2>Barbearia Motta — Sol &amp; Mar</h2><div class="meta">Quarta, ${B.day} de Outubro, 2026<b>${B.time}h (comparecimento pontual)</b></div><div class="meta">Profissional<b>${pro.name}</b></div><div class="meta">A pagar no local<b style="color:var(--mint-on-dark);font-size:16px">${fmt(total)}</b></div></section>
       <section class="card" style="align-items:center;text-align:center;padding:20px;gap:12px;border:1px solid #E6F1E5;">
+        <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:32px;object-fit:contain;">
         <span class="legend" style="color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Voucher Digital • Apresente na Recepção</span>
         <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#fff;padding:8px;border-radius:8px;">
           <rect width="140" height="140" fill="white"/>

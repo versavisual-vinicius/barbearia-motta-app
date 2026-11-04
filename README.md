@@ -46,6 +46,7 @@ As diretrizes canônicas, tokens e regras estão documentados em [`DESIGN_SYSTEM
 │   ├── styles.css            # Variáveis CSS dos tokens do Design System e utilitários
 │   ├── app.js                # Roteador SPA por hash, gerenciamento de estado e fluxo
 │   └── assets/               # Imagens e ícones
+│       ├── logos/            # Identidade oficial: Club Motta, Club Black e Isótipos (Dark, Green, Gold, White)
 │       ├── barbeiros/        # Fotos reais dos profissionais (Google Drive)
 │       └── svgs/             # Ícones vetoriais
 ├── DESIGN_SYSTEM.md          # Documentação oficial de tokens e componentes

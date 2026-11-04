@@ -52,6 +52,19 @@ Famílias: **Inter** (UI, 400/500/600/700) e **DM Serif Display** (títulos, 400
 - Raios: chip/botão/thumb `12px`; card `16px`; badge/ponto `9999px`; overlay legenda `8px`.
 - Sombras: card `0 8px 24px rgba(7,30,19,.06)`; hero `0 8px 24px rgba(7,30,19,.18)`; chip ativo `0 2px 8px rgba(21,85,45,.25)`.
 
+## Logotipos & Identidade de Marca
+
+Arquivos oficiais localizados em `app/assets/logos/`:
+
+| Elemento | Arquivo | Aplicação |
+| --- | --- | --- |
+| **Isótipo Dark** | `motta-symbol-dark.png` / `.svg` | Topo da home, cabeçalhos em fundo claro |
+| **Isótipo Green** | `motta-symbol-green.png` / `.svg` | Favicon do app, cards de planos Gold, boas-vindas |
+| **Isótipo Gold** | `motta-symbol-gold.png` / `.svg` | Selos VIP, cabeçalhos de hero escuro, vouchers |
+| **Isótipo White** | `motta-symbol-white.png` / `.svg` | Aplicações sobre fundos escuros (`--ink`) |
+| **Club Motta Logo** | `club-motta-transparent.png` | Header principal, tela de login, voucher digital |
+| **Club Black Logo** | `club-black-transparent.png` | Cards de planos Clube Black e Clube Black Prime |
+
 ## Componentes
 
 - **Eyebrow + título**: eyebrow forest + ponto gold 4px + legenda muted; título serif.
