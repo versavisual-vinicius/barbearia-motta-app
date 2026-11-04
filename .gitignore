@@ -1,0 +1,12 @@
+# Ambientes e Dependências
+node_modules/
+.DS_Store
+*.log
+/tmp/
+
+# Dumps brutos e pesados do exportador do Figma (>15MB)
+ProdutosBeneficios.json
+
+# Build e cache
+dist/
+.cache/

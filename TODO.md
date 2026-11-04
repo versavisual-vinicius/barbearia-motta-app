@@ -1,0 +1,25 @@
+
+## Marco 2026-11-04 — Clube Motta (app/)
+- [x] DESIGN_SYSTEM.md (tokens, tipografia, componentes)
+- [x] app/ estático: inicio, clube, plano, agendamentos, planos, perfil, novo/1..5
+- [x] Rotas auditadas (guard em #/novo/5, rota inválida → #/inicio)
+- [x] Modal de cancelamento nativo (closedby, form method=dialog)
+- [x] Testar no navegador via Playwright/Chromium (rotas, guards, modal, QR Code)
+- [x] QR code digital SVG no voucher (#/novo/5)
+- [ ] Integração de gateway real (checkout/reagendamento no backend)
+- Rodar: cd app && python3 -m http.server 5180
+- [x] QR code digital SVG embutido no Voucher (#/novo/5)
+- [x] Rota canônica Agendamentos Estado Vazio (#/agendamentos_vazio)
+- [x] Paridade 14/14 telas do Figma no app/
+- [x] Tela de Boas-Vindas para Cliente Novo (#/boas_vindas) com 4 Pilares e CTAs
+- [x] Banner de boas-vindas responsivo na home (#/inicio)
+- [x] Barra de navegação condicional: abas privadas (Agendamentos, Clube, Perfil) só aparecem após login
+- [x] Tela de autenticação (#/login) com alternância entre Entrar e Cadastrar
+- [x] Route Guards para áreas protegidas (redireciona para #/login com toast)
+- [x] Botão de Logout no perfil restaurando barra para visitante
+- [x] Integração Google Drive: pasta motta sincronizada
+  - Subpasta BARBEIROS: 11 fotos baixadas em app/assets/barbeiros/
+  - Subpasta ASSETS: 20 SVGs baixados em app/assets/svgs/
+- [x] Fotos reais dos barbeiros integradas na seleção de profissionais (#/novo/2)
+- [x] Validação E2E no Playwright aprovada pelo usuário
+- [x] Servidor ativo em segundo plano na porta 5180 (http://0.0.0.0:5180)

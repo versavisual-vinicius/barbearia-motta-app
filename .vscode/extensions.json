@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "figma.figma-vscode-extension",
+        "ms-playwright.playwright"
+    ]
+}
