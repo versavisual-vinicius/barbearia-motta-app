@@ -10,3 +10,4 @@ ProdutosBeneficios.json
 # Build e cache
 dist/
 .cache/
+.vercel

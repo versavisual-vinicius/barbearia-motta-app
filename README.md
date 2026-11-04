@@ -10,7 +10,8 @@ O projeto foi construído com base na identidade visual oficial e nas 14 telas d
 
 ### Principais Funcionalidades
 
-- **Onboarding e Conversão de Novos Clientes**: Tela inicial com chamada dedicada para agendamento avulso (a partir de R$ 45) ou com assinatura do Clube Motta.
+- **Onboarding e Conversão de Novos Clientes**: Tela inicial com chamada dedicada para agendamento avulso (a partir de R$ 49,99) ou com assinatura do Clube Motta.
+- **Tabela Oficial de Serviços e Preços (Cashbarber)**: Catálogo com os 20 procedimentos oficiais organizados em 5 categorias (Corte & Barba, Visagismo, Tratamentos & Cuidados, Pigmentação & Lavagem, Depilação & Sobrancelha), tabela responsiva semântica e sem exibição de tempo estimado nos cards conforme especificação.
 - **Navegação Condicional**: Menus públicos para visitantes (`Início`, `Planos`, `Entrar`) e menus restritos após login (`Agendamentos`, `Clube`, `Perfil`).
 - **Fluxo Completo de Agendamento em 5 Etapas**:
   1. *Seleção de Serviços* (cortes, barboterapia, combos, sobrancelha);

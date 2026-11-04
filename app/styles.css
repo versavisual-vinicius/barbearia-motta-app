@@ -84,3 +84,54 @@ dialog h2{font:400 22px/27.5px var(--serif);color:var(--text-strong);margin-bott
 @media (prefers-reduced-motion:reduce){#toast{transition:none}}
 
 main:focus{outline:none}
+
+/* Responsive Table per modern-web-guidance */
+.table-wrapper{
+  overflow:auto;
+  max-inline-size:100%;
+  max-block-size:min(520px,75vh);
+  container-type:inline-size;
+  border-radius:var(--r-md);
+  border:1px solid #d4dad4;
+  background:var(--surface);
+  box-shadow:var(--sh-card);
+}
+.table-wrapper table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:13px;
+  line-height:18px;
+  text-align:left;
+}
+.table-wrapper caption{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  color:var(--forest-800);
+  background:var(--mint);
+  padding:8px 12px;
+  text-align:left;
+  border-bottom:1px solid #d4dad4;
+}
+.table-wrapper thead{
+  position:sticky;
+  inset-block-start:0;
+  z-index:2;
+  background:var(--surface-soft);
+  color:var(--text-strong);
+}
+.table-wrapper th,.table-wrapper td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--surface-soft);
+}
+.table-wrapper thead th{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.4px;
+}
+.table-wrapper tbody tr:hover{
+  background:rgba(21,85,45,.04);
+}
+

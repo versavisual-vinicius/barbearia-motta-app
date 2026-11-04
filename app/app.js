@@ -48,11 +48,45 @@ const past = [
   { day: "04", mon: "Ago", barber: "Wanderson Mota", role: "Barbeiro Sênior", svc: "Corte Tradicional na Tesoura", dur: "~40 min", total: "R$ 49,99" },
   { day: "12", mon: "Jun", barber: "Welerson Mota", role: "Barbeiro Estilista", svc: "Design de Sobrancelha, Corte", dur: "~45 min", total: "R$ 72,00" },
 ];
+const serviceCategories = [
+  "Todos",
+  "Corte & Barba",
+  "Visagismo",
+  "Tratamentos & Cuidados",
+  "Pigmentação & Lavagem",
+  "Depilação & Sobrancelha",
+];
+
 const services = [
-  { id: "corte", name: "Corte Masculino Tradicional", desc: "Lavagem especial, corte na tesoura ou máquina.", min: 35, old: 45, price: 0, tag: "Incluso" },
-  { id: "barba", name: "Barba Terapia Toalha Quente", desc: "Vapor de ozônio, óleos essenciais e navalha.", min: 30, old: 38, price: 32.3, tag: "15% OFF Clube" },
-  { id: "sobr", name: "Sobrancelha na Navalha", desc: "Alinhamento sutil preservando o desenho.", min: 15, price: 20, tag: "Rápido" },
-  { id: "combo", name: "Combo Motta Premium", desc: "Corte completo + barba terapia.", min: 60, old: 105, price: 75, tag: "Mais vendido" },
+  // Corte & Barba
+  { id: "corte", cat: "Corte & Barba", name: "Corte", desc: "Corte completo na tesoura ou máquina, alinhamento e finalização.", price: 49.99, tag: "Mais pedido" },
+  { id: "barba", cat: "Corte & Barba", name: "Barba", desc: "Barboterapia com toalha quente, navalhete e pós-barba refrescante.", price: 49.99, tag: "Destaque" },
+  { id: "corte_kids", cat: "Corte & Barba", name: "Corte Kids (Até 8 anos)", desc: "Atendimento paciente e especializado para crianças até 8 anos.", price: 60.00, tag: "Kids" },
+  { id: "pezinho", cat: "Corte & Barba", name: "Pezinho / Acabamento", desc: "Acabamento de costeletas, nuca e contorno perfeito.", price: 20.00, tag: "Rápido" },
+
+  // Visagismo
+  { id: "visagismo_combo", cat: "Visagismo", name: "Atendimento com Técnica de Visagismo (Cabelo e Barba)", desc: "Experiência completa harmonizando corte e barba com traços anatômicos.", price: 199.99, tag: "Exclusivo" },
+  { id: "visagismo_corte", cat: "Visagismo", name: "Corte com Técnica de Visagismo", desc: "Análise facial e corte personalizado valorizando o formato do rosto.", price: 120.00, starting: true, tag: "Visagismo" },
+  { id: "visagismo_barba", cat: "Visagismo", name: "Barba com Técnica de Visagismo", desc: "Desenho, proporção e geometria sob medida para a anatomia facial.", price: 100.00, tag: "Visagismo" },
+  { id: "visagismo_consultoria", cat: "Visagismo", name: "Consultoria de Visagismo", desc: "Diagnóstico completo de imagem, morfologia e alinhamento visual.", price: 550.00, starting: true, tag: "VIP" },
+
+  // Tratamentos & Cuidados
+  { id: "selagem", cat: "Tratamentos & Cuidados", name: "Selagem Capilar", desc: "Tratamento de redução de volume, controle e alinhamento dos fios.", price: 120.00, starting: true, tag: "Tratamento" },
+  { id: "hidratacao_capilar", cat: "Tratamentos & Cuidados", name: "Hidratação Capilar", desc: "Nutrição e reparação profunda para fios ressecados ou opacos.", price: 40.00, tag: "Cuidado" },
+  { id: "hidratacao_barba", cat: "Tratamentos & Cuidados", name: "Hidratação de Barba", desc: "Tratamento intensivo para fios macios, alinhados e sem frizz.", price: 40.00, tag: "Cuidado" },
+  { id: "limpeza_facial", cat: "Tratamentos & Cuidados", name: "Limpeza Facial", desc: "Remoção de impurezas, argiloterapia e esfoliação revigorante.", price: 40.00, tag: "Estética" },
+
+  // Pigmentação & Lavagem
+  { id: "pigmentacao_capilar", cat: "Pigmentação & Lavagem", name: "Pigmentação Capilar", desc: "Camuflagem sutil e preenchimento de falhas ou fios brancos.", price: 40.00, tag: "Definição" },
+  { id: "pigmentacao_barba", cat: "Pigmentação & Lavagem", name: "Pigmentação Barba", desc: "Uniformização e definição de tom para aspecto denso e natural.", price: 40.00, tag: "Definição" },
+  { id: "lavagem_capilar", cat: "Pigmentação & Lavagem", name: "Lavagem Capilar (Simples)", desc: "Higienização capilar com shampoo refrescante e secagem.", price: 15.00, tag: "Express" },
+  { id: "lavagem_barba", cat: "Pigmentação & Lavagem", name: "Lavagem de Barba", desc: "Higienização profunda dos fios da barba com produtos especiais.", price: 15.00, tag: "Express" },
+
+  // Depilação & Sobrancelha
+  { id: "depilacao_orelha", cat: "Depilação & Sobrancelha", name: "Depilação Orelha (Cera)", desc: "Remoção rápida e higiênica de pelos da orelha com cera morna.", price: 25.00, tag: "Epilação" },
+  { id: "depilacao_nasal", cat: "Depilação & Sobrancelha", name: "Depilação Nasal (Cera)", desc: "Eliminação segura de pelos nasais com cera de alta precisão.", price: 25.00, tag: "Epilação" },
+  { id: "sobrancelha_navalha", cat: "Depilação & Sobrancelha", name: "Sobrancelha (Navalha)", desc: "Alinhamento sutil e limpeza do arco preservando formato natural.", price: 20.00, tag: "Design" },
+  { id: "sobrancelha_cera", cat: "Depilação & Sobrancelha", name: "Sobrancelha (Cera)", desc: "Design e epilação com cera hipoalergênica de maior durabilidade.", price: 35.00, tag: "Design" },
 ];
 const pros = [
   { id: "michel", name: "Michel Nogueira", role: "Barbeiro Master & Visagista", rate: "4.9", next: "Hoje às 15:30", photo: "assets/barbeiros/Michel Nogueira.png" },
@@ -94,12 +128,12 @@ const screens = {
   beneficios() {
     const f = state.benFilter || "todos";
     const items = [
-      ["Barba Completa", "100% OFF", "Aparar, alinhar linhas finas e hidratar.", 49.9, 0],
-      ["Barba Express", "100% OFF", "Barba aparada exclusivamente na máquina.", 35, 0],
-      ["Corte Masculino", "100% OFF", "Corte completo tesoura/máquina.", 49.99, 0],
-      ["Pente Único", "100% OFF", "Raspagem uniforme com uma só medida.", 40, 0],
-      ["Pezinho / Acabamento", "100% OFF", "Alinhamento da nuca e contornos.", 20, 0],
-      ["Barboterapia Spa", "50% OFF", "Toalha quente e vapor de ozônio.", 65, 32.5],
+      ["Corte", "100% OFF", "Corte completo na tesoura ou máquina.", 49.99, 0],
+      ["Barba", "100% OFF", "Barboterapia com toalha quente e alinhamento.", 49.99, 0],
+      ["Pezinho / Acabamento", "100% OFF", "Alinhamento da nuca e contornos.", 20.00, 0],
+      ["Sobrancelha (Navalha)", "100% OFF", "Alinhamento e desenho na navalha.", 20.00, 0],
+      ["Hidratação Capilar", "15% OFF", "Nutrição profunda dos fios.", 40.00, 34.00],
+      ["Limpeza Facial", "15% OFF", "Argiloterapia e esfoliação revigorante.", 40.00, 34.00],
     ].filter((x) => f === "todos" || (f === "gratis" ? x[4] === 0 : x[4] > 0));
     const brl = (n) => "R$ " + n.toFixed(2).replace(".", ",");
     return `<header class="col gap4"><div class="row"><span class="eyebrow">Plano selecionado</span></div><div class="row between"><h1 class="h-page">Benefícios do Plano</h1><span class="ok" style="color:var(--forest)">Membro Ativo</span></div><p class="body">Conheça cada serviço, cortesias e descontos exclusivos inclusos na sua assinatura.</p></header>
@@ -128,9 +162,9 @@ const screens = {
     </section>
     <section class="col gap16">
       <div><h2 class="h-section" style="font:400 18px/28px var(--serif)">Saldo e Utilização de Cotas</h2><p class="legend">Ciclo vigente: 06/10 a 05/11 · <b style="color:#003D1B">Renovação em 18 dias</b></p></div>
-      <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Corte Masculino Personalizado</div><div class="legend">Consultoria visagista, lavagem refrescante e styling</div></div><span class="badge">INCLUSO</span></div><div class="legend">Preço avulso: <s>R$ 75,00</s> · <b style="color:#003D1B">R$ 0,00</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/agendamentos">Agendar com cota</a></article>
-      <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Barboterapia Ritual Tradicional</div><div class="legend">Toalha quente com óleos essenciais e navalhete esterilizado</div></div><span class="badge">INCLUSO</span></div><div class="legend">Preço avulso: <s>R$ 60,00</s> · <b style="color:#003D1B">R$ 0,00</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/agendamentos">Agendar barba</a></article>
-      <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Hidratação &amp; Acabamento Facial</div><div class="legend">Argiloterapia ou máscara de carvão ativado</div></div><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">15% OFF</span></div><div class="legend">De R$ 55,00 por <b style="color:var(--text-strong)">R$ 46,75</b></div><button class="btn" data-toast="Extra adicionado ao seu próximo agendamento">Agendar extra</button></article>
+      <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Corte Tradicional ou Degradê</div><div class="legend">Lavagem refrescante, corte e styling</div></div><span class="badge">INCLUSO</span></div><div class="legend">Preço avulso: <s>R$ 49,99</s> · <b style="color:#003D1B">R$ 0,00</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/1">Agendar com cota</a></article>
+      <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Barba Tradicional</div><div class="legend">Toalha quente com óleos essenciais e navalhete esterilizado</div></div><span class="badge">INCLUSO</span></div><div class="legend">Preço avulso: <s>R$ 49,99</s> · <b style="color:#003D1B">R$ 0,00</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/1">Agendar barba</a></article>
+      <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Limpeza Facial ou Hidratação</div><div class="legend">Argiloterapia ou nutrição profunda</div></div><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">15% OFF</span></div><div class="legend">De R$ 40,00 por <b style="color:var(--text-strong)">R$ 34,00</b></div><button class="btn" data-toast="Extra adicionado ao seu próximo agendamento">Agendar extra</button></article>
     </section>
     <section class="col gap16">
       <h2 class="h-section" style="font:400 18px/28px var(--serif)">Benefícios &amp; Parcerias Homologadas</h2>
@@ -381,7 +415,7 @@ const screens = {
           </div>
         </div>
         <div class="row between" style="padding-top:6px;border-top:1px solid var(--surface-soft);margin-top:6px;">
-          <span class="legend" style="color:var(--forest);font-weight:600;">Cortes a partir de R$ 45,00</span>
+          <span class="legend" style="color:var(--forest);font-weight:600;">Cortes a partir de R$ 49,99</span>
           <a class="btn primary" style="text-decoration:none;" href="#/novo/1">Agendar avulso</a>
         </div>
       </article>
@@ -400,6 +434,10 @@ const screens = {
           <a class="btn" style="background:var(--forest);color:#fff;text-decoration:none;" href="#/planos">Assinar e agendar</a>
         </div>
       </article>
+
+      <div style="text-align:center;padding:2px 0;">
+        <a class="link" style="color:var(--forest);font-size:13px;text-decoration:none;font-weight:600;" href="#/tabela">📋 Ver tabela completa de serviços e preços (Cashbarber) →</a>
+      </div>
     </section>
 
     <!-- Hospitalidade e Localização -->
@@ -421,6 +459,42 @@ const screens = {
 
     <p class="legend" style="text-align:center;padding-top:4px;">Barbearia Motta Macaé • Ateliê &amp; Estética Masculina</p>`;
   },
+  tabela() {
+    return `<header class="col gap4">
+      <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Tabela Oficial</span></div>
+      <h1 class="h-display" style="font-size:26px;line-height:32px;">Tabela de Serviços e Preços</h1>
+      <p class="body">Valores extraídos diretamente do sistema oficial de agendamento Cashbarber da Barbearia Motta.</p>
+    </header>
+
+    <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="pricing-caption">
+      <table>
+        <caption id="pricing-caption">Barbearia Motta • Tabela Oficial de Serviços e Preços</caption>
+        <thead>
+          <tr>
+            <th scope="col" style="width:36%">Categoria</th>
+            <th scope="col">Serviço</th>
+            <th scope="col" style="text-align:right;white-space:nowrap">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${services.map((s) => `
+            <tr>
+              <th scope="row" style="font-weight:600;color:var(--forest);font-size:11px;text-transform:uppercase;">${s.cat}</th>
+              <td style="color:var(--text-strong);font-weight:500;">${s.name}</td>
+              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);">${(s.starting ? '<span class="legend" style="font-size:10px;font-weight:500;display:block">A partir de</span>' : '') + "R$ " + s.price.toFixed(2).replace(".", ",")}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="legend" style="text-align:center;color:var(--text-2);">Nota: Na interface de seleção do sistema Cashbarber, o tempo estimado de duração de cada procedimento não é exibido nos cards.</p>
+
+    <div class="col gap8">
+      <a class="btn primary" style="text-align:center;text-decoration:none;" href="#/novo/1">Agendar Procedimento</a>
+      <a class="btn" style="text-align:center;text-decoration:none;" href="#/inicio">Voltar ao Início</a>
+    </div>`;
+  },
   novo(step) {
     const B = state.book;
     const steps = ["Serviços", "Profissional", "Data e Hora", "Revisão", "Confirmação"];
@@ -428,12 +502,52 @@ const screens = {
       <div class="bar" role="progressbar" aria-valuenow="${step}" aria-valuemin="1" aria-valuemax="5"><i style="width:${step * 20}%"></i></div>
       <div class="row between legend">${steps.map((n, i) => `<span style="color:${i + 1 === step ? "var(--forest)" : ""};font-weight:${i + 1 === step ? 700 : 400}">${i + 1}. ${n}</span>`).join("")}</div></div>`;
     const total = services.filter((x) => B.svc.includes(x.id)).reduce((a, x) => a + x.price, 0);
-    const fmt = (n) => "R$ " + n.toFixed(2).replace(".", ",");
-    const foot = (next, label, back) => `<div class="col gap8"><div class="row between"><span class="legend">${B.svc.length} serviço(s)</span><b style="color:var(--ink);font-size:19px">${fmt(total)}</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/${next}">${label}</a>${back ? `<a class="btn" style="text-align:center;text-decoration:none" href="#/novo/${back}">Voltar</a>` : ""}</div>`;
+    const fmt = (n, starting = false) => (starting ? "A partir de " : "") + "R$ " + n.toFixed(2).replace(".", ",");
+    const foot = (next, label, back) => `<div class="col gap8"><div class="row between"><span class="legend">${B.svc.length} serviço(s) selecionado(s)</span><b style="color:var(--ink);font-size:19px">${fmt(total)}</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/${next}">${label}</a>${back ? `<a class="btn" style="text-align:center;text-decoration:none" href="#/novo/${back}">Voltar</a>` : ""}</div>`;
 
-    if (step === 1) return `<header class="col gap4"><h1 class="h-page">Novo Agendamento</h1><span class="legend">Seleção de Serviços · Unidade Sol &amp; Mar</span></header>${bar}
-      <div class="card" style="flex-direction:row;align-items:center"><div><div class="item" style="color:var(--ink)">Plano Black Ativo</div><div class="legend">100% OFF em Cortes • 15% em Rituais</div></div></div>
-      <div class="col gap16">${services.map((x) => { const on = B.svc.includes(x.id); return `<button class="card" style="text-align:left;outline:${on ? "2px solid var(--forest)" : "none"}" data-svc="${x.id}" aria-pressed="${on}"><div class="row between"><span class="h-section">${x.name}</span><span class="badge">${x.tag}</span></div><span class="body">${x.desc}</span><div class="row between"><span class="legend">• ${x.min} min</span><span><s class="legend">${x.old ? fmt(x.old) : ""}</s> <b style="color:var(--ink);font-size:19px">${fmt(x.price)}</b></span></div></button>`; }).join("")}</div>${foot(2, "Continuar para Profissional")}`;
+    if (step === 1) {
+      const activeCat = B.cat || "Todos";
+      const cats = activeCat === "Todos" ? serviceCategories.filter(c => c !== "Todos") : [activeCat];
+      return `<header class="col gap4">
+        <h1 class="h-page">Novo Agendamento</h1>
+        <span class="legend">Seleção de Serviços · Tabela Oficial Unidade Sol &amp; Mar</span>
+      </header>${bar}
+      <div class="card" style="flex-direction:row;align-items:center;justify-content:space-between">
+        <div>
+          <div class="item" style="color:var(--ink)">Tabela Cashbarber 2026</div>
+          <div class="legend">${B.svc.length} procedimento(s) marcado(s)</div>
+        </div>
+        <a class="btn" style="text-decoration:none;font-size:12px;padding:6px 12px;min-height:36px;white-space:nowrap" href="#/tabela">Ver tabela</a>
+      </div>
+      <div class="chips" role="group" aria-label="Filtrar por Categoria">
+        ${serviceCategories.map((c) => `<button class="chip ${activeCat === c ? "on" : ""}" data-scat="${c}" aria-pressed="${activeCat === c}">${c}</button>`).join("")}
+      </div>
+      <div class="col gap16">
+        ${cats.map((catName) => {
+          const list = services.filter((s) => s.cat === catName);
+          return `<div class="col gap8">
+            <div class="row between" style="padding-top:4px"><span class="eyebrow" style="color:var(--forest);letter-spacing:1px">${catName}</span><span class="legend">${list.length} opções</span></div>
+            ${list.map((x) => {
+              const on = B.svc.includes(x.id);
+              return `<button class="card" style="text-align:left;outline:${on ? "2px solid var(--forest)" : "none"};gap:10px" data-svc="${x.id}" aria-pressed="${on}">
+                <div class="row between">
+                  <span class="h-section" style="font-size:16px;line-height:22px">${x.name}</span>
+                  ${x.tag ? `<span class="badge">${x.tag}</span>` : ""}
+                </div>
+                <span class="body" style="color:var(--text);font-size:13px">${x.desc}</span>
+                <div class="row between" style="padding-top:4px;border-top:1px solid var(--surface-soft)">
+                  <span class="legend" style="color:var(--forest);font-weight:600;font-size:11px;text-transform:uppercase">${x.cat}</span>
+                  <div style="text-align:right">
+                    ${x.starting ? `<span class="legend" style="font-size:11px;display:block">A partir de</span>` : ""}
+                    <b style="color:var(--ink);font-size:18px">R$ ${x.price.toFixed(2).replace(".", ",")}</b>
+                  </div>
+                </div>
+              </button>`;
+            }).join("")}
+          </div>`;
+        }).join("")}
+      </div>${foot(2, "Continuar para Profissional")}`;
+    }
 
     if (step === 2) return `<header class="col gap4"><h1 class="h-page">Escolha o Profissional</h1><span class="legend">Selecione o especialista de sua confiança na unidade Sol &amp; Mar.</span></header>${bar}
       <div class="col gap16">${pros.map((p) => `<button class="card" style="text-align:left;outline:${B.pro === p.id ? "2px solid var(--forest)" : "none"}" data-pro="${p.id}" aria-pressed="${B.pro === p.id}"><div class="row between"><div class="row" style="gap:12px"><div class="avatar" style="overflow:hidden;padding:0;background:#F1F4EF;" aria-hidden="true">${p.photo ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">` : p.name[0]}</div><div><div class="h-section" style="font-size:16px;line-height:24px">${p.name}</div><div class="legend">${p.role}</div></div></div><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">★ ${p.rate}</span></div><span class="legend">Próximo livre: <b style="color:var(--text-strong)">${p.next}</b></span></button>`).join("")}</div>${foot(3, "Continuar para Data e Horário", 1)}`;
@@ -451,12 +565,16 @@ const screens = {
     if (step === 4) {
       const sel = services.filter((x) => B.svc.includes(x.id));
       const pro = pros.find((p) => p.id === B.pro) || pros[0];
-      const full = sel.reduce((a, x) => a + (x.old || x.price), 0);
-      return `<header class="col gap4"><h1 class="h-page">Revisão e Confirmação</h1><span class="legend">Confira os dados, condições financeiras e políticas antes de finalizar.</span></header>${bar}
+      const hasStarting = sel.some((x) => x.starting);
+      return `<header class="col gap4"><h1 class="h-page">Revisão e Confirmação</h1><span class="legend">Confira os dados, procedimentos e valores antes de finalizar.</span></header>${bar}
       <section class="card"><span class="eyebrow" style="color:#4C6455">Quando &amp; onde</span><div class="item" style="font-size:14px;color:var(--text-strong)">Quarta-feira, ${B.day} de Outubro de 2026</div><div class="legend">${B.time} · Unidade Sol &amp; Mar — Av. Carlos Augusto T. Garcia, 2040, Macaé - RJ</div></section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Profissional especialista</span><div class="item" style="font-size:14px;color:var(--text-strong)">${pro.name}</div><div class="legend">${pro.role}</div></section>
-      <section class="card"><span class="eyebrow" style="color:#4C6455">Procedimentos selecionados (${sel.length})</span>${sel.map((x) => `<div class="row between"><span class="item" style="color:var(--text-strong)">${x.name}</span><b>${fmt(x.price)}</b></div>`).join("")}</section>
-      <section class="card"><span class="eyebrow" style="color:#4C6455">Resumo de valores</span><div class="row between legend"><span>Subtotal de tabela</span><span>${fmt(full)}</span></div><div class="row between legend" style="color:#003D1B"><span>Economia do Clube</span><b>- ${fmt(full - total)}</b></div><div class="row between"><b style="color:var(--text-2)">TOTAL A LIQUIDAR</b><b style="font-size:24px;color:#003D1B">${fmt(total)}</b></div></section>
+      <section class="card"><span class="eyebrow" style="color:#4C6455">Procedimentos selecionados (${sel.length})</span>${sel.map((x) => `<div class="row between"><span class="item" style="color:var(--text-strong)">${x.name}</span><b style="color:var(--ink)">${fmt(x.price, x.starting)}</b></div>`).join("")}</section>
+      <section class="card"><span class="eyebrow" style="color:#4C6455">Resumo financeiro</span>
+        <div class="row between legend"><span>Forma de cobrança</span><span>Balcão / Recepção</span></div>
+        <div class="row between"><b style="color:var(--text-2)">TOTAL ESTIMADO</b><b style="font-size:24px;color:#003D1B">${hasStarting ? "A partir de " : ""}${fmt(total)}</b></div>
+        ${hasStarting ? `<p class="legend" style="color:var(--text-2);font-size:11px">* Procedimentos com indicação "A partir de" têm preço base sujeito a variação após avaliação técnica presencial.</p>` : ""}
+      </section>
       <label class="card" style="flex-direction:row;gap:12px;align-items:flex-start;font-size:11px;color:var(--text-strong)"><input type="checkbox" id="agree" ${B.agree ? "checked" : ""} style="width:20px;height:20px;accent-color:var(--forest);flex:none"><span>Li e concordo com os termos de comparecimento, tolerância de 15 minutos e política de cancelamento da Barbearia Motta.</span></label>
       <div class="col gap8"><button class="btn primary" id="confirm-book">Confirmar Agendamento</button><a class="btn" style="text-align:center;text-decoration:none" href="#/novo/3">Voltar e Modificar Dados</a></div>`;
     }
@@ -517,7 +635,7 @@ const screens = {
 };
 
 /* ---------- roteador ---------- */
-const titles = { inicio: "Início", login: "Entrar / Cadastro", boas_vindas: "Boas-vindas", clube: "Produtos e benefícios", plano: "Meu plano", beneficios: "Benefícios do plano", agendamentos: "Agendamentos", agendamentos_vazio: "Sua Agenda", planos: "Planos", perfil: "Perfil", novo: "Novo agendamento" };
+const titles = { inicio: "Início", login: "Entrar / Cadastro", boas_vindas: "Boas-vindas", clube: "Produtos e benefícios", plano: "Meu plano", beneficios: "Benefícios do plano", agendamentos: "Agendamentos", agendamentos_vazio: "Sua Agenda", planos: "Planos", perfil: "Perfil", novo: "Novo agendamento", tabela: "Tabela de Serviços e Preços" };
 function render() {
   const [route, arg] = (location.hash.replace("#/", "") || "inicio").split("/");
   if (!screens[route]) { location.replace("#/inicio"); return; }
@@ -569,7 +687,7 @@ window.addEventListener("hashchange", render);
 
 let cancelId = null;
 document.addEventListener("click", (e) => {
-  const t = e.target.closest("[data-copy],[data-toast],[data-ag],[data-pf],[data-cancel],[data-bf],[data-svc],[data-pro],[data-day],[data-time],#confirm-book,#logout-btn,#tab-login,#tab-register");
+  const t = e.target.closest("[data-copy],[data-toast],[data-ag],[data-pf],[data-cancel],[data-bf],[data-svc],[data-scat],[data-pro],[data-day],[data-time],#confirm-book,#logout-btn,#tab-login,#tab-register");
   if (!t) return;
 
   // Alternar abas Login / Cadastro
@@ -596,6 +714,7 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.ag) { state.agTab = t.dataset.ag; render(); }
   else if (t.dataset.pf) { state.planFilter = t.dataset.pf; render(); }
   else if (t.dataset.bf) { state.benFilter = t.dataset.bf; render(); }
+  else if (t.dataset.scat) { state.book.cat = t.dataset.scat; render(); }
   else if (t.dataset.svc) { const a = state.book.svc, k = t.dataset.svc; state.book.svc = a.includes(k) ? (a.length > 1 ? a.filter((x) => x !== k) : a) : [...a, k]; render(); }
   else if (t.dataset.pro) { state.book.pro = t.dataset.pro; render(); }
   else if (t.dataset.day) { state.book.day = +t.dataset.day; render(); }

@@ -27,3 +27,9 @@
 - [x] Repositório GitHub remoto criado e commit inicial enviado:
   - URL: https://github.com/versavisual-vinicius/barbearia-motta-app
   - Status: Privado, branch main configurada
+- [x] Atualização completa de valores oficiais extraídos do Cashbarber (Barbearia Motta):
+  - 20 serviços cadastrados nas 5 categorias canônicas (Corte & Barba, Visagismo, Tratamentos & Cuidados, Pigmentação & Lavagem, Depilação & Sobrancelha)
+  - Cards sem tempo de duração conforme interface original do Cashbarber
+  - Filtros por categoria e suporte a valores base ("A partir de")
+  - Tabela responsiva semântica `#/tabela` segundo modern-web-guidance (responsive-table, sticky headers, captions, scopes)
+  - Valores de entrada ajustados na home (Cortes a partir de R$ 49,99), cotas e benefícios
