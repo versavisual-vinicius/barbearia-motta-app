@@ -695,10 +695,10 @@ const screens = {
 								(a) => `
         <article class="card">
           <div class="row between"><span class="eyebrow" style="color:#4C6455">Próximo atendimento</span><span class="ok">Confirmado</span></div>
-          <div class="row" style="gap:12px"><div class="date"><small>${a.mon}</small><b>${a.day}</b></div><div><div class="h-section" style="font:400 1.125rem/1.222 var(--serif);color:var(--text-strong)">${a.when || "Sexta-feira, 24 de Outubro"}</div><div class="item" style="color:#003D1B">${a.time} · ${a.note}</div></div></div>
-          <div><div class="item" style="color:var(--text-strong)">${a.barber}</div><div class="legend" style="color:var(--text-2)">${a.role}</div></div>
-          <div class="legend" style="color:var(--text-2)">${a.svc} — Total <b style="color:#003D1B">${a.total}</b></div>
-          <div class="row gap8" style="gap:8px;flex-wrap:wrap"><button class="btn" data-toast="Detalhes do agendamento (demo)">Ver detalhes</button><button class="btn" data-toast="Reagendamento (demo)">Reagendar</button><button class="btn danger" data-cancel="${a.id}">Cancelar</button></div>
+          <div class="row" style="gap:12px"><div class="date"><small>${escapeHtml(a.mon)}</small><b>${escapeHtml(a.day)}</b></div><div><div class="h-section" style="font:400 1.125rem/1.222 var(--serif);color:var(--text-strong)">${escapeHtml(a.when || "Sexta-feira, 24 de Outubro")}</div><div class="item" style="color:#003D1B">${escapeHtml(a.time)} · ${escapeHtml(a.note)}</div></div></div>
+          <div><div class="item" style="color:var(--text-strong)">${escapeHtml(a.barber)}</div><div class="legend" style="color:var(--text-2)">${escapeHtml(a.role)}</div></div>
+          <div class="legend" style="color:var(--text-2)">${escapeHtml(a.svc)} — Total <b style="color:#003D1B">${escapeHtml(a.total)}</b></div>
+          <div class="row gap8" style="gap:8px;flex-wrap:wrap"><button class="btn" data-toast="Detalhes do agendamento (demo)">Ver detalhes</button><button class="btn" data-toast="Reagendamento (demo)">Reagendar</button><button class="btn danger" data-cancel="${escapeHtml(a.id)}">Cancelar</button></div>
         </article>`,
 							)
 							.join("")
@@ -708,9 +708,9 @@ const screens = {
 						.map(
 							(a) => `
         <article class="card">
-          <div class="row" style="gap:12px"><div class="date"><small>${a.mon}</small><b>${a.day}</b></div><div style="flex:1"><div class="h-section" style="font-size:1rem;line-height:1.5">${a.barber}</div><div class="legend">${a.role}</div></div><span class="ok">Concluído</span></div>
-          <div class="item" style="font-weight:500;font-size:0.875rem;color:var(--ink)">${a.svc}</div>
-          <div class="row between"><span class="legend">Duração: ${a.dur}</span><b style="color:var(--ink)">${a.total}</b></div>
+          <div class="row" style="gap:12px"><div class="date"><small>${escapeHtml(a.mon)}</small><b>${escapeHtml(a.day)}</b></div><div style="flex:1"><div class="h-section" style="font-size:1rem;line-height:1.5">${escapeHtml(a.barber)}</div><div class="legend">${escapeHtml(a.role)}</div></div><span class="ok">Concluído</span></div>
+          <div class="item" style="font-weight:500;font-size:0.875rem;color:var(--ink)">${escapeHtml(a.svc)}</div>
+          <div class="row between"><span class="legend">Duração: ${escapeHtml(a.dur)}</span><b style="color:var(--ink)">${escapeHtml(a.total)}</b></div>
           <div class="row" style="gap:8px"><button class="btn" data-toast="Detalhes (demo)">Detalhes</button><button class="btn primary" data-toast="Reagendar (demo)">Reagendar</button></div>
         </article>`,
 						)
@@ -910,20 +910,39 @@ const screens = {
             <div class="legend" style="font-size:0.6875rem;">Pioneira em Assinatura • Sol &amp; Mar</div>
           </div>
         </div>
-        <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:32px;object-fit:contain;">
       </div>
       <h1 class="h-display card-title">Clube para homens exigentes.</h1>
       <p class="body" style="color:var(--text);">Manutenção contínua do visual sem atrito de agendamento, produtos da linha profissional e hospitalidade de excelência em Macaé.</p>
     </header>
 
     <!-- Card Central: Novo por aqui? -->
-    <section class="hero" style="border:2px solid var(--gold);box-shadow:0 10px 28px rgba(7,30,19,0.22);padding:20px;text-align:center;align-items:center;gap:12px;">
+    <section class="hero hero-trust-card" style="border:2px solid var(--gold);box-shadow:0 10px 28px rgba(7,30,19,0.22);padding:24px 20px 28px;text-align:center;align-items:center;gap:12px;">
+      <!-- Floating Badge Top Left: Pioneira em Assinatura -->
+      <div class="floating-badge top-left">
+        <span class="badge-icon" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>
+        <div class="badge-content">
+          <span class="badge-title">Pioneira em Assinatura</span>
+          <span class="badge-subtitle">Padrão de Excelência Macaé</span>
+        </div>
+      </div>
+
       <h2 style="font-size:1.5rem;line-height:1.25;color:#fff;">Crie sua conta e viva a experiência Motta</h2>
       <p class="body" style="color:var(--on-dark);max-width:320px;margin:0 auto;">Agende seu horário com os melhores barbeiros da cidade. Planos mensais fixos com frequência programada ou agendamento avulso direto.</p>
 
       <div class="col gap8" style="width:100%;padding-top:4px;">
         <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-align:center;text-decoration:none;min-height:46px;display:flex;align-items:center;justify-content:center;" href="#/login">Criar Conta / Entrar</a>
         <a class="btn" style="background:rgba(255,255,255,0.12);color:#fff;text-align:center;text-decoration:none;min-height:42px;display:flex;align-items:center;justify-content:center;" href="#/boas_vindas">Conhecer o Conceito &amp; Hospitalidade</a>
+      </div>
+
+      <!-- Floating Badge Bottom Right: 4.9 Avaliação Máxima -->
+      <div class="floating-badge bottom-right">
+        <span class="badge-icon" aria-hidden="true" style="color:var(--gold);font-weight:bold;">★</span>
+        <div class="badge-content">
+          <span class="badge-title">4.9 ★ Avaliação Máxima</span>
+          <span class="badge-subtitle">+1.200 clientes • Sol &amp; Mar</span>
+        </div>
       </div>
     </section>
 
@@ -1295,42 +1314,56 @@ function render() {
 	}
 	if (route === "novo" && step < 5) state.book.done = false;
 
-	view.innerHTML = screens[route](step);
-	document.title = `Motta — ${titles[route] || "Barbearia"}`;
+	const updateDOM = () => {
+		view.innerHTML = screens[route](step);
+		document.title = `Motta — ${titles[route] || "Barbearia"}`;
 
-	// Atualizar Navbar conforme estado de login
-	const nav = document.querySelector("nav");
-	nav.classList.remove("is-hidden");
-	if (!state.isLoggedIn) {
-		nav.innerHTML = `
+		// Atualizar Navbar conforme estado de login
+		const nav = document.querySelector("nav");
+		nav.classList.remove("is-hidden");
+		if (!state.isLoggedIn) {
+			nav.innerHTML = `
       <a href="#/inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</a>
       <a href="#/planos"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Planos</a>
       <a href="#/login"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Entrar</a>
     `;
-	} else {
-		nav.innerHTML = `
+		} else {
+			nav.innerHTML = `
       <a href="#/inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</a>
       <a href="#/agendamentos"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agendamentos</a>
       <a href="#/clube"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.500l6.100-.9z"/></svg>Clube</a>
       <a href="#/planos"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Planos</a>
       <a href="#/perfil"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Perfil</a>
     `;
+		}
+
+		document.querySelectorAll("nav a").forEach((a) => {
+			const target = a.getAttribute("href").slice(2);
+			const active =
+				target === route ||
+				((route === "plano" || route === "beneficios") && target === "clube") ||
+				((route === "novo" || route === "agendamentos_vazio") &&
+					target === "agendamentos");
+			active
+				? a.setAttribute("aria-current", "page")
+				: a.removeAttribute("aria-current");
+		});
+
+		window.scrollTo(0, 0);
+		view.focus({ preventScroll: true });
+	};
+
+	if (
+		typeof document.startViewTransition === "function" &&
+		!window.matchMedia("(prefers-reduced-motion: reduce)").matches
+	) {
+		const transition = document.startViewTransition(updateDOM);
+		transition.finished.finally(() => {
+			view.focus({ preventScroll: true });
+		});
+	} else {
+		updateDOM();
 	}
-
-	document.querySelectorAll("nav a").forEach((a) => {
-		const target = a.getAttribute("href").slice(2);
-		const active =
-			target === route ||
-			((route === "plano" || route === "beneficios") && target === "clube") ||
-			((route === "novo" || route === "agendamentos_vazio") &&
-				target === "agendamentos");
-		active
-			? a.setAttribute("aria-current", "page")
-			: a.removeAttribute("aria-current");
-	});
-
-	window.scrollTo(0, 0);
-	view.focus({ preventScroll: true });
 }
 
 window.addEventListener("hashchange", render);

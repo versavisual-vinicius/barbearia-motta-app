@@ -59,3 +59,10 @@
   - Simulação de envio para recepção via WhatsApp no Voucher da Etapa 5 (botão direto com mensagem completa formatada e número oficial).
   - Deploy em produção na Vercel ativo: https://barbearia-motta-app.vercel.app
   - Suíte de 8 testes automatizados CDP aprovada com 0 erros.
+- [x] Auditoria Cirúrgica e Modern Web Guidance (2026-11-05):
+  - Limpeza autorizada de 27,2 MB de arquivos mortos na raiz (dumps Figma, TSX legados, fotos redundantes).
+  - SPA View Transitions: navegação suave com document.startViewTransition() e fallback com foco preservado.
+  - Sanitização de renderização dinâmica em agendamentos com escapeHtml().
+  - PWA Offline: fotos dos barbeiros adicionadas ao pré-cache em sw.js (cache v17).
+  - Responsividade de tabela: layout de container query para viewports ultra-compactos (< 340px).
+  - Automação: scripts/atualizar-inventario.mjs corrigido e README.md sincronizado.

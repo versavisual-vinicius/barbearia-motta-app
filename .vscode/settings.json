@@ -11,6 +11,11 @@
   "chat.editor.preferCopilotHarness": true,
   "github.copilot.chat.githubMcpServer.enabled": false,
   "chat.customizations.migration.enabled": false,
-  "chat.customizations.locationsMigration.enabled": false
+  "chat.customizations.locationsMigration.enabled": false,
+  "workbench.browser.dataStorage": "agent",
+  "workbench.browser.openLocalhostLinks": true,
+  "workbench.browser.showInTitleBar": true,
+  "workbench.browser.experimentalUserTools.enabled": true,
+  "antigravity.enableInlineDiff": true
 }
 

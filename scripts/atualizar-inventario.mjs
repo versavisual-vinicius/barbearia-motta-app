@@ -11,11 +11,11 @@ const start = '<!-- INVENTARIO_MOTTA_INICIO -->';
 const end = '<!-- INVENTARIO_MOTTA_FIM -->';
 
 const screenBlock = app.match(/const screens = \{([\s\S]*?)\n\};\s*\/\* ---------- roteador/);
-const titleBlock = app.match(/const titles = \{([^\n]+)\};/);
+const titleBlock = app.match(/const titles = \{([\s\S]*?)\};/);
 const guardBlock = app.match(/const protectedRoutes = \[([^\]]*)\]/);
 if (!screenBlock || !titleBlock || !guardBlock) throw new Error('Estrutura de rotas não reconhecida; README preservado.');
 
-const screens = [...screenBlock[1].matchAll(/^  ([a-z_]+)\([^\n]*\) \{/gm)].map((m) => m[1]);
+const screens = [...screenBlock[1].matchAll(/^[\t ]*([a-z_]+)\([^\n]*\) \{/gm)].map((m) => m[1]);
 const titles = new Map([...titleBlock[1].matchAll(/([a-z_]+):\s*"([^"]+)"/g)].map((m) => [m[1], m[2]]));
 const protectedRoutes = new Set([...guardBlock[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]));
 if (!screens.length || screens.some((route) => !titles.has(route))) throw new Error('Rotas ou títulos incompletos; README preservado.');

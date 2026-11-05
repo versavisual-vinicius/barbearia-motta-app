@@ -74,7 +74,6 @@ Execute `node scripts/atualizar-inventario.mjs` para atualizar esta seção. A l
 - Diálogo nativo
 - Service worker
 - Alinhamento de texto com text-box
-- Consultas de estado de rolagem
 <!-- INVENTARIO_MOTTA_FIM -->
 
 ## 🎨 Design System & Identidade Visual

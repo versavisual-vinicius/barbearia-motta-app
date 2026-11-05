@@ -1,15 +1,28 @@
-const CACHE_NAME = "motta-cache-v16";
+const CACHE_NAME = "motta-cache-v17";
 const ASSETS = [
 	"./",
 	"./index.html",
 	"./styles.css",
+	"./styles.css?v=17",
 	"./app.js",
+	"./app.js?v=17",
 	"./manifest.json",
 	"./assets/logos/motta-symbol-green.png",
 	"./assets/logos/motta-symbol-dark.png",
 	"./assets/logos/motta-symbol-gold.png",
 	"./assets/logos/club-motta-transparent.png",
 	"./assets/logos/club-black-transparent.png",
+	"./assets/barbeiros/Matheus%20Ferreira.png",
+	"./assets/barbeiros/Maycon%20Angelo-1.png",
+	"./assets/barbeiros/Maycon%20Angelo.png",
+	"./assets/barbeiros/Michel%20Nogueira-1.png",
+	"./assets/barbeiros/Michel%20Nogueira-2.png",
+	"./assets/barbeiros/Michel%20Nogueira-3.png",
+	"./assets/barbeiros/Michel%20Nogueira-4.png",
+	"./assets/barbeiros/Michel%20Nogueira-5.png",
+	"./assets/barbeiros/Michel%20Nogueira.png",
+	"./assets/barbeiros/Orlando%20Junior.png",
+	"./assets/barbeiros/Wanderson%20Mota.png",
 ];
 
 self.addEventListener("install", (e) => {
