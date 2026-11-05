@@ -47,6 +47,36 @@ O **Clube MOTTA** é o modelo de assinatura recorrente da **Barbearia Motta** em
 
 ---
 
+<!-- INVENTARIO_MOTTA_INICIO -->
+### Inventário gerado a partir do código
+
+Execute `node scripts/atualizar-inventario.mjs` para atualizar esta seção. A lista descreve rotas e recursos presentes no código; não comprova integração remota nem testes aprovados.
+
+| Rota | Tela | Acesso no roteador |
+| :--- | :--- | :--- |
+| `#/agendamentos` | Agendamentos | Login |
+| `#/agendamentos_vazio` | Sua Agenda | Público |
+| `#/beneficios` | Benefícios do plano | Login |
+| `#/boas_vindas` | Boas-vindas | Público |
+| `#/clube` | Produtos e benefícios | Login |
+| `#/inicio` | Início | Público |
+| `#/login` | Entrar / Cadastro | Público |
+| `#/novo` | Novo agendamento | Público |
+| `#/perfil` | Perfil | Login |
+| `#/plano` | Meu plano | Login |
+| `#/planos` | Planos | Público |
+| `#/tabela` | Tabela de Serviços e Preços | Público |
+
+**Recursos web identificados**
+
+- Navegação por hash
+- Estado no armazenamento local
+- Diálogo nativo
+- Service worker
+- Alinhamento de texto com text-box
+- Consultas de estado de rolagem
+<!-- INVENTARIO_MOTTA_FIM -->
+
 ## 🎨 Design System & Identidade Visual
 
 As diretrizes canônicas, tokens e regras estão documentados em [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md).

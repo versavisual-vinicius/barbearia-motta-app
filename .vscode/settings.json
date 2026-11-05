@@ -4,6 +4,13 @@
   },
   "editor.quickSuggestions": {
     "strings": true
-  }
+  },
+  "chat.checkpoints.showFileChanges": true,
+  "chat.editing.explainChanges.enabled": false,
+  "chat.editor.codex.preferAgentHost": true,
+  "chat.editor.preferCopilotHarness": true,
+  "github.copilot.chat.githubMcpServer.enabled": false,
+  "chat.customizations.migration.enabled": false,
+  "chat.customizations.locationsMigration.enabled": false
 }
 
