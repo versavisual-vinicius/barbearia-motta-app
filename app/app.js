@@ -451,7 +451,7 @@ const screens = {
       <p class="body" style="color:var(--on-dark);max-width:320px;margin:0 auto;">Agende seu horário com os melhores barbeiros da cidade. Planos mensais fixos com frequência programada ou agendamento avulso direto.</p>
       
       <div class="col gap8" style="width:100%;padding-top:4px;">
-        <a class="btn primary" style="background:var(--gold);color:#fff;font-weight:700;text-align:center;text-decoration:none;min-height:46px;display:flex;align-items:center;justify-content:center;" href="#/login">Criar Conta / Entrar</a>
+        <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-align:center;text-decoration:none;min-height:46px;display:flex;align-items:center;justify-content:center;" href="#/login">Criar Conta / Entrar</a>
         <a class="btn" style="background:rgba(255,255,255,0.12);color:#fff;text-align:center;text-decoration:none;min-height:42px;display:flex;align-items:center;justify-content:center;" href="#/boas_vindas">Conhecer o Conceito &amp; Hospitalidade</a>
       </div>
     </section>
@@ -508,7 +508,7 @@ const screens = {
         </div>
       </div>
       <div class="legend" style="color:var(--text-2);line-height:1.4;">Lounge climatizado com Café Nespresso e Chopp Artesanal inclusos em todos os atendimentos.</div>
-      <a class="btn primary home-whatsapp" href="https://wa.me/5522998389803" target="_blank" rel="noopener">WhatsApp Oficial: (22) 99838-9803 <span>Falar agora →</span></a>
+      <a class="btn primary home-whatsapp" href="https://wa.me/5522998389803" target="_blank" rel="noopener"><span>WhatsApp Oficial: (22) 99838-9803</span> <span style="font-weight:700;font-size:0.8125rem;">Falar agora →</span></a>
     </section>
 
     <div class="row home-shortcuts" style="gap:8px;">
@@ -768,17 +768,6 @@ function render() {
 
 window.addEventListener("hashchange", render);
 
-// Fallback para navegadores sem consultas de estado de rolagem.
-if (!CSS.supports("container-type", "scroll-state")) {
-  const nav = document.querySelector("nav");
-  let lastY = window.scrollY;
-  window.addEventListener("scroll", () => {
-    const y = Math.max(0, Math.min(window.scrollY, document.documentElement.scrollHeight - window.innerHeight));
-    if (y === lastY) return;
-    nav.classList.toggle("is-hidden", y > lastY && y > nav.offsetHeight);
-    lastY = y;
-  }, { passive: true });
-}
 
 let cancelId = null;
 document.addEventListener("click", (e) => {

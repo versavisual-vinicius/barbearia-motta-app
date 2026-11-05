@@ -9,7 +9,6 @@
   --serif:"DM Serif Display",serif;--sans:Inter,system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0}
-html{container-type:scroll-state}
 body{font-family:var(--sans);background:#d6d3d1;color:var(--text);-webkit-tap-highlight-color:transparent;display:flex;justify-content:safe center;min-height:100dvh}
 button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 :focus-visible{outline:2px solid var(--forest);outline-offset:2px}
@@ -24,8 +23,10 @@ main{padding:4rem 1rem 8rem;display:flex;flex-direction:column;gap:2rem}
 .h-section{font-size:1.1875rem;line-height:1.316;font-weight:600;color:var(--ink)}
 .body{font-size:0.875rem;line-height:1.429}
 .item{font-size:0.8125rem;line-height:1.385;font-weight:600;letter-spacing:.13px}
-/* Alinhamento progressivo em títulos e controles curtos; parágrafos mantêm a entrelinha. */
-h1,h2,h3,.eyebrow,.btn,.chip{text-box:trim-both cap alphabetic}
+/* Alinhamento progressivo com fallback seguro */
+@supports (text-box: trim-both) {
+  h1,h2,h3,.eyebrow,.btn,.chip{text-box:trim-both cap alphabetic}
+}
 .row{display:flex;flex-wrap:wrap;align-items:safe center;gap:6px}.between{justify-content:space-between}
 .col{display:flex;flex-direction:column}.gap4{gap:4px}.gap8{gap:8px}.gap16{gap:16px}.gap24{gap:24px}
 .dot{width:4px;height:4px;border-radius:50%;background:var(--gold)}
@@ -74,14 +75,10 @@ h1,h2,h3,.eyebrow,.btn,.chip{text-box:trim-both cap alphabetic}
 .date small{font-size:0.75rem;text-transform:uppercase;color:var(--muted)}
 .ok{color:var(--success);font-weight:600;font-size:0.75rem}
 /* nav */
-nav{position:fixed;bottom:0;width:100%;max-width:430px;display:flex;justify-content:space-around;background:#fff;border-top:1px solid var(--mint);padding:4px 0 max(4px,env(safe-area-inset-bottom));transition:transform .2s ease;z-index:2}
+nav{position:fixed;bottom:0;inset-inline:0;margin-inline:auto;width:100%;max-width:430px;display:flex;justify-content:space-around;background:#fff;border-top:1px solid var(--mint);padding:4px 0 max(4px,env(safe-area-inset-bottom));z-index:10}
 nav a{display:flex;flex:1 1 0;flex-direction:column;align-items:safe center;gap:2px;min-width:0;min-height:44px;text-align:center;overflow-wrap:anywhere;text-decoration:none;color:var(--muted);font-size:0.75rem}
 nav a[aria-current=page]{color:var(--forest);font-weight:600}
 nav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
-@container scroll-state((scrolled: bottom) and (scrollable: top)){
-  nav:not(:focus-within){transform:translateY(100%)}
-}
-nav.is-hidden:not(:focus-within){transform:translateY(100%)}
 /* modal & toast */
 dialog{border:0;border-radius:var(--r-lg);padding:24px;width:min(360px,92vw);margin:auto}
 dialog::backdrop{background:rgba(7,30,19,.55);overflow:hidden;overscroll-behavior:contain}
@@ -89,7 +86,7 @@ dialog:modal{overscroll-behavior:contain}
 dialog h2{font:400 1.375rem/1.25 var(--serif);color:var(--text-strong);margin-bottom:8px}
 #toast{position:fixed;inset:20px auto auto 50%;margin:0;border:0;transform:translate(-50%,-150%);transition:transform .25s;background:var(--ink);color:var(--gold);font-size:0.75rem;font-weight:600;padding:8px 16px;border-radius:var(--r-pill);z-index:9;max-width:92%;overflow-wrap:anywhere}
 #toast.show{transform:translate(-50%,0)}
-@media (prefers-reduced-motion:reduce){#toast,nav{transition:none}}
+@media (prefers-reduced-motion:reduce){#toast{transition:none}}
 
 main:focus{outline:none}
 main :is(.row,.col,.card,.hero) > *{min-inline-size:0;overflow-wrap:anywhere}
@@ -106,7 +103,7 @@ main img{display:block;max-inline-size:100%}
 .home-booking > div:first-child{display:grid;gap:.5rem}
 .home-card-actions{flex-wrap:wrap;gap:.75rem}
 .home-card-actions .btn{flex:0 1 auto}
-.home-whatsapp{display:flex;flex-direction:column;gap:.5rem;align-items:center;justify-content:center;text-align:center}
+.home-whatsapp{display:flex;align-items:center;justify-content:space-between;gap:.5rem;text-decoration:none;padding:12px 16px}
 .home-footer{text-align:center;padding-block:1rem}
 .home-shortcuts{flex-wrap:wrap}
 .home-shortcuts .btn{min-width:min(100%, 10rem)}
