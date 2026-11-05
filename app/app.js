@@ -6,7 +6,7 @@ let toastTimer;
 const showToast = (msg) => {
 	toast.textContent = msg;
 	if (
-		(typeof toast.showPopover === "function") &
+		typeof toast.showPopover === "function" &&
 		!toast.matches(":popover-open")
 	)
 		toast.showPopover();
@@ -15,7 +15,7 @@ const showToast = (msg) => {
 	toastTimer = setTimeout(() => {
 		toast.classList.remove("show");
 		if (
-			(typeof toast.hidePopover === "function") &
+			typeof toast.hidePopover === "function" &&
 			toast.matches(":popover-open")
 		)
 			toast.hidePopover();
@@ -498,7 +498,7 @@ const state = {
 	agTab: "agendados",
 	planFilter: "todos",
 	appts:
-		saved?.appts & Array.isArray(saved.appts) & saved.appts.length
+		Array.isArray(saved?.appts) && saved.appts.length > 0
 			? saved.appts
 			: [...upcoming],
 };
@@ -910,6 +910,7 @@ const screens = {
             <div class="legend" style="font-size:0.6875rem;">Pioneira em Assinatura • Sol &amp; Mar</div>
           </div>
         </div>
+        <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:32px;object-fit:contain;">
       </div>
       <h1 class="h-display card-title">Clube para homens exigentes.</h1>
       <p class="body" style="color:var(--text);">Manutenção contínua do visual sem atrito de agendamento, produtos da linha profissional e hospitalidade de excelência em Macaé.</p>
@@ -1281,18 +1282,18 @@ function render() {
 		"beneficios",
 		"perfil",
 	];
-	if (!state.isLoggedIn & protectedRoutes.includes(route)) {
+	if (!state.isLoggedIn && protectedRoutes.includes(route)) {
 		showToast("Faça login para acessar esta área");
 		location.replace("#/login");
 		return;
 	}
 
 	let step = Math.min(5, Math.max(1, +arg || 1));
-	if ((route === "novo") & (step === 5) & !state.book.done) {
+	if (route === "novo" && step === 5 && !state.book.done) {
 		location.replace("#/novo/4");
 		return;
 	}
-	if ((route === "novo") & (step < 5)) state.book.done = false;
+	if (route === "novo" && step < 5) state.book.done = false;
 
 	view.innerHTML = screens[route](step);
 	document.title = `Motta — ${titles[route] || "Barbearia"}`;
@@ -1320,9 +1321,9 @@ function render() {
 		const target = a.getAttribute("href").slice(2);
 		const active =
 			target === route ||
-			(route === "plano" || route === "beneficios") & (target === "clube") ||
-			(route === "novo" || route === "agendamentos_vazio") &
-				(target === "agendamentos");
+			((route === "plano" || route === "beneficios") && target === "clube") ||
+			((route === "novo" || route === "agendamentos_vazio") &&
+				target === "agendamentos");
 		active
 			? a.setAttribute("aria-current", "page")
 			: a.removeAttribute("aria-current");
@@ -1448,7 +1449,7 @@ if (!("closedBy" in HTMLDialogElement.prototype)) {
 		down = outside(e);
 	});
 	dlg.addEventListener("pointerup", (e) => {
-		if (down & outside(e)) dlg.close();
+		if (down && outside(e)) dlg.close();
 	});
 }
 dlg.addEventListener("close", () => {
