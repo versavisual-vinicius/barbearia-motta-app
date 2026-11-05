@@ -1,3 +1,10 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const screenshotsDir = path.resolve(__dirname, '../app/assets/screenshots');
 const WS = globalThis.WebSocket;
 
 async function run() {
@@ -52,37 +59,36 @@ async function run() {
     ws.send(JSON.stringify({ id: msgId, method, params }));
   });
 
-  // Enable DevTools domains
-  await send('Page.enable');
-  await send('Runtime.enable');
-  await send('Network.enable');
+  try {
+    // Enable DevTools domains
+    await send('Page.enable');
+    await send('Runtime.enable');
+    await send('Network.enable');
 
-  // Set mobile viewport (390 x 844 - iPhone 14 / Figma frame)
-  await send('Emulation.setDeviceMetricsOverride', {
-    width: 390,
-    height: 844,
-    deviceScaleFactor: 2,
-    mobile: true
-  });
-
-  const evaluate = async (expr) => {
-    const r = await send('Runtime.evaluate', { expression: expr, returnByValue: true });
-    if (r.exceptionDetails) {
-      throw new Error(r.exceptionDetails.exception?.description || 'Eval error');
-    }
-    return r.result.value;
-  };
-
-  const captureScreenshot = async (name) => {
-    const r = await send('Page.captureScreenshot', { format: 'png' });
-    const buf = Buffer.from(r.data, 'base64');
-    const path = `/Users/viniciuscunha/3_DEV/MOTTA ULTIMA TENTATIVA/app/assets/screenshots/${name}.png`;
-    import('fs').then(fs => {
-      fs.mkdirSync('/Users/viniciuscunha/3_DEV/MOTTA ULTIMA TENTATIVA/app/assets/screenshots', { recursive: true });
-      fs.writeFileSync(path, buf);
+    // Set mobile viewport (390 x 844 - iPhone 14 / Figma frame)
+    await send('Emulation.setDeviceMetricsOverride', {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 2,
+      mobile: true
     });
-    console.log(`📸 Screenshot capturado: ${name}.png`);
-  };
+
+    const evaluate = async (expr) => {
+      const r = await send('Runtime.evaluate', { expression: expr, returnByValue: true });
+      if (r.exceptionDetails) {
+        throw new Error(r.exceptionDetails.exception?.description || 'Eval error');
+      }
+      return r.result.value;
+    };
+
+    const captureScreenshot = async (name) => {
+      const r = await send('Page.captureScreenshot', { format: 'png' });
+      const buf = Buffer.from(r.data, 'base64');
+      fs.mkdirSync(screenshotsDir, { recursive: true });
+      const targetPath = path.join(screenshotsDir, `${name}.png`);
+      fs.writeFileSync(targetPath, buf);
+      console.log(`📸 Screenshot capturado: ${name}.png`);
+    };
 
   const results = [];
 
@@ -216,7 +222,7 @@ async function run() {
   results.push({ test: 'Voucher Digital & Botão WhatsApp (#/novo/5)', ok: voucherData.hasQrCode && voucherData.hasWhatsAppSendBtn });
   await captureScreenshot('07-voucher-whatsapp');
 
-  // TEST 8: PWA & Manifest Check
+  // TEST 8: PWA Manifest Check
   console.log('\n--- TESTE 8: PWA & Manifest Check ---');
   const pwaData = await evaluate(`({
     hasManifest: !!document.querySelector('link[rel="manifest"]'),
@@ -232,8 +238,9 @@ async function run() {
   console.log('Erros de rede (4xx/5xx):', networkErrors.length);
   results.forEach(r => console.log(`- ${r.test}: ${r.ok ? '✅ APROVADO' : '❌ FALHOU'}`));
   console.log('=========================================\n');
-
-  ws.close();
+  } finally {
+    ws.close();
+  }
 }
 
 run().catch(console.error);
