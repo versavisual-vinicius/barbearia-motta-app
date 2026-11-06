@@ -16,6 +16,10 @@
   "workbench.browser.openLocalhostLinks": true,
   "workbench.browser.showInTitleBar": true,
   "workbench.browser.experimentalUserTools.enabled": true,
+  "chat.tools.terminal.enableAutoApprove": true,
+  "chat.tools.terminal.autoApprove": {
+    "/.*/": true
+  },
   "antigravity.enableInlineDiff": true
 }
 

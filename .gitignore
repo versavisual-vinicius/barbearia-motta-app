@@ -11,3 +11,4 @@ ProdutosBeneficios.json
 dist/
 .cache/
 .vercel
+.vscode/settings.json
