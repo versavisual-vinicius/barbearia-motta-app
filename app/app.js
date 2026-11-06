@@ -775,10 +775,17 @@ const screens = {
       <p class="body">Cuidado masculino contínuo na unidade Sol &amp; Mar. Frequência programada, visagismo exclusivo, produtos da linha profissional e hospitalidade de excelência.</p>
     </header>
 
-    <section class="hero" aria-label="Boas-vindas">
-      <div class="row between"><span class="eyebrow">Primeira Experiência</span><span class="pill">Cortesia VIP</span></div>
-      <h2>Primeira Visita com Chopp &amp; Café</h2>
-      <p>Chegue 15 minutos antes para relaxar no lounge climatizado. Seu atendimento inclui café espresso gourmet ou chopp artesanal gelado cortesia.</p>
+    <section class="hero mimos-hero" aria-label="Boas-vindas">
+      <div class="row between"><span class="eyebrow">Experiência Motta</span><span class="pill">Autocuidado</span></div>
+      <h2>Seus mimos de autocuidado</h2>
+      <div class="mimos-carousel" role="region" aria-label="Mimos de autocuidado" aria-roledescription="carrossel">
+        <div class="mimos-slides" aria-live="off">
+          <div class="mimos-slide" role="group" aria-label="1 de 3"><strong>Cabelo e barba</strong><p>Corte, barba, hidratação, camuflagem e selagem.</p></div>
+          <div class="mimos-slide" role="group" aria-label="2 de 3" hidden><strong>Rosto</strong><p>Limpeza facial e sobrancelha.</p></div>
+          <div class="mimos-slide" role="group" aria-label="3 de 3" hidden><strong>Higienização</strong><p>Orelha e nariz.</p></div>
+        </div>
+        <div class="mimos-controls"><button type="button" data-mimos="prev" aria-label="Mimo anterior">←</button><span class="mimos-position" aria-live="polite">1 / 3</span><button type="button" data-mimos="next" aria-label="Próximo mimo">→</button><button type="button" class="mimos-pause" data-mimos="pause">Pausar</button></div>
+      </div>
       <div class="row" style="gap:16px;padding-top:8px">
         <div class="meta">Unidade Sol &amp; Mar<b>Av. Carlos Augusto T. Garcia, 2040</b></div>
         <span style="width:1px;height:24px;background:var(--forest-800)"></span>
@@ -786,7 +793,7 @@ const screens = {
       </div>
     </section>
 
-    <section class="col gap16">
+    <section class="col gap16 welcome-options">
       <div>
         <h2 class="h-section">Por onde deseja começar?</h2>
         <p class="legend">Escolha sua forma preferida de atendimento</p>
@@ -988,6 +995,21 @@ const screens = {
       </div>
     </section>
 
+    <section class="home-experience" aria-labelledby="experience-title">
+      <div class="home-experience-copy">
+        <span class="home-experience-eyebrow">Seu momento começa aqui</span>
+        <h2 id="experience-title">Muito além do corte e da barba.</h2>
+        <p>Cuidado em cada detalhe para você se sentir bem e manter seu estilo.</p>
+      </div>
+      <img class="home-experience-image" src="assets/experiencia/atendimento.jpg" width="484" height="604" loading="lazy" alt="Cliente recebe cuidado com a barba na Barbearia Motta">
+      <div class="home-experience-details">
+        <div><h3>Profissionais preparados</h3><p>Atendimento que entende seu estilo.</p></div>
+        <div><h3>Produtos selecionados</h3><p>O cuidado certo para manter o resultado.</p></div>
+        <div><h3>Conforto e cuidado</h3><p>Um padrão que faz você querer voltar.</p></div>
+        <a href="https://www.instagram.com/p/DeRtSUdoF2S/" target="_blank" rel="noopener noreferrer">Conheça a experiência no Instagram <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
     <!-- Hospitalidade e Localização -->
     <section class="card" style="padding:18px;gap:12px;">
       <div class="row" style="gap:10px;align-items:center;">
@@ -998,7 +1020,7 @@ const screens = {
         </div>
       </div>
       <div class="legend" style="color:var(--text-2);line-height:1.4;">Lounge climatizado com Café Nespresso e Chopp Artesanal inclusos em todos os atendimentos.</div>
-      <a class="btn primary home-whatsapp" href="https://wa.me/5522998389803" target="_blank" rel="noopener"><span>WhatsApp Oficial: (22) 99838-9803</span> <span style="font-weight:700;font-size:0.8125rem;">Falar agora →</span></a>
+      <div class="home-whatsapp"><span class="home-whatsapp-contact">WhatsApp Oficial<br><span>(22) 99838-9803</span></span><a class="btn primary home-whatsapp-action" href="https://wa.me/5522998389803" target="_blank" rel="noopener">Falar agora →</a></div>
     </section>
 
     <div class="row home-shortcuts" style="gap:8px;">
@@ -1286,6 +1308,56 @@ const titles = {
 	novo: "Novo agendamento",
 	tabela: "Tabela de Serviços e Preços",
 };
+let mimosTimer;
+let welcomeObserver;
+function setupWelcomeReveal() {
+	welcomeObserver?.disconnect();
+	if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+	const cards = view.querySelectorAll(".welcome-options > .card");
+	if (!cards.length) return;
+	cards.forEach((card) => card.classList.add("reveal-pending"));
+	welcomeObserver = new IntersectionObserver((entries) => {
+		for (const entry of entries) {
+			if (entry.isIntersecting) {
+				entry.target.classList.add("reveal-ready");
+				entry.target.classList.remove("reveal-pending");
+			} else if (entry.boundingClientRect.top >= innerHeight) {
+				entry.target.classList.remove("reveal-ready");
+				entry.target.classList.add("reveal-pending");
+			}
+		}
+	}, { threshold: 0.1 });
+	cards.forEach((card) => welcomeObserver.observe(card));
+}
+function setupMimos() {
+	clearInterval(mimosTimer);
+	const carousel = view.querySelector(".mimos-carousel");
+	if (!carousel) return;
+	const slides = [...carousel.querySelectorAll(".mimos-slide")];
+	const position = carousel.querySelector(".mimos-position");
+	const pause = carousel.querySelector('[data-mimos="pause"]');
+	let current = 0;
+	let playing = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const show = (index) => {
+		current = (index + slides.length) % slides.length;
+		slides.forEach((slide, i) => { slide.hidden = i !== current; });
+		position.textContent = `${current + 1} / ${slides.length}`;
+	};
+	const sync = () => {
+		clearInterval(mimosTimer);
+		pause.textContent = playing ? "Pausar" : "Reproduzir";
+		if (playing) mimosTimer = setInterval(() => { if (!document.hidden) show(current + 1); }, 5000);
+	};
+	carousel.addEventListener("focusin", (event) => { if (playing && event.target.matches(":focus-visible")) { playing = false; sync(); } });
+	carousel.addEventListener("click", (event) => {
+		const action = event.target.closest("[data-mimos]")?.dataset.mimos;
+		if (!action) return;
+		if (action === "pause") playing = !playing;
+		else { playing = false; show(current + (action === "next" ? 1 : -1)); }
+		sync();
+	});
+	sync();
+}
 function render() {
 	const [route, arg] = (location.hash.replace("#/", "") || "inicio").split("/");
 	if (!screens[route]) {
@@ -1315,7 +1387,11 @@ function render() {
 	if (route === "novo" && step < 5) state.book.done = false;
 
 	const updateDOM = () => {
+		clearInterval(mimosTimer);
+		welcomeObserver?.disconnect();
 		view.innerHTML = screens[route](step);
+		setupMimos();
+		setupWelcomeReveal();
 		document.title = `Motta — ${titles[route] || "Barbearia"}`;
 
 		// Atualizar Navbar conforme estado de login
