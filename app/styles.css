@@ -12,8 +12,8 @@
 body{font-family:var(--sans);background:#d6d3d1;color:var(--text);-webkit-tap-highlight-color:transparent;display:flex;justify-content:safe center;min-height:100dvh}
 button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 :focus-visible{outline:2px solid var(--forest);outline-offset:2px}
-.app{width:100%;max-width:430px;min-height:100dvh;background:var(--canvas) url("assets/experiencia/fundo-motta.svg") repeat-y center top / 100% auto;position:relative}
-main{padding:4rem 1rem 8rem;display:flex;flex-direction:column;gap:2rem}
+.app{width:100%;max-width:1200px;margin-inline:auto;padding-inline:16px;box-sizing:border-box;min-height:100dvh;background:var(--canvas) url("assets/experiencia/fundo-motta.svg") repeat-y center top / 100% auto;position:relative;box-shadow:0 0 50px rgba(7,30,19,.08)}
+main{display:grid;grid-template-columns:1fr;gap:16px;padding-block:20px 5rem;width:100%}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 /* type */
 .eyebrow{font-size:0.75rem;line-height:1.333;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--forest)}
@@ -264,4 +264,82 @@ main:has(>.home-footer){min-height:100dvh;padding-bottom:4rem}
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   Desktop & Tablet Responsiveness: Motta — Responsive CSS Grid Layout
+   ========================================================================== */
+/* Tablet & Split Screen (680px and up) */
+@media (min-width: 680px) {
+  main#view {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding-block: 24px 6rem;
+  }
+
+  /* Landmarks estruturais em largura total */
+  main#view > header.home-header,
+  main#view > .home-shortcuts,
+  main#view > footer.home-footer {
+    grid-column: 1 / -1;
+  }
+
+  /* Fluxo de formulários e páginas internas contido e centrado */
+  main#view:not(:has(.home-header)) {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  /* Barra de navegação inferior centralizada e elevada no desktop/tablet */
+  nav {
+    max-width: 520px;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 24px rgba(7, 30, 19, 0.1);
+  }
+}
+
+/* Desktop (1024px and up) */
+@media (min-width: 1024px) {
+  main#view {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding-block: 32px 6rem;
+  }
+
+  /* Ensure Header/Footer/Shortcuts span both columns */
+  main#view > header.home-header,
+  main#view > .home-shortcuts,
+  main#view > footer.home-footer {
+    grid-column: 1 / -1;
+  }
+
+  main#view > header.home-header {
+    text-align: center;
+    padding-bottom: 0.5rem;
+  }
+
+  main#view > header.home-header .row.between {
+    justify-content: center;
+  }
+
+  main#view > header.home-header .card-title {
+    font-size: 2.25rem;
+  }
+
+  main#view > header.home-header .body {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  main#view > .home-shortcuts {
+    max-width: 580px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .home-whatsapp {
+    margin-top: auto;
+  }
+}
+
 

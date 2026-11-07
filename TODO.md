@@ -1,4 +1,14 @@
 
+## Marco 2026-11-07 — Layout Otimizado: CSS Grid Responsivo Desktop & Tablet (app/)
+- [x] Transição do override manual Flexbox para arquitetura CSS Grid mobile-first sem `!important` ou `calc()` manual
+- [x] Container global `.app` com `max-width: 1200px`, `margin-inline: auto` e propriedades lógicas (`padding-inline: 16px`)
+- [x] `main#view` como CSS Grid fluido: 1 coluna no mobile, `repeat(auto-fit, minmax(320px, 1fr))` no tablet (≥768px) e `repeat(2, 1fr)` no desktop (≥1024px)
+- [x] Spanning semântico em largura total (`grid-column: 1 / -1`) para Header, Atalhos e Footer
+- [x] 4 seções pareadas em 2 colunas simétricas (Hero Trust Card vs Agendamento, Experiência vs Localização/Hospitalidade)
+- [x] Páginas internas e fluxos de agendamento protegidos com max-width 600px centrado (`main#view:not(:has(.home-header))`)
+- [x] Bump de cache do Service Worker e estilos para `sw-v26` e `styles.css?v=26`
+- [x] Bateria de testes CDP executada com sucesso (0 overflow, paridade em 390px, 768px e 1280px)
+
 ## Marco 2026-11-04 — Clube Motta (app/)
 - [x] DESIGN_SYSTEM.md (tokens, tipografia, componentes)
 - [x] app/ estático: inicio, clube, plano, agendamentos, planos, perfil, novo/1..5
