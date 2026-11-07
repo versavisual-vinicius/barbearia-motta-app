@@ -265,3 +265,76 @@ main:has(>.home-footer){min-height:100dvh;padding-bottom:4rem}
   }
 }
 
+/* ==========================================================================
+   Desktop & Tablet Responsiveness: Motta — Início (min-width: 768px / 1024px+)
+   ========================================================================== */
+@media (min-width: 768px) {
+  /* Desbloqueia o container global da aplicação */
+  .app {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    box-shadow: 0 0 50px rgba(7, 30, 19, 0.08);
+  }
+
+  /* Fluxo multi-colunas responsivo na tela inicial */
+  main#view:has(.home-header) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* Landmarks estruturais em largura total */
+  main#view:has(.home-header) > header.home-header,
+  main#view:has(.home-header) > footer.home-footer {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  main#view:has(.home-header) > header.home-header {
+    text-align: center;
+    padding-bottom: 0.5rem;
+  }
+
+  main#view:has(.home-header) > header.home-header .row.between {
+    justify-content: center;
+  }
+
+  main#view:has(.home-header) > header.home-header .card-title {
+    font-size: 2.25rem;
+  }
+
+  main#view:has(.home-header) > header.home-header .body {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* Seções e cartões organizados em 2 colunas equilibradas */
+  main#view:has(.home-header) > section,
+  main#view:has(.home-header) > .card:not(.home-header) {
+    flex: 1 1 calc(50% - 12px);
+    max-width: calc(50% - 10px);
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  /* Atalhos e ações de conta centralizados */
+  main#view:has(.home-header) > .home-shortcuts {
+    flex: 1 1 100%;
+    max-width: 580px;
+    margin: 0.5rem auto 0;
+  }
+
+  /* Barra de navegação inferior centralizada e elevada no desktop */
+  nav {
+    max-width: 520px;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 24px rgba(7, 30, 19, 0.1);
+  }
+}
+
+
