@@ -1,4 +1,12 @@
 
+## Marco 2026-11-06 — Otimização Responsiva Desktop & Tablet (app/)
+- [x] Desbloqueio do container global `.app` para `max-width: 1200px` em viewports `≥768px` e `≥1024px`
+- [x] Grid responsivo multi-coluna na tela inicial (`#/inicio`) delimitado por seletor `:has(.home-header)`
+- [x] Seções pareadas em 2 colunas: Hero Trust Card ao lado de Opções de Agendamento, Experiência ao lado de Localização & Hospitalidade
+- [x] Landmarks estruturais (Header, Footer, Shortcuts) em largura total centralizados
+- [x] Barra de navegação inferior contida em `max-width: 520px` e elevada para uso em desktop
+- [x] Bump de cache do Service Worker e estilos para `sw-v26` e `styles.css?v=26`
+
 ## Marco 2026-11-04 — Clube Motta (app/)
 - [x] DESIGN_SYSTEM.md (tokens, tipografia, componentes)
 - [x] app/ estático: inicio, clube, plano, agendamentos, planos, perfil, novo/1..5
