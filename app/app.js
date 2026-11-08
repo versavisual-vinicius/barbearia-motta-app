@@ -82,113 +82,43 @@ const perks = [
 ];
 const plans = [
 	{
-		id: "gold3",
+		id: "gold",
 		tier: "gold",
-		dark: true,
-		tag: "Mais vendido",
-		eyebrow: "Club Motta",
-		name: "Club Motta — Corte Barba",
-		sub: "Corte Barba ilimitado",
-		desc: "O plano mais completo do Club Motta, ideal para manutenção contínua semanal sem cobrança avulsa por visita.",
-		price: "229,99",
+		dark: false,
+		tag: "Mais Escolhido",
+		eyebrow: "Club Gold",
+		name: "Club Gold",
+		sub: "Manutenção programada para cabelo e barba",
+		desc: "Manutenção programada para cabelo e barba com frequência garantida, mantendo seu visual impecável sem cobrança avulsa por visita.",
+		price: "125,99",
 		per: "por mês via recorrência",
 		feats: [
-			"Corte com frequência programada",
-			"Barba com frequência programada",
-			"Sem taxa avulsa por visita",
-			"Taxa de ativação R$ 7,00 (1º mês)",
+			"Manutenção programada para cabelo e barba",
+			"Acabamento (pezinho/contorno) sempre em dia",
+			"Descontos exclusivos em tratamentos e produtos",
+			"Sem carência ou multas rescisórias",
 		],
-		cta: "Assinar agora",
+		cta: "Assinar Club Gold",
 	},
 	{
-		id: "gold2",
-		tier: "gold",
-		name: "Club Motta — Barba",
-		sub: "Barba alinhada sempre",
-		desc: "Ideal para quem quer a barba sempre desenhada e alinhada toda semana sem cobrança avulsa.",
-		price: "129,99",
-		per: "por mês",
-		feats: [
-			"Barba com frequência programada",
-			"Barboterapia com toalha quente",
-			"Taxa de ativação R$ 7,00 (1º mês)",
-		],
-		cta: "Comprar",
-	},
-	{
-		id: "gold1",
-		tier: "gold",
-		name: "Club Motta — Corte",
-		sub: "Corte na frequência ideal",
-		desc: "Cortes com frequência programada para manter o visual impecável sem pagar a cada visita.",
-		price: "125,99",
-		per: "por mês",
-		feats: [
-			"Corte com frequência programada",
-			"Manutenção contínua do visual",
-			"Taxa de ativação R$ 7,00 (1º mês)",
-		],
-		cta: "Comprar",
-	},
-	{
-		id: "black1",
+		id: "black",
 		tier: "black",
 		dark: true,
-		tag: "Vagas limitadas",
+		tag: "VIP & Ilimitado",
 		eyebrow: "Club Black",
-		name: "Club Black — Corte VIP",
-		sub: "Para homens exigentes",
-		desc: "Corte sempre em dia, atendimento prioritário, lavagem especial e produtos da linha profissional.",
-		price: "159,99",
-		per: "por mês",
-		scarce: "Resta 4 vaga(s)",
-		feats: [
-			"Atendimento prioritário",
-			"Corte com frequência programada",
-			"Linha profissional homologada",
-			"Taxa de ativação R$ 7,00 (1º mês)",
-		],
-		cta: "Garantir vaga",
-	},
-	{
-		id: "black2",
-		tier: "black",
-		dark: true,
-		tag: "Vagas limitadas",
-		eyebrow: "Club Black",
-		name: "Club Black — Barba VIP",
-		sub: "Autocuidado premium",
-		desc: "Alinhamento de precisão, toalha quente e tratamentos capilares e de pele com produtos premium.",
-		price: "159,99",
-		per: "por mês",
-		scarce: "Resta 1 vaga(s)",
-		feats: [
-			"Barba com atendimento prioritário",
-			"Toalha quente e barboterapia",
-			"Produtos da linha profissional",
-			"Taxa de ativação R$ 7,00 (1º mês)",
-		],
-		cta: "Garantir vaga",
-	},
-	{
-		id: "prime",
-		tier: "black",
-		dark: true,
-		tag: "Poucas vagas",
-		eyebrow: "Club Black Prime",
-		name: "Club Black — Prime Total",
-		sub: "Experiência definitiva",
-		desc: "Total liberdade para barba e corte, cobertura ampliada com tratamentos e bebidas cortesia.",
+		name: "Club Black",
+		sub: "Acesso ilimitado e exclusivo",
+		desc: "Acesso ilimitado/premium com benefícios e condições exclusivas para homens que não abrem mão da máxima excelência.",
 		price: "299,99",
 		per: "por mês na assinatura",
-		scarce: "Resta 14 vaga(s)",
+		scarce: "Vagas VIP limitadas",
 		feats: [
-			"Corte e Barba prioritários",
-			"Cobertura de tratamentos e cuidados",
-			"Sem cobrança avulsa por visita",
-			"Taxa de ativação R$ 7,00 (1º mês)",
+			"Acesso ilimitado a cortes masculinos",
+			"Barboterapia e acabamentos liberados",
+			"Atendimento prioritário na agenda e horários nobres",
+			"Condições e benefícios exclusivos em procedimentos estéticos",
 		],
-		cta: "Garantir vaga",
+		cta: "Garantir vaga VIP",
 	},
 ];
 const upcoming = [
@@ -244,185 +174,91 @@ const past = [
 ];
 const serviceCategories = [
 	"Todos",
-	"Corte Barba",
-	"Visagismo",
-	"Tratamentos Cuidados",
-	"Pigmentação Lavagem",
-	"Depilação Sobrancelha",
+	"Cabelo & Barba",
+	"Tratamentos & Estética",
 ];
 
 const services = [
-	// Corte Barba
+	// Cabelo & Barba
 	{
 		id: "corte",
-		cat: "Corte Barba",
-		name: "Corte",
+		cat: "Cabelo & Barba",
+		name: "Corte Masculino",
 		desc: "Corte completo na tesoura ou máquina, alinhamento e finalização.",
 		price: 49.99,
 		tag: "Mais pedido",
 	},
 	{
 		id: "barba",
-		cat: "Corte Barba",
-		name: "Barba",
-		desc: "Barboterapia com toalha quente, navalhete e pós-barba refrescante.",
+		cat: "Cabelo & Barba",
+		name: "Barboterapia / Barba",
+		desc: "Barboterapia com toalha quente, óleos essenciais, navalhete e pós-barba refrescante.",
 		price: 49.99,
 		tag: "Destaque",
 	},
 	{
-		id: "corte_kids",
-		cat: "Corte Barba",
-		name: "Corte Kids (Até 8 anos)",
-		desc: "Atendimento paciente e especializado para crianças até 8 anos.",
-		price: 60.0,
-		tag: "Kids",
-	},
-	{
-		id: "pezinho",
-		cat: "Corte Barba",
-		name: "Pezinho / Acabamento",
-		desc: "Acabamento de costeletas, nuca e contorno perfeito.",
+		id: "acabamento",
+		cat: "Cabelo & Barba",
+		name: "Acabamento (Pezinho/Contorno)",
+		desc: "Acabamento de costeletas, nuca e contorno com precisão.",
 		price: 20.0,
 		tag: "Rápido",
 	},
-
-	// Visagismo
 	{
-		id: "visagismo_combo",
-		cat: "Visagismo",
-		name: "Atendimento com Técnica de Visagismo (Cabelo e Barba)",
-		desc: "Experiência completa harmonizando corte e barba com traços anatômicos.",
-		price: 199.99,
-		tag: "Exclusivo",
-	},
-	{
-		id: "visagismo_corte",
-		cat: "Visagismo",
-		name: "Corte com Técnica de Visagismo",
-		desc: "Análise facial e corte personalizado valorizando o formato do rosto.",
-		price: 120.0,
+		id: "pigmentacao",
+		cat: "Cabelo & Barba",
+		name: "Pigmentação (Barba ou Cabelo)",
+		desc: "Disfarce de fios brancos, preenchimento de falhas e realce do contorno.",
+		price: 30.0,
 		starting: true,
-		tag: "Visagismo",
+		tag: "Definição",
 	},
 	{
-		id: "visagismo_barba",
-		cat: "Visagismo",
-		name: "Barba com Técnica de Visagismo",
-		desc: "Desenho, proporção e geometria sob medida para a anatomia facial.",
-		price: 100.0,
-		tag: "Visagismo",
-	},
-	{
-		id: "visagismo_consultoria",
-		cat: "Visagismo",
-		name: "Consultoria de Visagismo",
-		desc: "Diagnóstico completo de imagem, morfologia e alinhamento visual.",
-		price: 550.0,
+		id: "lavagem_especial",
+		cat: "Cabelo & Barba",
+		name: "Lavagem Especial",
+		desc: "Higienização capilar profunda com produtos profissionais e massagem revigorante.",
+		price: 20.0,
 		starting: true,
-		tag: "VIP",
+		tag: "Relax",
 	},
 
-	// Tratamentos Cuidados
-	{
-		id: "selagem",
-		cat: "Tratamentos Cuidados",
-		name: "Selagem Capilar",
-		desc: "Tratamento de redução de volume, controle e alinhamento dos fios.",
-		price: 120.0,
-		starting: true,
-		tag: "Tratamento",
-	},
+	// Tratamentos & Estética
 	{
 		id: "hidratacao_capilar",
-		cat: "Tratamentos Cuidados",
+		cat: "Tratamentos & Estética",
 		name: "Hidratação Capilar",
-		desc: "Nutrição e reparação profunda para fios ressecados ou opacos.",
+		desc: "Nutrição e reparação profunda para fios macios, sedosos e saudáveis.",
 		price: 40.0,
-		tag: "Cuidado",
-	},
-	{
-		id: "hidratacao_barba",
-		cat: "Tratamentos Cuidados",
-		name: "Hidratação de Barba",
-		desc: "Tratamento intensivo para fios macios, alinhados e sem frizz.",
-		price: 40.0,
+		starting: true,
 		tag: "Cuidado",
 	},
 	{
 		id: "limpeza_facial",
-		cat: "Tratamentos Cuidados",
-		name: "Limpeza Facial",
-		desc: "Remoção de impurezas, argiloterapia e esfoliação revigorante.",
+		cat: "Tratamentos & Estética",
+		name: "Limpeza Facial / Cuidados com a Pele",
+		desc: "Remoção de impurezas, máscara negra, esfoliação e controle de oleosidade.",
 		price: 40.0,
+		starting: true,
 		tag: "Estética",
 	},
-
-	// Pigmentação Lavagem
 	{
-		id: "pigmentacao_capilar",
-		cat: "Pigmentação Lavagem",
-		name: "Pigmentação Capilar",
-		desc: "Camuflagem sutil e preenchimento de falhas ou fios brancos.",
-		price: 40.0,
-		tag: "Definição",
+		id: "selagem",
+		cat: "Tratamentos & Estética",
+		name: "Selagem Capilar",
+		desc: "Tratamento de redução de volume, controle e selagem dos fios conforme o comprimento.",
+		price: 0,
+		priceDisplay: "Sob consulta (conforme comprimento)",
+		tag: "Tratamento",
 	},
 	{
-		id: "pigmentacao_barba",
-		cat: "Pigmentação Lavagem",
-		name: "Pigmentação Barba",
-		desc: "Uniformização e definição de tom para aspecto denso e natural.",
-		price: 40.0,
-		tag: "Definição",
-	},
-	{
-		id: "lavagem_capilar",
-		cat: "Pigmentação Lavagem",
-		name: "Lavagem Capilar (Simples)",
-		desc: "Higienização capilar com shampoo refrescante e secagem.",
-		price: 15.0,
-		tag: "Express",
-	},
-	{
-		id: "lavagem_barba",
-		cat: "Pigmentação Lavagem",
-		name: "Lavagem de Barba",
-		desc: "Higienização profunda dos fios da barba com produtos especiais.",
-		price: 15.0,
-		tag: "Express",
-	},
-
-	// Depilação Sobrancelha
-	{
-		id: "depilacao_orelha",
-		cat: "Depilação Sobrancelha",
-		name: "Depilação Orelha (Cera)",
-		desc: "Remoção rápida e higiênica de pelos da orelha com cera morna.",
+		id: "depilacao_masculina",
+		cat: "Tratamentos & Estética",
+		name: "Depilação Masculina (Áreas específicas)",
+		desc: "Remoção higiênica e rápida de pelos em áreas específicas (orelha, nariz ou sobrancelha).",
 		price: 25.0,
+		priceDisplay: "R$ 25,00 a R$ 35,00",
 		tag: "Epilação",
-	},
-	{
-		id: "depilacao_nasal",
-		cat: "Depilação Sobrancelha",
-		name: "Depilação Nasal (Cera)",
-		desc: "Eliminação segura de pelos nasais com cera de alta precisão.",
-		price: 25.0,
-		tag: "Epilação",
-	},
-	{
-		id: "sobrancelha_navalha",
-		cat: "Depilação Sobrancelha",
-		name: "Sobrancelha (Navalha)",
-		desc: "Alinhamento sutil e limpeza do arco preservando formato natural.",
-		price: 20.0,
-		tag: "Design",
-	},
-	{
-		id: "sobrancelha_cera",
-		cat: "Depilação Sobrancelha",
-		name: "Sobrancelha (Cera)",
-		desc: "Design e epilação com cera hipoalergênica de maior durabilidade.",
-		price: 35.0,
-		tag: "Design",
 	},
 ];
 const pros = [
@@ -617,9 +453,9 @@ const screens = {
         </div>
         <span class="item" style="color:var(--gold-soft)">Nível Ouro</span>
       </div>
-      <h2>Clube Gold 3 — Corte &amp; Barba</h2>
+      <h2>Club Gold — Corte &amp; Barba</h2>
       <p class="meta">Membro assíduo desde Out/2023 • Renovação automática em 05/11/2026</p>
-      <div class="row between" style="padding-top:8px"><span class="meta">Mensalidade:</span><span style="font-weight:700;font-size:1.25rem;color:var(--mint-on-dark)">R$ 229,99<small class="meta">/mês</small></span></div>
+      <div class="row between" style="padding-top:8px"><span class="meta">Mensalidade:</span><span style="font-weight:700;font-size:1.25rem;color:var(--mint-on-dark)">R$ 125,99<small class="meta">/mês</small></span></div>
       ${quotas.map(([n, u, t]) => `<div class="meta"><div class="row between"><span>${n}</span><span style="color:var(--mint-on-dark);font-weight:600">${u} de ${t} (${(u / t) * 100}%)</span></div><div class="bar" style="background:rgba(255,255,255,.15);margin-top:4px" role="progressbar" aria-valuenow="${u}" aria-valuemax="${t}"><i style="width:${(u / t) * 100}%;background:var(--mint-on-dark)"></i></div></div>`).join("")}
       <div class="meta">Extras Upgrades: <b style="display:inline">15% OFF</b> · Economia anual: <b style="display:inline;color:var(--mint-on-dark)">R$ 640,00</b></div>
     </section>
@@ -655,7 +491,7 @@ const screens = {
 				)
 				.join("")}</div>
     </section>
-    <section class="card"><h2 class="h-section" style="font:400 1.125rem/1.556 var(--serif)">Gestão de Assinatura &amp; Faturamento</h2><div class="item" style="color:var(--text-strong)">Mastercard final •••• 9241</div><div class="legend">Próxima cobrança: 05/11/2026 (R$ 229,99) · Automática</div><div class="legend" style="color:var(--text-2)"><b>Sem período de carência:</b> pause ou cancele a qualquer momento antes da renovação, sem multas.</div><button class="btn" data-toast="Abrindo forma de pagamento (demo)">Alterar forma de pagamento</button><a class="btn" style="text-align:center;text-decoration:none" href="#/planos">Trocar de plano</a></section>
+    <section class="card"><h2 class="h-section" style="font:400 1.125rem/1.556 var(--serif)">Gestão de Assinatura &amp; Faturamento</h2><div class="item" style="color:var(--text-strong)">Mastercard final •••• 9241</div><div class="legend">Próxima cobrança: 05/11/2026 (R$ 125,99) · Automática</div><div class="legend" style="color:var(--text-2)"><b>Sem período de carência:</b> pause ou cancele a qualquer momento antes da renovação, sem multas.</div><button class="btn" data-toast="Abrindo forma de pagamento (demo)">Alterar forma de pagamento</button><a class="btn" style="text-align:center;text-decoration:none" href="#/planos">Trocar de plano</a></section>
     <p class="legend" style="text-align:center">Protótipo demonstrativo • valores ilustrativos</p>`;
 	},
 
@@ -736,13 +572,13 @@ const screens = {
     ${tabs(
 			[
 				["todos", "Todos"],
-				["gold", "Club Motta"],
+				["gold", "Club Gold"],
 				["black", "Club Black"],
 			],
 			f,
 			"pf",
 		)}
-    <div class="row between"><h2 class="h-section">${f === "black" ? "Categoria Club Black (VIP)" : f === "gold" ? "Categoria Club Motta" : "Planos do Clube MOTTA"}</h2><span class="legend">${list.length} opções</span></div>
+    <div class="row between"><h2 class="h-section">${f === "black" ? "Categoria Club Black (VIP)" : f === "gold" ? "Categoria Club Gold" : "Planos de Recorrência (Assinaturas Mensais)"}</h2><span class="legend">${list.length} opções</span></div>
     <div class="col gap16">${list
 			.map(
 				(p) => `
@@ -750,7 +586,7 @@ const screens = {
         <div class="row between">
           <div class="row" style="gap:8px;align-items:center;">
             <img src="${p.tier === "black" ? "assets/logos/club-black-transparent.png" : "assets/logos/motta-symbol-green.png"}" alt="" style="height:22px;object-fit:contain;">
-            <span class="eyebrow" style="color:${p.dark ? "var(--gold)" : "var(--muted)"}">${p.eyebrow || "Club Motta"}</span>
+            <span class="eyebrow" style="color:${p.dark ? "var(--gold)" : "var(--muted)"}">${p.eyebrow || (p.tier === "black" ? "Club Black" : "Club Gold")}</span>
           </div>
           ${p.tag ? `<span class="badge" style="${p.scarce ? "background:transparent;color:var(--gold-soft);padding:0" : ""}">${p.tag}</span>` : ""}
         </div>
@@ -1037,39 +873,76 @@ const screens = {
         <img src="assets/logos/motta-symbol-green.png" alt="Motta" style="width:26px;height:26px;object-fit:contain;">
       </div>
       <h1 class="h-display" style="font-size:1.625rem;line-height:1.231;">Tabela de Serviços e Preços</h1>
-      <p class="body">Valores extraídos diretamente do sistema oficial de agendamento Cashbarber da Barbearia Motta.</p>
+      <p class="body">Valores oficiais e atualizados de serviços avulsos e assinaturas mensais da Barbearia Motta.</p>
     </header>
 
-    <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="pricing-caption">
-      <table>
-        <caption id="pricing-caption">Barbearia Motta • Tabela Oficial de Serviços e Preços</caption>
-        <thead>
-          <tr>
-            <th scope="col" style="width:36%">Categoria</th>
-            <th scope="col">Serviço</th>
-            <th scope="col" style="text-align:right;white-space:nowrap">Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${services
-						.map(
-							(s) => `
+    <div class="col gap8" style="margin-bottom:8px">
+      <div class="row between" style="align-items:center">
+        <h2 class="h-section" style="font-size:1.125rem;margin:0">Serviços Avulsos</h2>
+        <span class="legend">${services.length} serviços</span>
+      </div>
+      <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="pricing-caption">
+        <table>
+          <caption id="pricing-caption">Barbearia Motta • Tabela Oficial de Serviços Avulsos</caption>
+          <thead>
             <tr>
-              <th scope="row" style="font-weight:600;color:var(--forest);font-size:0.6875rem;text-transform:uppercase;">${s.cat}</th>
-              <td style="color:var(--text-strong);font-weight:500;">${s.name}</td>
-              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);">${(s.starting ? '<span class="legend" style="font-size:0.625rem;font-weight:500;display:block">A partir de</span>' : "") + "R$ " + s.price.toFixed(2).replace(".", ",")}</td>
+              <th scope="col" style="width:36%">Categoria</th>
+              <th scope="col">Serviço</th>
+              <th scope="col" style="text-align:right;white-space:nowrap">Valor</th>
             </tr>
-          `,
-						)
-						.join("")}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            ${services
+							.map(
+								(s) => `
+              <tr>
+                <th scope="row" style="font-weight:600;color:var(--forest);font-size:0.6875rem;text-transform:uppercase;">${s.cat}</th>
+                <td style="color:var(--text-strong);font-weight:500;">${s.name}</td>
+                <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);">${s.priceDisplay ? s.priceDisplay : (s.starting ? '<span class="legend" style="font-size:0.625rem;font-weight:500;display:block">A partir de</span>' : "") + "R$ " + s.price.toFixed(2).replace(".", ",")}</td>
+              </tr>
+            `,
+							)
+							.join("")}
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <p class="legend" style="text-align:center;color:var(--text-2);">Nota: Na interface de seleção do sistema Cashbarber, o tempo estimado de duração de cada procedimento não é exibido nos cards.</p>
+    <!-- Planos de Recorrência (Assinaturas Mensais) -->
+    <div class="col gap8" style="margin-top:12px;margin-bottom:8px">
+      <div class="row between" style="align-items:center">
+        <h2 class="h-section" style="font-size:1.125rem;margin:0">Planos de Recorrência (Assinaturas Mensais)</h2>
+        <span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">Clube Motta</span>
+      </div>
+      <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="plans-caption">
+        <table>
+          <caption id="plans-caption">Barbearia Motta • Planos de Assinatura Mensal</caption>
+          <thead>
+            <tr>
+              <th scope="col" style="width:30%">Plano</th>
+              <th scope="col">Cobertura &amp; Benefícios</th>
+              <th scope="col" style="text-align:right;white-space:nowrap">Valor Mensal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" style="font-weight:700;color:var(--gold-soft);font-size:0.8125rem;">Club Gold</th>
+              <td style="color:var(--text-strong);font-size:0.75rem;">Manutenção programada para cabelo e barba.</td>
+              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);"><b style="font-size:0.9375rem">R$ 125,99</b><small class="legend" style="display:block">/mês</small></td>
+            </tr>
+            <tr>
+              <th scope="row" style="font-weight:700;color:#071E13;font-size:0.8125rem;">Club Black</th>
+              <td style="color:var(--text-strong);font-size:0.75rem;">Acesso ilimitado/premium com benefícios e condições exclusivas.</td>
+              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);"><b style="font-size:0.9375rem">R$ 299,99</b><small class="legend" style="display:block">/mês</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <div class="col gap8">
-      <a class="btn primary" style="text-align:center;text-decoration:none;" href="#/novo/1">Agendar Procedimento</a>
+      <a class="btn primary" style="text-align:center;text-decoration:none;" href="#/novo/1">Agendar Procedimento Avulso</a>
+      <a class="btn" style="text-align:center;text-decoration:none;" href="#/planos">Conhecer e Assinar Planos</a>
       <a class="btn" style="text-align:center;text-decoration:none;" href="#/inicio">Voltar ao Início</a>
     </div>`;
 	},
@@ -1131,8 +1004,7 @@ const screens = {
                 <div class="row between" style="padding-top:4px;border-top:1px solid var(--surface-soft)">
                   <span class="legend" style="color:var(--forest);font-weight:600;font-size:0.6875rem;text-transform:uppercase">${x.cat}</span>
                   <div style="text-align:right">
-                    ${x.starting ? `<span class="legend" style="font-size:0.6875rem;display:block">A partir de</span>` : ""}
-                    <b style="color:var(--ink);font-size:1.125rem">R$ ${x.price.toFixed(2).replace(".", ",")}</b>
+                    ${x.priceDisplay ? `<b style="color:var(--ink);font-size:1.125rem">${x.priceDisplay}</b>` : `${x.starting ? `<span class="legend" style="font-size:0.6875rem;display:block">A partir de</span>` : ""}<b style="color:var(--ink);font-size:1.125rem">R$ ${x.price.toFixed(2).replace(".", ",")}</b>`}
                   </div>
                 </div>
               </button>`;
@@ -1178,15 +1050,15 @@ const screens = {
 		if (step === 4) {
 			const sel = services.filter((x) => B.svc.includes(x.id));
 			const pro = pros.find((p) => p.id === B.pro) || pros[0];
-			const hasStarting = sel.some((x) => x.starting);
+			const hasStarting = sel.some((x) => x.starting || x.priceDisplay);
 			return `<header class="col gap4"><h1 class="h-page">Revisão e Confirmação</h1><span class="legend">Confira os dados, procedimentos e valores antes de finalizar.</span></header>${bar}
       <section class="card"><span class="eyebrow" style="color:#4C6455">Quando &amp; onde</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">Quarta-feira, ${B.day} de Outubro de 2026</div><div class="legend">${B.time} · Unidade Sol &amp; Mar — Av. Carlos Augusto T. Garcia, 2040, Macaé - RJ</div></section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Profissional especialista</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">${pro.name}</div><div class="legend">${pro.role}</div></section>
-      <section class="card"><span class="eyebrow" style="color:#4C6455">Procedimentos selecionados (${sel.length})</span>${sel.map((x) => `<div class="row between"><span class="item" style="color:var(--text-strong)">${x.name}</span><b style="color:var(--ink)">${fmt(x.price, x.starting)}</b></div>`).join("")}</section>
+      <section class="card"><span class="eyebrow" style="color:#4C6455">Procedimentos selecionados (${sel.length})</span>${sel.map((x) => `<div class="row between"><span class="item" style="color:var(--text-strong)">${x.name}</span><b style="color:var(--ink)">${x.priceDisplay || fmt(x.price, x.starting)}</b></div>`).join("")}</section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Resumo financeiro</span>
         <div class="row between legend"><span>Forma de cobrança</span><span>Balcão / Recepção</span></div>
         <div class="row between"><b style="color:var(--text-2)">TOTAL ESTIMADO</b><b style="font-size:1.5rem;color:#003D1B">${hasStarting ? "A partir de " : ""}${fmt(total)}</b></div>
-        ${hasStarting ? `<p class="legend" style="color:var(--text-2);font-size:0.6875rem">* Procedimentos com indicação "A partir de" têm preço base sujeito a variação após avaliação técnica presencial.</p>` : ""}
+        ${hasStarting ? `<p class="legend" style="color:var(--text-2);font-size:0.6875rem">* Procedimentos com indicação "A partir de", faixas de valores ou sob consulta têm valor final confirmado na recepção.</p>` : ""}
       </section>
       <label class="card" style="flex-direction:row;gap:12px;align-items:flex-start;font-size:0.6875rem;color:var(--text-strong)"><input type="checkbox" id="agree" ${B.agree ? "checked" : ""} style="width:20px;height:20px;accent-color:var(--forest);flex:none"><span>Li e concordo com os termos de comparecimento, tolerância de 15 minutos e política de cancelamento da Barbearia Motta.</span></label>
       <div class="col gap8"><button class="btn primary" id="confirm-book">Confirmar Agendamento</button><a class="btn" style="text-align:center;text-decoration:none" href="#/novo/3">Voltar e Modificar Dados</a></div>`;
