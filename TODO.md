@@ -1,4 +1,17 @@
 
+## Marco 2026-11-08 — Tabela Oficial de Valores & Audit A11y/Design v0 (app/)
+- [x] Atualização completa da tabela oficial de serviços avulsos (Cabelo & Barba, Tratamentos & Estética) e planos de recorrência (Club Gold R$ 125,99/mês e Club Black R$ 299,99/mês)
+- [x] Correção do seletor e semântica da tabela `th:nth-of-type(3)` com remoção do container query destrutivo e inclusão de scroll hints visíveis (`.table-hint`) com `aria-describedby`
+- [x] Formatação monetária padronizada via `Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })`
+- [x] Acessibilidade de abas WAI-ARIA (`role="tablist"`, `role="tab"`, `aria-selected`, `tabindex`, `aria-controls`, `role="tabpanel"`) e suporte a navegação por teclado (ArrowLeft, ArrowRight, Home, End)
+- [x] Arquitetura de navegação unificada com 5 abas consistentes entre visitante e autenticado, com `aria-hidden="true"` nos SVGs decorativos
+- [x] Datas relativas dinâmicas com `Intl.DateTimeFormat` eliminando datas estáticas desatualizadas
+- [x] Limpeza editorial: eliminação de emojis em títulos, headings e badges
+- [x] Indicador de foco acessível com `:focus-visible` em `main` e adição de skip link acessível no `index.html`
+- [x] Otimização visual do Hero Trust Card: rating integrado no corpo do card e remoção de badge concorrente com botões de ação
+- [x] Suporte a `prefers-reduced-motion: reduce` estendido para mimos, carrosséis e toasts
+- [x] Bump de versão do Service Worker e assets para `v27`
+
 ## Marco 2026-11-07 — Layout Otimizado: CSS Grid Responsivo Desktop & Tablet (app/)
 - [x] Transição do override manual Flexbox para arquitetura CSS Grid mobile-first sem `!important` ou `calc()` manual
 - [x] Container global `.app` com `max-width: 1200px`, `margin-inline: auto` e propriedades lógicas (`padding-inline: 16px`)

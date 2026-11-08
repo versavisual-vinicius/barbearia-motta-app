@@ -1,11 +1,11 @@
-const CACHE_NAME = "motta-cache-v26-1";
+const CACHE_NAME = "motta-cache-v27";
 const ASSETS = [
 	"./",
 	"./index.html",
 	"./styles.css",
-	"./styles.css?v=26.1",
+	"./styles.css?v=27",
 	"./app.js",
-	"./app.js?v=25",
+	"./app.js?v=27",
 	"./assets/experiencia/atendimento.jpg",
 	"./assets/experiencia/fundo-motta.svg",
 	"./manifest.json",

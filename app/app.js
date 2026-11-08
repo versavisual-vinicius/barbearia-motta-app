@@ -24,6 +24,31 @@ const showToast = (msg) => {
 
 const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 
+const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+	style: "currency",
+	currency: "BRL",
+});
+const formatCurrency = (val) => {
+	if (typeof val === "string") return val;
+	return currencyFormatter.format(val);
+};
+
+const now = new Date();
+const formatDynamicDate = (daysAhead) => {
+	const d = new Date(now);
+	d.setDate(d.getDate() + daysAhead);
+	return {
+		day: new Intl.DateTimeFormat("pt-BR", { day: "2-digit" }).format(d),
+		mon: new Intl.DateTimeFormat("pt-BR", { month: "short" }).format(d).replace(".", ""),
+		weekday: new Intl.DateTimeFormat("pt-BR", { weekday: "long" }).format(d),
+		full: new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "numeric", month: "long" }).format(d),
+		shortDate: new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit" }).format(d),
+	};
+};
+
+const nextAppt = formatDynamicDate(3);
+const renewalDate = formatDynamicDate(25);
+
 const header = (kicker, sub, title) => `
   <header class="col gap4">
     <div class="row"><span class="eyebrow">${kicker}</span><span class="dot"></span><span class="legend">${sub}</span></div>
@@ -31,10 +56,10 @@ const header = (kicker, sub, title) => `
   </header>`;
 
 const tabs = (items, active, attr) => `
-  <div class="chips" role="tablist">${items
+  <div class="chips" role="tablist" aria-label="Filtro de opções">${items
 		.map(
 			([id, label]) =>
-				`<button class="chip" role="tab" aria-selected="${id === active}" data-${attr}="${id}">${label}</button>`,
+				`<button class="chip ${id === active ? "on" : ""}" role="tab" aria-selected="${id === active}" tabindex="${id === active ? "0" : "-1"}" id="tab-${id}" aria-controls="panel-${id}" data-${attr}="${id}">${escapeHtml(label)}</button>`,
 		)
 		.join("")}</div>`;
 
@@ -90,7 +115,8 @@ const plans = [
 		name: "Club Gold",
 		sub: "Manutenção programada para cabelo e barba",
 		desc: "Manutenção programada para cabelo e barba com frequência garantida, mantendo seu visual impecável sem cobrança avulsa por visita.",
-		price: "125,99",
+		price: 125.99,
+		priceFormatted: "R$ 125,99",
 		per: "por mês via recorrência",
 		feats: [
 			"Manutenção programada para cabelo e barba",
@@ -109,7 +135,8 @@ const plans = [
 		name: "Club Black",
 		sub: "Acesso ilimitado e exclusivo",
 		desc: "Acesso ilimitado/premium com benefícios e condições exclusivas para homens que não abrem mão da máxima excelência.",
-		price: "299,99",
+		price: 299.99,
+		priceFormatted: "R$ 299,99",
 		per: "por mês na assinatura",
 		scarce: "Vagas VIP limitadas",
 		feats: [
@@ -124,52 +151,53 @@ const plans = [
 const upcoming = [
 	{
 		id: "a1",
-		day: "24",
-		mon: "Out",
+		day: nextAppt.day,
+		mon: nextAppt.mon,
 		time: "15:30",
 		barber: "Michel Nogueira",
 		role: "Barbeiro Master Visagista",
 		svc: "Corte Masculino + Barba",
 		note: "Em 3 dias",
-		total: "R$ 32,30",
+		total: formatCurrency(49.99),
+		when: nextAppt.full.charAt(0).toUpperCase() + nextAppt.full.slice(1),
 	},
 ];
 const past = [
 	{
-		day: "05",
-		mon: "Out",
+		day: formatDynamicDate(-20).day,
+		mon: formatDynamicDate(-20).mon,
 		barber: "Orlando Junior",
 		role: "Barbeiro Master",
-		svc: "Sobrancelha, Hidratação Capilar, Corte",
+		svc: "Limpeza Facial, Hidratação Capilar, Corte",
 		dur: "~60 min",
-		total: "R$ 109,99",
+		total: formatCurrency(129.99),
 	},
 	{
-		day: "05",
-		mon: "Set",
+		day: formatDynamicDate(-50).day,
+		mon: formatDynamicDate(-50).mon,
 		barber: "Matheus Albuquerque",
 		role: "Barbeiro Estilista",
-		svc: "Corte Masculino Degradê",
+		svc: "Corte Masculino",
 		dur: "~35 min",
-		total: "R$ 49,99",
+		total: formatCurrency(49.99),
 	},
 	{
-		day: "04",
-		mon: "Ago",
+		day: formatDynamicDate(-80).day,
+		mon: formatDynamicDate(-80).mon,
 		barber: "Wanderson Mota",
 		role: "Barbeiro Sênior",
 		svc: "Corte Tradicional na Tesoura",
 		dur: "~40 min",
-		total: "R$ 49,99",
+		total: formatCurrency(49.99),
 	},
 	{
-		day: "12",
-		mon: "Jun",
+		day: formatDynamicDate(-110).day,
+		mon: formatDynamicDate(-110).mon,
 		barber: "Welerson Mota",
 		role: "Barbeiro Estilista",
-		svc: "Design de Sobrancelha, Corte",
+		svc: "Barboterapia / Barba, Corte",
 		dur: "~45 min",
-		total: "R$ 72,00",
+		total: formatCurrency(99.98),
 	},
 ];
 const serviceCategories = [
@@ -342,7 +370,7 @@ const state = {
 /* ---------- telas ---------- */
 const screens = {
 	clube() {
-		return `${header("Clube Motta", "Vantagens Exclusivas", "Produtos e benefícios 🛍️")}
+		return `${header("Clube Motta", "Vantagens Exclusivas", "Produtos e benefícios")}
     <p class="body">Aproveite descontos exclusivos em marcas parceiras e privilégios desenhados para elevar o seu ritual de cuidado.</p>
     <div class="chips"><a class="chip on" href="#/clube" style="text-decoration:none">Produtos e benefícios</a><a class="chip" href="#/plano" style="text-decoration:none">Meu plano</a><a class="chip" href="#/agendamentos" style="text-decoration:none">Agendamentos</a><a class="chip" href="#/perfil" style="text-decoration:none">Editar perfil</a></div>
     <section class="hero" aria-label="Seu plano">
@@ -353,9 +381,9 @@ const screens = {
         </div>
         <span class="pill">Ativo</span>
       </div>
-      <h2>Clube Motta Master</h2>
-      <p>Descontos automáticos aplicados no caixa e atendimento com prioridade absoluta.</p>
-      <div class="row" style="gap:16px;padding-top:8px"><div class="meta">Próxima renovação<b>05 de Novembro, 2026</b></div><span style="width:1px;height:24px;background:var(--forest-800)"></span><div class="meta">Economia acumulada<b style="color:var(--gold)">R$ 148,00</b></div></div>
+      <h2>Club Gold</h2>
+      <p>Manutenção programada para cabelo e barba com frequência garantida e prioridade de atendimento.</p>
+      <div class="row" style="gap:16px;padding-top:8px"><div class="meta">Próxima renovação<b>${renewalDate.full}</b></div><span style="width:1px;height:24px;background:var(--forest-800)"></span><div class="meta">Economia acumulada<b style="color:var(--gold)">R$ 148,00</b></div></div>
     </section>
     <section class="col gap16">
       <div class="row between"><div><h2 class="h-section">Descontos em produtos</h2><p class="legend">Linha profissional selecionada para cuidados diários</p></div></div>
@@ -417,11 +445,10 @@ const screens = {
 				34.0,
 			],
 		].filter((x) => f === "todos" || (f === "gratis" ? x[4] === 0 : x[4] > 0));
-		const brl = (n) => "R$ " + n.toFixed(2).replace(".", ",");
 		return `<header class="col gap4"><div class="row"><span class="eyebrow">Plano selecionado</span></div><div class="row between"><h1 class="h-page">Benefícios do Plano</h1><span class="ok" style="color:var(--forest)">Membro Ativo</span></div><p class="body">Conheça cada serviço, cortesias e descontos exclusivos inclusos na sua assinatura.</p></header>
     <div class="chips"><a class="chip on" href="#/beneficios" style="text-decoration:none">Benefícios</a><a class="chip" href="#/plano" style="text-decoration:none">Meu plano</a><a class="chip" href="#/planos" style="text-decoration:none">Comparar</a><a class="chip" href="#/clube" style="text-decoration:none">Dúvidas</a></div>
     <section class="card"><div class="row between"><span class="item" style="color:var(--ink)">100 Cortesias</span><span class="legend">Serviços por mês</span></div><div class="row between"><span class="item" style="color:var(--ink)">Até 100% OFF</span><span class="legend">Nos carros-chefes</span></div><div class="row between"><span class="item" style="color:var(--ink)">Produtos -15%</span><span class="legend">Pomadas e óleos</span></div></section>
-    <section class="hero"><span class="eyebrow">Plano selecionado</span><h2 style="font-size:1.75rem;line-height:1.214">Clube Motta</h2><p class="meta">Experiência completa de barbearia com serviços ilimitados e mimos exclusivos.</p><div class="row" style="gap:16px"><span class="meta"><b>100 / mês</b>Serviços grátis</span><span class="meta"><b>Extras -15%</b>Descontos VIP</span></div></section>
+    <section class="hero"><span class="eyebrow">Plano selecionado</span><h2 style="font-size:1.75rem;line-height:1.214">Club Gold</h2><p class="meta">Experiência completa de barbearia com serviços programados e hospitalidade de excelência.</p><div class="row" style="gap:16px"><span class="meta"><b>Cortes &amp; Barba</b>Inclusos no plano</span><span class="meta"><b>Extras -15%</b>Descontos exclusivos</span></div></section>
     <div class="row between"><h2 class="h-section">Serviços do Plano</h2><span class="legend">${items.length} disponíveis</span></div>
     ${tabs(
 			[
@@ -432,16 +459,16 @@ const screens = {
 			f,
 			"bf",
 		)}
-    <div class="col gap16">${items.map(([n, off, d, p, np]) => `<article class="card"><div class="row between"><span class="h-section">${n}</span><span class="badge" ${np ? 'style="background:var(--warn-bg);color:#78350F"' : ""}>${off}</span></div><p class="body" style="color:var(--muted)">${d}</p><div class="row between"><span><s class="legend">${brl(p)}</s> <b style="color:var(--forest)">${brl(np)}</b></span><a class="link" href="#/novo/1">Agendar</a></div></article>`).join("")}</div>
-    <section class="card"><div class="row between"><span class="item" style="color:var(--ink)">Vantagens Inclusas</span><span class="ok" style="color:var(--forest)">Tudo ativo</span></div><ul><li>100 serviços gratuitos por mês</li><li>Descontos de até 100% em procedimentos</li><li>Serviços adicionais com até 15% OFF</li><li>Prioridade na fila e horários premium</li></ul></section>
-    <section class="hero"><span class="eyebrow" style="letter-spacing:1.2px">Ambiente exclusivo</span><div class="item">Cerveja artesanal e café cortesia</div></section>
-    <div class="col gap8"><a class="btn primary" style="text-align:center;text-decoration:none" href="#/planos">Contratar este plano</a><p class="legend" style="text-align:center">Sem fidelidade forçada. Cancele a qualquer momento no app.</p></div>`;
+    <div id="panel-${f}" role="tabpanel" aria-labelledby="tab-${f}" class="col gap16">${items.map(([n, off, d, p, np]) => `<article class="card"><div class="row between"><span class="h-section">${escapeHtml(n)}</span><span class="badge" ${np ? 'style="background:var(--warn-bg);color:#78350F"' : ""}>${escapeHtml(off)}</span></div><p class="body" style="color:var(--muted)">${escapeHtml(d)}</p><div class="row between"><span><s class="legend">${formatCurrency(p)}</s> <b style="color:var(--forest)">${formatCurrency(np)}</b></span><a class="link" href="#/novo/1">Agendar</a></div></article>`).join("")}</div>
+    <section class="card"><div class="row between"><span class="item" style="color:var(--ink)">Vantagens Inclusas</span><span class="ok" style="color:var(--forest)">Tudo ativo</span></div><ul><li>Manutenção programada para cabelo e barba</li><li>Descontos de até 100% em procedimentos essenciais</li><li>Serviços adicionais com até 15% OFF</li><li>Prioridade na agenda e horários nobres</li></ul></section>
+    <section class="hero"><span class="eyebrow" style="letter-spacing:1.2px">Ambiente exclusivo</span><div class="item">Cerveja artesanal e café cortesia inclusos</div></section>
+    <div class="col gap8"><a class="btn primary" style="text-align:center;text-decoration:none" href="#/planos">Contratar este plano</a><p class="legend" style="text-align:center">Sem fidelidade forçada. Cancele ou altere a qualquer momento no app.</p></div>`;
 	},
 
 	plano() {
 		const quotas = [
-			["Cotas de Corte de Cabelo", 3, 4, "Resta 1 corte até 05/11"],
-			["Cotas de Barboterapia Ritual", 2, 4, "Restam 2 rituais até 05/11"],
+			["Cotas de Corte de Cabelo", 3, 4, `Resta 1 corte até ${renewalDate.shortDate}`],
+			["Cotas de Barboterapia Ritual", 2, 4, `Restam 2 rituais até ${renewalDate.shortDate}`],
 		];
 		return `${header("Assinatura premium", "Meu plano", "Meu Plano Benefícios")}
     <p class="body">Acompanhe o saldo mensal de suas cotas, utilize cortes inclusos e desfrute de privilégios exclusivos.</p>
@@ -451,16 +478,16 @@ const screens = {
           <img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:22px;height:22px;object-fit:contain;">
           <span class="pill">Plano ativo</span>
         </div>
-        <span class="item" style="color:var(--gold-soft)">Nível Ouro</span>
+        <span class="item" style="color:var(--gold-soft)">Club Gold</span>
       </div>
       <h2>Club Gold — Corte &amp; Barba</h2>
-      <p class="meta">Membro assíduo desde Out/2023 • Renovação automática em 05/11/2026</p>
-      <div class="row between" style="padding-top:8px"><span class="meta">Mensalidade:</span><span style="font-weight:700;font-size:1.25rem;color:var(--mint-on-dark)">R$ 125,99<small class="meta">/mês</small></span></div>
+      <p class="meta">Membro assíduo • Renovação automática em ${renewalDate.shortDate}/${now.getFullYear()}</p>
+      <div class="row between" style="padding-top:8px"><span class="meta">Mensalidade:</span><span style="font-weight:700;font-size:1.25rem;color:var(--mint-on-dark)">${formatCurrency(125.99)}<small class="meta">/mês</small></span></div>
       ${quotas.map(([n, u, t]) => `<div class="meta"><div class="row between"><span>${n}</span><span style="color:var(--mint-on-dark);font-weight:600">${u} de ${t} (${(u / t) * 100}%)</span></div><div class="bar" style="background:rgba(255,255,255,.15);margin-top:4px" role="progressbar" aria-valuenow="${u}" aria-valuemax="${t}"><i style="width:${(u / t) * 100}%;background:var(--mint-on-dark)"></i></div></div>`).join("")}
-      <div class="meta">Extras Upgrades: <b style="display:inline">15% OFF</b> · Economia anual: <b style="display:inline;color:var(--mint-on-dark)">R$ 640,00</b></div>
+      <div class="meta">Extras Upgrades: <b style="display:inline">15% OFF</b> · Economia anual garantida</div>
     </section>
     <section class="col gap16">
-      <div><h2 class="h-section" style="font:400 1.125rem/1.556 var(--serif)">Saldo e Utilização de Cotas</h2><p class="legend">Ciclo vigente: 06/10 a 05/11 · <b style="color:#003D1B">Renovação em 18 dias</b></p></div>
+      <div><h2 class="h-section" style="font:400 1.125rem/1.556 var(--serif)">Saldo e Utilização de Cotas</h2><p class="legend">Ciclo mensal ativo · <b style="color:#003D1B">Renovação programada</b></p></div>
       <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Corte Tradicional ou Degradê</div><div class="legend">Lavagem refrescante, corte e styling</div></div><span class="badge">INCLUSO</span></div><div class="legend">Preço avulso: <s>R$ 49,99</s> · <b style="color:#003D1B">R$ 0,00</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/1">Agendar com cota</a></article>
       <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Barba Tradicional</div><div class="legend">Toalha quente com óleos essenciais e navalhete esterilizado</div></div><span class="badge">INCLUSO</span></div><div class="legend">Preço avulso: <s>R$ 49,99</s> · <b style="color:#003D1B">R$ 0,00</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/1">Agendar barba</a></article>
       <article class="card"><div class="row between"><div><div class="item" style="color:var(--text-strong)">Limpeza Facial ou Hidratação</div><div class="legend">Argiloterapia ou nutrição profunda</div></div><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">15% OFF</span></div><div class="legend">De R$ 40,00 por <b style="color:var(--text-strong)">R$ 34,00</b></div><button class="btn" data-toast="Extra adicionado ao seu próximo agendamento">Agendar extra</button></article>
@@ -497,9 +524,11 @@ const screens = {
 
 	agendamentos_vazio() {
 		return `<header class="col gap4"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px">Agenda Motta</span><div class="row between"><h1 class="h-display">Sua Agenda</h1><span class="badge" style="background:var(--mint);color:#123D26">Em dia</span></div></header>
-    <div class="chips" role="tablist"><button class="chip on" role="tab" aria-selected="true">Agendados (0)</button><a class="chip" role="tab" href="#/agendamentos" style="text-decoration:none;">Anteriores (12)</a></div>
+    <div class="chips" role="tablist" aria-label="Visualização de agendamentos"><button class="chip on" role="tab" aria-selected="true" tabindex="0">Agendados (0)</button><a class="chip" role="tab" aria-selected="false" tabindex="-1" href="#/agendamentos" style="text-decoration:none;">Anteriores (12)</a></div>
     <article class="card" style="align-items:center;text-align:center;padding:32px 16px;gap:16px;">
-      <div style="width:64px;height:64px;border-radius:50%;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;font-size:1.75rem;">📅</div>
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;color:var(--forest);" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      </div>
       <div class="legend" style="color:var(--forest);font-weight:600;text-transform:uppercase;letter-spacing:0.8px;">Barbearia Motta • Sala Privada</div>
       <h2 class="h-page" style="font-size:1.4375rem;line-height:1.217;">Você ainda não tem nenhum agendamento</h2>
       <p class="body" style="color:var(--text);">Que tal reservar seu próximo momento de cuidado? Escolha o barbeiro da sua preferência e viva a experiência completa Motta.</p>
@@ -518,7 +547,7 @@ const screens = {
       <div class="item" style="color:var(--ink)">Por que fazer parte do Clube MOTTA?</div>
       <div class="legend"><b>Pioneirismo em Macaé:</b> Modelo inovador de assinatura recorrente com planos mensais fixos.</div>
       <div class="legend"><b>Manutenção Contínua:</b> Atendimento semanal ou quinzenal para homens exigentes que prezam pelo visual impecável.</div>
-      <div class="legend"><b>Categorias Sob Medida:</b> Club Motta e Club Black com produtos homologados e visagismo exclusivo.</div>
+      <div class="legend"><b>Categorias Sob Medida:</b> Club Gold e Club Black com produtos homologados e visagismo exclusivo.</div>
     </section>`;
 	},
 	agendamentos() {
@@ -531,7 +560,7 @@ const screens = {
 								(a) => `
         <article class="card">
           <div class="row between"><span class="eyebrow" style="color:#4C6455">Próximo atendimento</span><span class="ok">Confirmado</span></div>
-          <div class="row" style="gap:12px"><div class="date"><small>${escapeHtml(a.mon)}</small><b>${escapeHtml(a.day)}</b></div><div><div class="h-section" style="font:400 1.125rem/1.222 var(--serif);color:var(--text-strong)">${escapeHtml(a.when || "Sexta-feira, 24 de Outubro")}</div><div class="item" style="color:#003D1B">${escapeHtml(a.time)} · ${escapeHtml(a.note)}</div></div></div>
+          <div class="row" style="gap:12px"><div class="date"><small>${escapeHtml(a.mon)}</small><b>${escapeHtml(a.day)}</b></div><div><div class="h-section" style="font:400 1.125rem/1.222 var(--serif);color:var(--text-strong)">${escapeHtml(a.when || nextAppt.full)}</div><div class="item" style="color:#003D1B">${escapeHtml(a.time)} · ${escapeHtml(a.note)}</div></div></div>
           <div><div class="item" style="color:var(--text-strong)">${escapeHtml(a.barber)}</div><div class="legend" style="color:var(--text-2)">${escapeHtml(a.role)}</div></div>
           <div class="legend" style="color:var(--text-2)">${escapeHtml(a.svc)} — Total <b style="color:#003D1B">${escapeHtml(a.total)}</b></div>
           <div class="row gap8" style="gap:8px;flex-wrap:wrap"><button class="btn" data-toast="Detalhes do agendamento (demo)">Ver detalhes</button><button class="btn" data-toast="Reagendamento (demo)">Reagendar</button><button class="btn danger" data-cancel="${escapeHtml(a.id)}">Cancelar</button></div>
@@ -551,7 +580,7 @@ const screens = {
         </article>`,
 						)
 						.join("");
-		return `<header class="col gap4"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px">Agenda Motta</span><div class="row between"><h1 class="h-display">Agendamentos 📅</h1><a class="btn primary" style="text-decoration:none;display:grid;align-content:center" href="#/novo/1">Novo</a></div></header>
+		return `<header class="col gap4"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px">Agenda Motta</span><div class="row between"><h1 class="h-display">Agendamentos</h1><a class="btn primary" style="text-decoration:none;display:grid;align-content:center" href="#/novo/1">Novo</a></div></header>
     ${tabs(
 			[
 				["agendados", `Agendados (${state.appts.length})`],
@@ -560,14 +589,14 @@ const screens = {
 			t,
 			"ag",
 		)}
-    <div class="col gap16">${body}</div>
+    <div id="panel-${t}" role="tabpanel" aria-labelledby="tab-${t}" class="col gap16">${body}</div>
     <section class="card"><div class="item" style="color:var(--ink)">Por que agendar pelo aplicativo?</div><div class="legend"><b>Pontualidade e praticidade.</b> Sem filas, horário reservado com seu profissional.</div><div class="legend"><b>Barbeiros especialistas.</b> Visagismo sob medida a cada visita.</div></section>`;
 	},
 
 	planos() {
 		const f = state.planFilter;
 		const list = plans.filter((p) => f === "todos" || p.tier === f);
-		return `${header("Planos e assinaturas", "Pioneira em Macaé", "Clube MOTTA — Assinatura Recorrente ✂️")}
+		return `${header("Planos e assinaturas", "Pioneira em Macaé", "Clube MOTTA — Assinatura Recorrente")}
     <p class="body">Pioneira no modelo de assinatura na cidade de Macaé. Planos mensais fixos com frequência programada (semanal ou quinzenal) para manutenção contínua do visual, sem cobrança avulsa por visita. Um clube para homens exigentes.</p>
     ${tabs(
 			[
@@ -579,7 +608,7 @@ const screens = {
 			"pf",
 		)}
     <div class="row between"><h2 class="h-section">${f === "black" ? "Categoria Club Black (VIP)" : f === "gold" ? "Categoria Club Gold" : "Planos de Recorrência (Assinaturas Mensais)"}</h2><span class="legend">${list.length} opções</span></div>
-    <div class="col gap16">${list
+    <div id="panel-${f}" role="tabpanel" aria-labelledby="tab-${f}" class="col gap16">${list
 			.map(
 				(p) => `
       <article class="card ${p.dark ? "dark" : ""}">
@@ -592,7 +621,7 @@ const screens = {
         </div>
         <div><h3 class="h-section" ${p.dark ? "" : ""}>${p.name}</h3><div class="item" style="color:${p.dark ? "var(--gold)" : "var(--forest)"}">${p.sub}</div></div>
         <p class="body">${p.desc}</p>
-        <div><span class="legend">R$</span> <span class="price">${p.price}</span><div class="legend">${p.per}</div>${p.scarce ? `<div class="scarce">${p.scarce}</div>` : ""}</div>
+        <div><span class="price">${p.priceFormatted || formatCurrency(p.price)}</span><div class="legend">${p.per}</div>${p.scarce ? `<div class="scarce">${p.scarce}</div>` : ""}</div>
         <ul>${p.feats.map((x) => `<li>${x}</li>`).join("")}</ul>
         <button class="btn ${p.dark ? "gold" : "primary"} block" data-toast="${p.name}: assinatura digital via link da bio / app">${p.cta}</button>
       </article>`,
@@ -658,7 +687,7 @@ const screens = {
           </div>
         </div>
         <div class="row between" style="padding-top:4px;">
-          <span class="legend" style="color:var(--text);">Categorias Club Motta e Club Black</span>
+          <span class="legend" style="color:var(--text);">Categorias Club Gold e Club Black</span>
           <a class="btn" style="text-decoration:none;text-align:center;" href="#/planos">Conhecer planos</a>
         </div>
       </article>
@@ -676,7 +705,7 @@ const screens = {
         </div>
         <div style="height:1px;background:var(--surface-soft);"></div>
         <div>
-          <div class="item" style="color:var(--ink)">2. Segmentação em Categorias (Club Motta &amp; Club Black)</div>
+          <div class="item" style="color:var(--ink)">2. Segmentação em Categorias (Club Gold &amp; Club Black)</div>
           <div class="legend" style="color:var(--text-2)">Membros divididos em níveis de benefícios, variando a cobertura de procedimentos (ex.: apenas corte, corte + barba/barboterapia, sobrancelha e tratamentos capilares como hidratação ou selagem).</div>
         </div>
         <div style="height:1px;background:var(--surface-soft);"></div>
@@ -708,9 +737,9 @@ const screens = {
       <p class="body">Acesse seus agendamentos, cotas do Clube Motta e histórico de atendimento.</p>
     </header>
 
-    <div class="chips" role="tablist">
-      <button class="chip on" id="tab-login" role="tab">Já sou cliente (Entrar)</button>
-      <button class="chip" id="tab-register" role="tab">Primeira vez (Cadastrar)</button>
+    <div class="chips" role="tablist" aria-label="Acesso à conta">
+      <button class="chip on" id="tab-login" role="tab" aria-selected="true" tabindex="0" aria-controls="auth-form">Já sou cliente (Entrar)</button>
+      <button class="chip" id="tab-register" role="tab" aria-selected="false" tabindex="-1" aria-controls="auth-form">Primeira vez (Cadastrar)</button>
     </div>
 
     <!-- Formulário de Login -->
@@ -759,7 +788,7 @@ const screens = {
     </header>
 
     <!-- Card Central: Novo por aqui? -->
-    <section class="hero hero-trust-card" style="border:2px solid var(--gold);box-shadow:0 10px 28px rgba(7,30,19,0.22);padding:24px 20px 28px;text-align:center;align-items:center;gap:12px;">
+    <section class="hero hero-trust-card" style="border:2px solid var(--gold);box-shadow:0 10px 28px rgba(7,30,19,0.22);padding:24px 20px 24px;text-align:center;align-items:center;gap:12px;">
       <!-- Floating Badge Top Left: Pioneira em Assinatura -->
       <div class="floating-badge top-left">
         <span class="badge-icon" aria-hidden="true">
@@ -779,13 +808,9 @@ const screens = {
         <a class="btn" style="background:rgba(255,255,255,0.12);color:#fff;text-align:center;text-decoration:none;min-height:42px;display:flex;align-items:center;justify-content:center;" href="#/boas_vindas">Conhecer o Conceito &amp; Hospitalidade</a>
       </div>
 
-      <!-- Floating Badge Bottom Right: 4.9 Avaliação Máxima -->
-      <div class="floating-badge bottom-right">
-        <span class="badge-icon" aria-hidden="true" style="color:var(--gold);font-weight:bold;">★</span>
-        <div class="badge-content">
-          <span class="badge-title">4.9 ★ Avaliação Máxima</span>
-          <span class="badge-subtitle">+1.200 clientes • Sol &amp; Mar</span>
-        </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.75rem;color:var(--gold-soft);padding-top:2px;">
+        <span aria-hidden="true">★★★★★</span>
+        <span style="color:rgba(255,255,255,0.85);font-weight:500;">4.9 de avaliação • Mais de 1.200 clientes atendidos</span>
       </div>
     </section>
 
@@ -815,9 +840,9 @@ const screens = {
       <article class="card" style="border:1.5px solid var(--gold);background:linear-gradient(180deg, #FFFFFF 0%, #F9F7F2 100%);">
         <div class="row between">
           <div>
-            <span class="badge" style="background:var(--warn-bg);color:var(--warn-text);margin-bottom:6px;display:inline-block;">★ Manutenção Contínua</span>
+            <span class="badge" style="background:var(--warn-bg);color:var(--warn-text);margin-bottom:6px;display:inline-block;">Manutenção Contínua</span>
             <div class="item" style="font-size:1rem;color:var(--text-strong)">Clube MOTTA — Assinatura Recorrente</div>
-            <div class="legend" style="color:var(--text-2);margin-top:2px;">Planos mensais fixos com frequência semanal ou quinzenal programada, sem cobrança avulsa por visita. Categorias Club Motta e Club Black.</div>
+            <div class="legend" style="color:var(--text-2);margin-top:2px;">Planos mensais fixos com frequência semanal ou quinzenal programada, sem cobrança avulsa por visita. Categorias Club Gold e Club Black.</div>
           </div>
         </div>
         <div class="row between home-card-actions" style="padding-top:6px;border-top:1px solid #EBE5D8;margin-top:6px;">
@@ -827,7 +852,7 @@ const screens = {
       </article>
 
       <div style="text-align:center;padding:2px 0;">
-        <a class="link" style="color:var(--forest);font-size:0.8125rem;text-decoration:none;font-weight:600;" href="#/tabela">📋 Ver tabela completa de serviços e preços (Cashbarber) →</a>
+        <a class="link" style="color:var(--forest);font-size:0.8125rem;text-decoration:none;font-weight:600;" href="#/tabela">Ver tabela completa de serviços e preços →</a>
       </div>
     </section>
 
@@ -849,7 +874,9 @@ const screens = {
     <!-- Hospitalidade e Localização -->
     <section class="card" style="padding:18px;gap:12px;">
       <div class="row" style="gap:10px;align-items:center;">
-        <div class="avatar" style="background:#E6F1E5;color:var(--forest);font-size:1.25rem;">📍</div>
+        <div class="avatar" style="background:#E6F1E5;color:var(--forest);display:flex;align-items:center;justify-content:center;" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        </div>
         <div>
           <div class="item" style="color:var(--text-strong);">Unidade Sol &amp; Mar (Macaé - RJ)</div>
           <div class="legend">Av. Carlos Augusto T. Garcia, 2040 • Valet cortesia</div>
@@ -881,7 +908,8 @@ const screens = {
         <h2 class="h-section" style="font-size:1.125rem;margin:0">Serviços Avulsos</h2>
         <span class="legend">${services.length} serviços</span>
       </div>
-      <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="pricing-caption">
+      <p class="table-hint" id="services-hint">Role a tabela lateralmente para visualizar todos os detalhes</p>
+      <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="pricing-caption" aria-describedby="services-hint">
         <table>
           <caption id="pricing-caption">Barbearia Motta • Tabela Oficial de Serviços Avulsos</caption>
           <thead>
@@ -898,7 +926,7 @@ const screens = {
               <tr>
                 <th scope="row" style="font-weight:600;color:var(--forest);font-size:0.6875rem;text-transform:uppercase;">${s.cat}</th>
                 <td style="color:var(--text-strong);font-weight:500;">${s.name}</td>
-                <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);">${s.priceDisplay ? s.priceDisplay : (s.starting ? '<span class="legend" style="font-size:0.625rem;font-weight:500;display:block">A partir de</span>' : "") + "R$ " + s.price.toFixed(2).replace(".", ",")}</td>
+                <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);">${s.priceDisplay ? s.priceDisplay : (s.starting ? '<span class="legend" style="font-size:0.625rem;font-weight:500;display:block">A partir de</span>' : "") + formatCurrency(s.price)}</td>
               </tr>
             `,
 							)
@@ -914,7 +942,8 @@ const screens = {
         <h2 class="h-section" style="font-size:1.125rem;margin:0">Planos de Recorrência (Assinaturas Mensais)</h2>
         <span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">Clube Motta</span>
       </div>
-      <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="plans-caption">
+      <p class="table-hint" id="plans-hint">Role a tabela lateralmente para comparar planos e coberturas</p>
+      <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="plans-caption" aria-describedby="plans-hint">
         <table>
           <caption id="plans-caption">Barbearia Motta • Planos de Assinatura Mensal</caption>
           <thead>
@@ -928,12 +957,12 @@ const screens = {
             <tr>
               <th scope="row" style="font-weight:700;color:var(--gold-soft);font-size:0.8125rem;">Club Gold</th>
               <td style="color:var(--text-strong);font-size:0.75rem;">Manutenção programada para cabelo e barba.</td>
-              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);"><b style="font-size:0.9375rem">R$ 125,99</b><small class="legend" style="display:block">/mês</small></td>
+              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);"><b style="font-size:0.9375rem">${formatCurrency(125.99)}</b><small class="legend" style="display:block">/mês</small></td>
             </tr>
             <tr>
               <th scope="row" style="font-weight:700;color:#071E13;font-size:0.8125rem;">Club Black</th>
               <td style="color:var(--text-strong);font-size:0.75rem;">Acesso ilimitado/premium com benefícios e condições exclusivas.</td>
-              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);"><b style="font-size:0.9375rem">R$ 299,99</b><small class="legend" style="display:block">/mês</small></td>
+              <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);"><b style="font-size:0.9375rem">${formatCurrency(299.99)}</b><small class="legend" style="display:block">/mês</small></td>
             </tr>
           </tbody>
         </table>
@@ -962,7 +991,7 @@ const screens = {
 			.filter((x) => B.svc.includes(x.id))
 			.reduce((a, x) => a + x.price, 0);
 		const fmt = (n, starting = false) =>
-			(starting ? "A partir de " : "") + "R$ " + n.toFixed(2).replace(".", ",");
+			(starting ? "A partir de " : "") + formatCurrency(n);
 		const foot = (next, label, back) =>
 			`<div class="col gap8"><div class="row between"><span class="legend">${B.svc.length} serviço(s) selecionado(s)</span><b style="color:var(--ink);font-size:1.1875rem">${fmt(total)}</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/${next}">${label}</a>${back ? `<a class="btn" style="text-align:center;text-decoration:none" href="#/novo/${back}">Voltar</a>` : ""}</div>`;
 
@@ -978,7 +1007,7 @@ const screens = {
       </header>${bar}
       <div class="card" style="flex-direction:row;align-items:center;justify-content:space-between">
         <div>
-          <div class="item" style="color:var(--ink)">Tabela Cashbarber 2026</div>
+          <div class="item" style="color:var(--ink)">Tabela Oficial 2026</div>
           <div class="legend">${B.svc.length} procedimento(s) marcado(s)</div>
         </div>
         <a class="btn" style="text-decoration:none;font-size:0.75rem;padding:6px 12px;min-height:36px;white-space:nowrap" href="#/tabela">Ver tabela</a>
@@ -1004,7 +1033,7 @@ const screens = {
                 <div class="row between" style="padding-top:4px;border-top:1px solid var(--surface-soft)">
                   <span class="legend" style="color:var(--forest);font-weight:600;font-size:0.6875rem;text-transform:uppercase">${x.cat}</span>
                   <div style="text-align:right">
-                    ${x.priceDisplay ? `<b style="color:var(--ink);font-size:1.125rem">${x.priceDisplay}</b>` : `${x.starting ? `<span class="legend" style="font-size:0.6875rem;display:block">A partir de</span>` : ""}<b style="color:var(--ink);font-size:1.125rem">R$ ${x.price.toFixed(2).replace(".", ",")}</b>`}
+                    ${x.priceDisplay ? `<b style="color:var(--ink);font-size:1.125rem">${x.priceDisplay}</b>` : `${x.starting ? `<span class="legend" style="font-size:0.6875rem;display:block">A partir de</span>` : ""}<b style="color:var(--ink);font-size:1.125rem">${formatCurrency(x.price)}</b>`}
                   </div>
                 </div>
               </button>`;
@@ -1021,15 +1050,16 @@ const screens = {
       <div class="col gap16">${pros.map((p) => `<button class="card" style="text-align:left;outline:${B.pro === p.id ? "2px solid var(--forest)" : "none"}" data-pro="${p.id}" aria-pressed="${B.pro === p.id}"><div class="row between"><div class="row" style="gap:12px"><div class="avatar" style="overflow:hidden;padding:0;background:#F1F4EF;" aria-hidden="true">${p.photo ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">` : p.name[0]}</div><div><div class="h-section" style="font-size:1rem;line-height:1.5">${p.name}</div><div class="legend">${p.role}</div></div></div><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">★ ${p.rate}</span></div><span class="legend">Próximo livre: <b style="color:var(--text-strong)">${p.next}</b></span></button>`).join("")}</div>${foot(3, "Continuar para Data e Horário", 1)}`;
 
 		if (step === 3) {
-			const days = [
-				["SEG", 26, "Livre"],
-				["TER", 27, "Livre"],
-				["QUA", 28, "Hoje"],
-				["QUI", 29, "Livre"],
-				["SEX", 30, "Poucos"],
-				["SÁB", 31, "Poucos"],
-				["DOM", 1, "Fechado"],
-			];
+			const daySlots = [0, 1, 2, 3, 4, 5, 6].map((offset) => {
+				const info = formatDynamicDate(offset);
+				const isSunday = info.weekday.toLowerCase().startsWith("dom");
+				return [
+					info.weekday.slice(0, 3).toUpperCase(),
+					parseInt(info.day, 10),
+					isSunday ? "Fechado" : offset === 0 ? "Hoje" : offset > 3 ? "Poucos" : "Livre",
+					info.full,
+				];
+			});
 			const slots = [
 				["Manhã", "08:00 às 12:00", ["09:00", "09:45", "10:30", "11:15"], 3],
 				[
@@ -1040,11 +1070,12 @@ const screens = {
 				],
 				["Noite", "18:00 às 21:00", ["18:00", "18:45", "19:30", "20:15"], 0],
 			];
-			return `<header class="col gap4"><h1 class="h-page">Escolha Data e Horário</h1><span class="legend">Disponibilidade em tempo real · Outubro 2026</span></header>${bar}
-      <div class="chips" role="group" aria-label="Dias">${days.map(([d, n, st]) => `<button class="chip" style="min-width:72px;padding:8px 6px;display:flex;flex-direction:column;align-items:center" aria-pressed="${B.day === n}" ${st === "Fechado" ? "disabled" : ""} data-day="${n}"><small>${d}</small><b>${String(n).padStart(2, "0")}</b><small>${B.day === n ? "Selecionado" : st}</small></button>`).join("")}</div>
+			const currentPro = pros.find((p) => p.id === B.pro)?.name || "Michel Nogueira";
+			return `<header class="col gap4"><h1 class="h-page">Escolha Data e Horário</h1><span class="legend">Disponibilidade em tempo real · Próximos dias</span></header>${bar}
+      <div class="chips" role="group" aria-label="Dias">${daySlots.map(([d, n, st]) => `<button class="chip" style="min-width:72px;padding:8px 6px;display:flex;flex-direction:column;align-items:center" aria-pressed="${B.day === n}" ${st === "Fechado" ? "disabled" : ""} data-day="${n}"><small>${d}</small><b>${String(n).padStart(2, "0")}</b><small>${B.day === n ? "Selecionado" : st}</small></button>`).join("")}</div>
       ${slots.map(([n, r, hs, dis]) => `<section class="col gap8"><div class="row between"><span class="eyebrow" style="color:var(--text-strong)">${n}</span><span class="legend">${r}</span></div><div class="time-slots">${hs.map((h, i) => `<button class="chip ${B.time === h ? "on" : ""}" ${i < dis ? 'disabled style="text-decoration:line-through;opacity:.5"' : ""} data-time="${h}">${h}</button>`).join("")}</div></section>`).join("")}
       <div class="card"><div class="item" style="color:var(--text-strong)">Pontualidade &amp; Cancelamentos</div><div class="legend" style="color:var(--text-2)">Tolerância máxima de 15 minutos. Cancelamento sem custo com até 2 horas de antecedência.</div></div>
-      <div class="col gap8"><div class="legend">Qua, ${B.day} Out às ${B.time} • ${pros.find((p) => p.id === B.pro)?.name || "Michel Nogueira"}</div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/4">Prosseguir para Revisão</a><a class="btn" style="text-align:center;text-decoration:none" href="#/novo/2">Voltar</a></div>`;
+      <div class="col gap8"><div class="legend">Dia ${B.day} às ${B.time} • ${currentPro}</div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/4">Prosseguir para Revisão</a><a class="btn" style="text-align:center;text-decoration:none" href="#/novo/2">Voltar</a></div>`;
 		}
 
 		if (step === 4) {
@@ -1052,7 +1083,7 @@ const screens = {
 			const pro = pros.find((p) => p.id === B.pro) || pros[0];
 			const hasStarting = sel.some((x) => x.starting || x.priceDisplay);
 			return `<header class="col gap4"><h1 class="h-page">Revisão e Confirmação</h1><span class="legend">Confira os dados, procedimentos e valores antes de finalizar.</span></header>${bar}
-      <section class="card"><span class="eyebrow" style="color:#4C6455">Quando &amp; onde</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">Quarta-feira, ${B.day} de Outubro de 2026</div><div class="legend">${B.time} · Unidade Sol &amp; Mar — Av. Carlos Augusto T. Garcia, 2040, Macaé - RJ</div></section>
+      <section class="card"><span class="eyebrow" style="color:#4C6455">Quando &amp; onde</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">Data agendada: Dia ${B.day}</div><div class="legend">${B.time} · Unidade Sol &amp; Mar — Av. Carlos Augusto T. Garcia, 2040, Macaé - RJ</div></section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Profissional especialista</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">${pro.name}</div><div class="legend">${pro.role}</div></section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Procedimentos selecionados (${sel.length})</span>${sel.map((x) => `<div class="row between"><span class="item" style="color:var(--text-strong)">${x.name}</span><b style="color:var(--ink)">${x.priceDisplay || fmt(x.price, x.starting)}</b></div>`).join("")}</section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Resumo financeiro</span>
@@ -1071,18 +1102,18 @@ const screens = {
 			.join(" + ");
 		const waText = encodeURIComponent(
 			`Olá, Barbearia Motta! Acabei de agendar pelo aplicativo:\n\n` +
-				`✂️ Procedimento(s): ${svcNames}\n` +
-				`👤 Profissional: ${pro.name}\n` +
-				`📅 Data: Quarta, ${B.day} de Outubro de 2026 às ${B.time}h\n` +
-				`📍 Unidade Sol Mar — Av. Carlos Augusto T. Garcia, 2040\n` +
-				`🎫 Voucher: #MOTTA-2026-8849\n` +
-				`💰 Total: ${fmt(total)}\n\n` +
+				`Procedimento(s): ${svcNames}\n` +
+				`Profissional: ${pro.name}\n` +
+				`Data: Dia ${B.day} às ${B.time}h\n` +
+				`Unidade Sol & Mar — Av. Carlos Augusto T. Garcia, 2040\n` +
+				`Voucher: #MOTTA-2026-8849\n` +
+				`Total: ${fmt(total)}\n\n` +
 				`Favor confirmar o recebimento na recepção!`,
 		);
 		const waUrl = `https://wa.me/5522998389803?text=${waText}`;
 
 		return `<header class="col gap4" style="text-align:center;align-items:center"><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">MOTTA CLUB PRIORITY • #MOTTA-2026-8849</span><h1 class="h-display" style="font-size:1.875rem;line-height:1.25;color:var(--text-strong)">Agendamento Confirmado!</h1><p class="body">Sua reserva foi processada. Apresente seu voucher digital ao chegar no balcão da unidade Sol &amp; Mar.</p></header>${bar}
-      <section class="hero"><div class="row between"><span class="eyebrow">Unidade Macaé</span><img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:24px;height:24px;object-fit:contain;"></div><h2>Barbearia Motta — Sol &amp; Mar</h2><div class="meta">Quarta, ${B.day} de Outubro, 2026<b>${B.time}h (comparecimento pontual)</b></div><div class="meta">Profissional<b>${pro.name}</b></div><div class="meta">A pagar no local<b style="color:var(--mint-on-dark);font-size:1rem">${fmt(total)}</b></div></section>
+      <section class="hero"><div class="row between"><span class="eyebrow">Unidade Macaé</span><img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:24px;height:24px;object-fit:contain;"></div><h2>Barbearia Motta — Sol &amp; Mar</h2><div class="meta">Dia ${B.day}<b>${B.time}h (comparecimento pontual)</b></div><div class="meta">Profissional<b>${pro.name}</b></div><div class="meta">A pagar no local<b style="color:var(--mint-on-dark);font-size:1rem">${fmt(total)}</b></div></section>
       <section class="card" style="align-items:center;text-align:center;padding:20px;gap:12px;border:1px solid #E6F1E5;">
         <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:32px;object-fit:contain;">
         <span class="legend" style="color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Voucher Digital • Apresente na Recepção</span>
@@ -1266,24 +1297,16 @@ function render() {
 		setupWelcomeReveal();
 		document.title = `Motta — ${titles[route] || "Barbearia"}`;
 
-		// Atualizar Navbar conforme estado de login
+		// Atualizar Navbar conforme estado de login (arquitetura consistente de 5 abas)
 		const nav = document.querySelector("nav");
 		nav.classList.remove("is-hidden");
-		if (!state.isLoggedIn) {
-			nav.innerHTML = `
-      <a href="#/inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</a>
-      <a href="#/planos"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Planos</a>
-      <a href="#/login"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Entrar</a>
+		nav.innerHTML = `
+      <a href="#/inicio"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</a>
+      <a href="#/agendamentos"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agendamentos</a>
+      <a href="#/clube"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.500l6.100-.9z"/></svg>Clube</a>
+      <a href="#/planos"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Planos</a>
+      <a href="${state.isLoggedIn ? "#/perfil" : "#/login"}"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>${state.isLoggedIn ? "Perfil" : "Entrar"}</a>
     `;
-		} else {
-			nav.innerHTML = `
-      <a href="#/inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</a>
-      <a href="#/agendamentos"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agendamentos</a>
-      <a href="#/clube"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.500l6.100-.9z"/></svg>Clube</a>
-      <a href="#/planos"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Planos</a>
-      <a href="#/perfil"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Perfil</a>
-    `;
-		}
 
 		document.querySelectorAll("nav a").forEach((a) => {
 			const target = a.getAttribute("href").slice(2);
@@ -1316,6 +1339,25 @@ function render() {
 
 window.addEventListener("hashchange", render);
 
+document.addEventListener("keydown", (e) => {
+	if (e.target.matches('[role="tab"]')) {
+		const tablist = e.target.closest('[role="tablist"]');
+		if (!tablist) return;
+		const tabButtons = [...tablist.querySelectorAll('[role="tab"]')];
+		const idx = tabButtons.indexOf(e.target);
+		if (idx === -1) return;
+		let nextIdx = idx;
+		if (e.key === "ArrowRight") nextIdx = (idx + 1) % tabButtons.length;
+		else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + tabButtons.length) % tabButtons.length;
+		else if (e.key === "Home") nextIdx = 0;
+		else if (e.key === "End") nextIdx = tabButtons.length - 1;
+		else return;
+		e.preventDefault();
+		tabButtons[nextIdx].focus();
+		tabButtons[nextIdx].click();
+	}
+});
+
 let cancelId = null;
 document.addEventListener("click", (e) => {
 	const t = e.target.closest(
@@ -1326,14 +1368,22 @@ document.addEventListener("click", (e) => {
 	// Alternar abas Login / Cadastro
 	if (e.target.id === "tab-login") {
 		$("#tab-login").classList.add("on");
+		$("#tab-login").setAttribute("aria-selected", "true");
+		$("#tab-login").tabIndex = 0;
 		$("#tab-register").classList.remove("on");
+		$("#tab-register").setAttribute("aria-selected", "false");
+		$("#tab-register").tabIndex = -1;
 		$("#register-fields").style.display = "none";
 		$("#auth-submit-btn").textContent = "Acessar Minha Conta";
 	} else if (e.target.id === "tab-register") {
 		$("#tab-register").classList.add("on");
+		$("#tab-register").setAttribute("aria-selected", "true");
+		$("#tab-register").tabIndex = 0;
 		$("#tab-login").classList.remove("on");
+		$("#tab-login").setAttribute("aria-selected", "false");
+		$("#tab-login").tabIndex = -1;
 		$("#register-fields").style.display = "flex";
-		$("#auth-submit-btn").textContent = "Finalizar Cadastro Entrar";
+		$("#auth-submit-btn").textContent = "Finalizar Cadastro e Entrar";
 	} else if (t.id === "logout-btn") {
 		state.isLoggedIn = false;
 		state.user = null;
@@ -1387,7 +1437,7 @@ document.addEventListener("click", (e) => {
 		state.appts.push({
 			id: "a" + Date.now(),
 			day: String(B.day).padStart(2, "0"),
-			mon: "Out",
+			mon: now.toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""),
 			time: B.time,
 			barber: pro.name,
 			role: pro.role,
@@ -1396,14 +1446,12 @@ document.addEventListener("click", (e) => {
 				.map((x) => x.name)
 				.join(" + "),
 			note: "Confirmado",
-			total:
-				"R$ " +
+			total: formatCurrency(
 				services
 					.filter((x) => B.svc.includes(x.id))
-					.reduce((a, x) => a + x.price, 0)
-					.toFixed(2)
-					.replace(".", ","),
-			when: `Quarta-feira, ${B.day} de Outubro`,
+					.reduce((a, x) => a + x.price, 0),
+			),
+			when: `Dia ${B.day}`,
 		});
 		savePersistentState();
 		B.done = true;
