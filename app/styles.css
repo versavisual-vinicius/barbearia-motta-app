@@ -292,6 +292,13 @@ main:has(>.home-footer){min-height:100dvh;padding-bottom:4rem}
 
 /* Desktop (1024px and up) */
 @media (min-width: 1024px) {
+  body{background:var(--forest-900)}
+  .app{max-width:1360px;padding-inline:32px;padding-top:76px}
+  nav{position:fixed;top:0;bottom:auto;inset-inline:0;max-width:none;height:68px;padding:0 max(32px, calc((100vw - 1360px) / 2 + 32px));justify-content:flex-end;gap:8px;background:rgba(255,255,255,.96);border-top:0;border-bottom:1px solid #dce7df;box-shadow:0 4px 18px rgba(7,30,19,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  nav a{flex:0 0 auto;flex-direction:row;gap:7px;padding:0 14px;min-height:44px;border-radius:var(--r-md);font-size:.8125rem}
+  nav a:hover{background:var(--surface-soft);color:var(--forest)}
+  nav a[aria-current=page]{background:var(--mint);font-weight:700}
+  nav svg{width:18px;height:18px}
   main#view {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
