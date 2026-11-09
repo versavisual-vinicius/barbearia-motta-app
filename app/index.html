@@ -17,7 +17,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Barbearia Motta">
-  <link rel="stylesheet" href="styles.css?v=29">
+  <link rel="stylesheet" href="styles.css?v=30">
 </head>
 
 <body>
@@ -42,8 +42,8 @@
       </form>
     </dialog>
   </div>
-  <script src="play-game.js?v=29"></script>
-  <script src="app.js?v=29"></script>
+  <script src="play-game.js?v=30"></script>
+  <script src="app.js?v=30"></script>
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -53,7 +53,7 @@
         navigator.serviceWorker.getRegistrations().then(regs => {
           for (let r of regs) r.update();
         });
-        navigator.serviceWorker.register("./sw.js?v=29").then(reg => {
+        navigator.serviceWorker.register("./sw.js?v=30").then(reg => {
           reg.update();
         }).catch(() => { });
       });

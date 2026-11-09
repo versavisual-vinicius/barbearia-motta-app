@@ -1,13 +1,13 @@
-const CACHE_NAME = "motta-cache-v29";
+const CACHE_NAME = "motta-cache-v30";
 const ASSETS = [
 	"./",
 	"./index.html",
 	"./styles.css",
-	"./styles.css?v=29",
+	"./styles.css?v=30",
 	"./app.js",
-	"./app.js?v=29",
+	"./app.js?v=30",
 	"./play-game.js",
-	"./play-game.js?v=29",
+	"./play-game.js?v=30",
 	"./icon.svg",
 	"./manifest.webmanifest",
 	"./play/index.html",

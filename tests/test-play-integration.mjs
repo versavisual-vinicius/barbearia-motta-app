@@ -28,15 +28,15 @@ for (const file of files) {
 
 console.log('\n--- Test 2: HTML Integration ---');
 const indexHtml = fs.readFileSync(path.join(appDir, 'index.html'), 'utf8');
-assert.ok(indexHtml.includes('play-game.js?v=29'), 'index.html should reference play-game.js?v=29');
-assert.ok(indexHtml.includes('app.js?v=29'), 'index.html should reference app.js?v=29');
-assert.ok(indexHtml.includes('styles.css?v=29'), 'index.html should reference styles.css?v=29');
-assert.ok(indexHtml.includes('sw.js?v=29'), 'index.html should register sw.js?v=29');
+assert.ok(indexHtml.includes('play-game.js?v=30'), 'index.html should reference play-game.js?v=30');
+assert.ok(indexHtml.includes('app.js?v=30'), 'index.html should reference app.js?v=30');
+assert.ok(indexHtml.includes('styles.css?v=30'), 'index.html should reference styles.css?v=30');
+assert.ok(indexHtml.includes('sw.js?v=30'), 'index.html should register sw.js?v=30');
 console.log('✓ index.html references verified');
 
 console.log('\n--- Test 3: Service Worker Cache ---');
 const swJs = fs.readFileSync(path.join(appDir, 'sw.js'), 'utf8');
-assert.ok(swJs.includes('motta-cache-v29'), 'sw.js should use motta-cache-v29');
+assert.ok(swJs.includes('motta-cache-v30'), 'sw.js should use motta-cache-v30');
 assert.ok(swJs.includes('./play-game.js'), 'sw.js should cache play-game.js');
 assert.ok(swJs.includes('./play/index.html'), 'sw.js should cache play/index.html');
 assert.ok(swJs.includes('./icon.svg'), 'sw.js should cache icon.svg');

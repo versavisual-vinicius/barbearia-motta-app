@@ -56,7 +56,7 @@ const header = (kicker, sub, title) => `
   </header>`;
 
 const tabs = (items, active, attr) => `
-  <div class="chips" role="tablist" aria-label="Filtro de opções">${items
+  <div class="chips chips-wrap" role="tablist" aria-label="Filtro de opções">${items
 		.map(
 			([id, label]) =>
 				`<button class="chip ${id === active ? "on" : ""}" role="tab" aria-selected="${id === active}" tabindex="${id === active ? "0" : "-1"}" id="tab-${id}" aria-controls="panel-${id}" data-${attr}="${id}">${escapeHtml(label)}</button>`,
@@ -331,6 +331,73 @@ const pros = [
 		photo: "assets/barbeiros/Wanderson Mota.png",
 	},
 ];
+const TIME_PERIODS = [
+	["Manhã", "08:00 às 12:00", ["09:00", "09:45", "10:30", "11:15"], 3],
+	["Tarde", "12:00 às 18:00", ["13:30", "14:15", "15:00", "15:45", "16:30", "17:15"], 0],
+	["Noite", "18:00 às 21:00", ["18:00", "18:45", "19:30", "20:15"], 0],
+];
+
+function getAvailableDaySlots() {
+	return [0, 1, 2, 3, 4, 5, 6].map((offset) => {
+		const info = formatDynamicDate(offset);
+		const isSunday = info.weekday.toLowerCase().startsWith("dom");
+		const dayNum = parseInt(info.day, 10);
+		return {
+			offset,
+			weekdayShort: info.weekday.slice(0, 3).toUpperCase(),
+			day: dayNum,
+			dayPadded: info.day,
+			mon: info.mon,
+			full: info.full.charAt(0).toUpperCase() + info.full.slice(1),
+			shortDate: info.shortDate,
+			status: isSunday ? "Fechado" : offset === 0 ? "Hoje" : offset > 3 ? "Poucos" : "Livre",
+			available: !isSunday,
+		};
+	});
+}
+
+function getValidTimes() {
+	return TIME_PERIODS.flatMap(([, , hs, dis]) => hs.slice(dis));
+}
+
+function normalizeBookState(rawBook) {
+	const daySlots = getAvailableDaySlots();
+	const validDays = daySlots.filter((d) => d.available).map((d) => d.day);
+	const validTimes = getValidTimes();
+	const validServiceIds = new Set(services.map((s) => s.id));
+	const validProIds = new Set(pros.map((p) => p.id));
+
+	if (!rawBook || typeof rawBook !== "object") {
+		return {
+			cat: "Todos",
+			svc: ["corte"],
+			pro: "michel",
+			day: validDays[0] ?? null,
+			time: validTimes.includes("15:00") ? "15:00" : (validTimes[0] ?? null),
+			agree: false,
+			done: false,
+		};
+	}
+
+	const svc = Array.isArray(rawBook.svc)
+		? rawBook.svc.filter((id) => validServiceIds.has(id))
+		: ["corte"];
+	const pro = validProIds.has(rawBook.pro) ? rawBook.pro : null;
+	const day = validDays.includes(Number(rawBook.day)) ? Number(rawBook.day) : null;
+	const time = validTimes.includes(rawBook.time) ? rawBook.time : null;
+	const cat = serviceCategories.includes(rawBook.cat) ? rawBook.cat : "Todos";
+
+	return {
+		cat,
+		svc,
+		pro,
+		day,
+		time,
+		agree: Boolean(rawBook.agree),
+		done: false,
+	};
+}
+
 const STORAGE_KEY = "motta_app_state_v1";
 function loadSavedState() {
 	try {
@@ -347,6 +414,14 @@ function savePersistentState() {
 				isLoggedIn: state.isLoggedIn,
 				user: state.user,
 				appts: state.appts,
+				book: {
+					cat: state.book.cat,
+					svc: state.book.svc,
+					pro: state.book.pro,
+					day: state.book.day,
+					time: state.book.time,
+					agree: state.book.agree,
+				},
 			}),
 		);
 	} catch (e) {
@@ -358,7 +433,7 @@ const saved = loadSavedState();
 const state = {
 	isLoggedIn: saved?.isLoggedIn ?? false,
 	user: saved?.user ?? null,
-	book: { svc: ["corte"], pro: "michel", day: 28, time: "15:00", agree: false },
+	book: normalizeBookState(saved?.book),
 	agTab: "agendados",
 	planFilter: "todos",
 	appts:
@@ -375,7 +450,7 @@ const screens = {
 	clube() {
 		return `${header("Clube Motta", "Vantagens Exclusivas", "Produtos e benefícios")}
     <p class="body">Aproveite descontos exclusivos em marcas parceiras e privilégios desenhados para elevar o seu ritual de cuidado.</p>
-    <div class="chips"><a class="chip on" href="#/clube" style="text-decoration:none">Produtos e benefícios</a><a class="chip" href="#/plano" style="text-decoration:none">Meu plano</a><a class="chip" href="#/agendamentos" style="text-decoration:none">Agendamentos</a><a class="chip" href="#/perfil" style="text-decoration:none">Editar perfil</a></div>
+    <div class="chips chips-wrap"><a class="chip on" href="#/clube" style="text-decoration:none">Produtos e benefícios</a><a class="chip" href="#/plano" style="text-decoration:none">Meu plano</a><a class="chip" href="#/agendamentos" style="text-decoration:none">Agendamentos</a><a class="chip" href="#/perfil" style="text-decoration:none">Editar perfil</a></div>
     <section class="hero" aria-label="Seu plano">
       <div class="row between">
         <div class="row" style="gap:8px;align-items:center;">
@@ -394,7 +469,7 @@ const screens = {
 				.map(
 					(p) => `
       <article class="card">
-        <div class="row between"><div class="row gap8" style="gap:8px"><div class="avatar" aria-hidden="true">${p.badge}</div><div><div class="item" style="color:var(--ink)">${p.name}</div><div class="legend">${p.desc}</div></div></div><span class="badge">${p.off}</span></div>
+        <div class="pro-card-header"><div class="pro-card-identity"><div class="avatar" aria-hidden="true">${p.badge}</div><div class="pro-card-info"><div class="item" style="color:var(--ink)">${p.name}</div><div class="legend">${p.desc}</div></div></div><span class="badge pro-card-rate">${p.off}</span></div>
         <div class="ph"><img src="${p.img}" alt="" loading="lazy"><span>${p.over}</span></div>
         <div class="row between"><span class="legend" style="color:var(--text)">${p.av}</span><button class="link" data-copy="${p.code}">Copiar cupom</button></div>
       </article>`,
@@ -449,7 +524,7 @@ const screens = {
 			],
 		].filter((x) => f === "todos" || (f === "gratis" ? x[4] === 0 : x[4] > 0));
 		return `<header class="col gap4"><div class="row"><span class="eyebrow">Plano selecionado</span></div><div class="row between"><h1 class="h-page">Benefícios do Plano</h1><span class="ok" style="color:var(--forest)">Membro Ativo</span></div><p class="body">Conheça cada serviço, cortesias e descontos exclusivos inclusos na sua assinatura.</p></header>
-    <div class="chips"><a class="chip on" href="#/beneficios" style="text-decoration:none">Benefícios</a><a class="chip" href="#/plano" style="text-decoration:none">Meu plano</a><a class="chip" href="#/planos" style="text-decoration:none">Comparar</a><a class="chip" href="#/clube" style="text-decoration:none">Dúvidas</a></div>
+    <div class="chips chips-wrap"><a class="chip on" href="#/beneficios" style="text-decoration:none">Benefícios</a><a class="chip" href="#/plano" style="text-decoration:none">Meu plano</a><a class="chip" href="#/planos" style="text-decoration:none">Comparar</a><a class="chip" href="#/clube" style="text-decoration:none">Dúvidas</a></div>
     <section class="card"><div class="row between"><span class="item" style="color:var(--ink)">100 Cortesias</span><span class="legend">Serviços por mês</span></div><div class="row between"><span class="item" style="color:var(--ink)">Até 100% OFF</span><span class="legend">Nos carros-chefes</span></div><div class="row between"><span class="item" style="color:var(--ink)">Produtos -15%</span><span class="legend">Pomadas e óleos</span></div></section>
     <section class="hero"><span class="eyebrow">Plano selecionado</span><h2 style="font-size:1.75rem;line-height:1.214">Club Gold</h2><p class="meta">Experiência completa de barbearia com serviços programados e hospitalidade de excelência.</p><div class="row" style="gap:16px"><span class="meta"><b>Cortes &amp; Barba</b>Inclusos no plano</span><span class="meta"><b>Extras -15%</b>Descontos exclusivos</span></div></section>
     <div class="row between"><h2 class="h-section">Serviços do Plano</h2><span class="legend">${items.length} disponíveis</span></div>
@@ -526,8 +601,8 @@ const screens = {
 	},
 
 	agendamentos_vazio() {
-		return `<header class="col gap4"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px">Agenda Motta</span><div class="row between"><h1 class="h-display">Sua Agenda</h1><span class="badge" style="background:var(--mint);color:#123D26">Em dia</span></div></header>
-    <div class="chips" role="tablist" aria-label="Visualização de agendamentos"><button class="chip on" role="tab" aria-selected="true" tabindex="0">Agendados (0)</button><a class="chip" role="tab" aria-selected="false" tabindex="-1" href="#/agendamentos" style="text-decoration:none;">Anteriores (12)</a></div>
+		return `<header class="col gap4"><span class="eyebrow" style="color:var(--gold-ink);letter-spacing:1.92px">Agenda Motta</span><div class="row between"><h1 class="h-display">Sua Agenda</h1><span class="badge" style="background:var(--mint);color:#123D26">Em dia</span></div></header>
+    <div class="chips chips-wrap" role="tablist" aria-label="Visualização de agendamentos"><button class="chip on" role="tab" aria-selected="true" tabindex="0">Agendados (0)</button><a class="chip" role="tab" aria-selected="false" tabindex="-1" href="#/agendamentos" style="text-decoration:none;">Anteriores (12)</a></div>
     <article class="card" style="align-items:center;text-align:center;padding:32px 16px;gap:16px;">
       <div style="width:64px;height:64px;border-radius:50%;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;color:var(--forest);" aria-hidden="true">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -568,26 +643,28 @@ const screens = {
           <div><div class="item" style="color:var(--text-strong)">${escapeHtml(a.svc)} — Total <b style="color:#003D1B">${escapeHtml(a.total)}</b></div></div>
           <div class="row gap8" style="gap:8px;flex-wrap:wrap"><button class="btn" data-toast="Detalhes do agendamento (demo)">Ver detalhes</button><button class="btn" data-toast="Reagendamento (demo)">Reagendar</button><button class="btn danger" data-cancel="${escapeHtml(a.id)}">Cancelar</button></div>
         </article>
-        <article class="card" style="border:1.5px solid var(--gold);background:radial-gradient(ellipse at 50% 0%, #17241D 0%, #0B1C14 100%);color:#fff;padding:16px;">
+        <article class="card lounge-game-card">
           <div class="row between" style="align-items:center;">
             <span class="eyebrow" style="color:var(--gold);font-size:0.6875rem;">Aguardando seu horário?</span>
             <span class="badge" style="background:rgba(199,165,102,0.25);color:var(--gold-soft);font-size:0.6875rem;">Lounge Motta</span>
           </div>
-          <div class="item" style="color:#fff;font-size:0.9375rem;margin-top:4px;">MOTTA / INTERVALO — 4 Jogos de Precisão</div>
-          <p class="legend" style="color:var(--on-dark);margin-top:2px;">Aproveite o café no lounge e relaxe com nossos minigames táteis de precisão e ritmo enquanto aguarda seu atendimento.</p>
-          <div class="row" style="gap:8px;margin-top:10px;">
-            <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;flex:1;min-height:40px;display:flex;align-items:center;justify-content:center;" href="#/play">Jogar no Lounge →</a>
-            <a class="btn" style="background:rgba(255,255,255,0.1);color:#fff;text-decoration:none;min-height:40px;display:flex;align-items:center;justify-content:center;" href="play/" target="_blank" rel="noopener">Tela Cheia ↗</a>
+          <div class="lounge-game-copy">
+            <div class="item" style="color:#fff;font-size:0.9375rem;">MOTTA / INTERVALO — 4 Jogos de Precisão</div>
+            <p class="legend" style="color:var(--on-dark);">Aproveite o café no lounge e relaxe com nossos minigames táteis de precisão e ritmo enquanto aguarda seu atendimento.</p>
+          </div>
+          <div class="row" style="gap:8px;flex-wrap:wrap;">
+            <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;" href="#/play">Jogar no Lounge →</a>
+            <a class="btn" style="background:rgba(255,255,255,0.1);color:#fff;text-decoration:none;min-height:44px;display:flex;align-items:center;justify-content:center;" href="play/" target="_blank" rel="noopener">Tela Cheia ↗</a>
           </div>
         </article>`,
 							)
 							.join("")
 					: `<article class="card" style="align-items:center;text-align:center"><h2 class="h-page">Você ainda não tem nenhum agendamento</h2><p class="body">Que tal reservar seu próximo momento de cuidado? Escolha o barbeiro da sua preferência e viva a experiência completa Motta.</p><a class="btn primary" style="text-decoration:none" href="#/novo/1">Novo agendamento</a></article>
-        <article class="card" style="border:1.5px solid var(--gold);background:radial-gradient(ellipse at 50% 0%, #17241D 0%, #0B1C14 100%);color:#fff;padding:16px;text-align:center;align-items:center;">
+        <article class="card lounge-game-card" style="text-align:center;align-items:center;">
           <span class="eyebrow" style="color:var(--gold);font-size:0.6875rem;">Lounge &amp; Experiência</span>
-          <div class="item" style="color:#fff;font-size:0.9375rem;margin-top:2px;">Conheça o MOTTA / INTERVALO</div>
-          <p class="legend" style="color:var(--on-dark);max-width:300px;margin-top:2px;">Quatro minigames analógicos desenhados para desacelerar o seu dia com estilo.</p>
-          <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;margin-top:8px;padding:8px 16px;" href="#/play">Jogar Minigames →</a>
+          <div class="item" style="color:#fff;font-size:0.9375rem;">Conheça o MOTTA / INTERVALO</div>
+          <p class="legend" style="color:var(--on-dark);max-width:300px;">Quatro minigames analógicos desenhados para desacelerar o seu dia com estilo.</p>
+          <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;min-height:44px;padding:10px 18px;" href="#/play">Jogar Minigames →</a>
         </article>`
 				: `<div class="row between"><div><h2 class="h-section">Histórico de agendamentos</h2><p class="legend">12 visitas concluídas</p></div></div>` +
 					past
@@ -597,11 +674,11 @@ const screens = {
           <div class="row" style="gap:12px"><div class="date"><small>${escapeHtml(a.mon)}</small><b>${escapeHtml(a.day)}</b></div><div style="flex:1"><div class="h-section" style="font-size:1rem;line-height:1.5">${escapeHtml(a.barber)}</div><div class="legend">${escapeHtml(a.role)}</div></div><span class="ok">Concluído</span></div>
           <div class="item" style="font-weight:500;font-size:0.875rem;color:var(--ink)">${escapeHtml(a.svc)}</div>
           <div class="row between"><span class="legend">Duração: ${escapeHtml(a.dur)}</span><b style="color:var(--ink)">${escapeHtml(a.total)}</b></div>
-          <div class="row" style="gap:8px"><button class="btn" data-toast="Detalhes (demo)">Detalhes</button><button class="btn primary" data-toast="Reagendar (demo)">Reagendar</button></div>
+          <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn" data-toast="Detalhes (demo)">Detalhes</button><button class="btn primary" data-toast="Reagendar (demo)">Reagendar</button></div>
         </article>`,
 						)
 						.join("");
-		return `<header class="col gap4"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px">Agenda Motta</span><div class="row between"><h1 class="h-display">Agendamentos</h1><a class="btn primary" style="text-decoration:none;display:grid;align-content:center" href="#/novo/1">Novo</a></div></header>
+		return `<header class="col gap4"><span class="eyebrow" style="color:var(--gold-ink);letter-spacing:1.92px">Agenda Motta</span><div class="row between"><h1 class="h-display">Agendamentos</h1><a class="btn primary" style="text-decoration:none;display:grid;align-content:center" href="#/novo/1">Novo</a></div></header>
     ${tabs(
 			[
 				["agendados", `Agendados (${state.appts.length})`],
@@ -654,7 +731,7 @@ const screens = {
 	boas_vindas() {
 		return `<header class="col gap4">
       <div class="row between" style="align-items:center;">
-        <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Pioneira em Macaé</span></div>
+        <div class="row"><span class="eyebrow" style="color:var(--gold-ink);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Pioneira em Macaé</span></div>
         <img src="assets/logos/motta-symbol-green.png" alt="Motta" style="width:26px;height:26px;object-fit:contain;">
       </div>
       <h1 class="h-display" style="font-size:1.75rem;line-height:1.214;">Clube para homens exigentes.</h1>
@@ -758,7 +835,7 @@ const screens = {
       <p class="body">Acesse seus agendamentos, cotas do Clube Motta e histórico de atendimento.</p>
     </header>
 
-    <div class="chips" role="tablist" aria-label="Acesso à conta">
+    <div class="chips chips-auth" role="tablist" aria-label="Acesso à conta">
       <button class="chip on" id="tab-login" role="tab" aria-selected="true" tabindex="0" aria-controls="auth-form">Já sou cliente (Entrar)</button>
       <button class="chip" id="tab-register" role="tab" aria-selected="false" tabindex="-1" aria-controls="auth-form">Primeira vez (Cadastrar)</button>
     </div>
@@ -799,7 +876,7 @@ const screens = {
         <div class="row" style="gap:10px;align-items:center;">
           <img src="assets/logos/motta-symbol-dark.png" alt="Barbearia Motta" style="width:34px;height:34px;object-fit:contain;">
           <div>
-            <div class="eyebrow" style="color:var(--gold);letter-spacing:1.5px;font-size:0.6875rem;">Barbearia Motta</div>
+            <div class="eyebrow" style="color:var(--gold-ink);letter-spacing:1.5px;font-size:0.6875rem;">Barbearia Motta</div>
             <div class="legend" style="font-size:0.6875rem;">Pioneira em Assinatura • Sol &amp; Mar</div>
           </div>
         </div>
@@ -893,28 +970,34 @@ const screens = {
     </section>
 
     <!-- Card Lounge & Minigames: Enquanto você aguarda -->
-    <section class="card lounge-game-card" style="border:1.5px solid var(--gold);background:radial-gradient(ellipse at 50% 0%, #17241D 0%, #0B1C14 100%);color:#fff;padding:22px 20px;position:relative;overflow:hidden;">
+    <section class="card lounge-game-card">
       <div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle, rgba(199,165,102,0.2) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
       <div class="row between" style="align-items:center;">
-        <span class="pill" style="background:rgba(199,165,102,0.2);color:var(--gold);border:1px solid rgba(199,165,102,0.4);">
+        <span class="pill" style="background:rgba(199,165,102,0.2);color:var(--gold-soft);border:1px solid rgba(199,165,102,0.45);">
           Lounge &amp; Hospitalidade
         </span>
         <span class="legend" style="color:var(--gold-soft);font-size:0.6875rem;letter-spacing:1px;font-weight:600;">ENQUANTO AGUARDA</span>
       </div>
-      <div style="margin-top:8px;">
-        <div class="eyebrow" style="color:var(--gold);letter-spacing:1.5px;font-size:0.6875rem;">MOTTA / INTERVALO</div>
-        <h2 style="font:400 1.35rem/1.25 var(--serif);color:#fff;margin-top:2px;">O luxo de não ter pressa.</h2>
-        <p class="body" style="color:var(--on-dark);margin-top:6px;font-size:0.8125rem;line-height:1.45;">Chegou mais cedo ou aguardando seu horário no lounge? Desfrute de um Café Nespresso ou Chopp cortesia e experimente nossos 4 minigames exclusivos de precisão, ritmo e contemplação.</p>
+      <div class="lounge-game-copy">
+        <div class="eyebrow">MOTTA / INTERVALO</div>
+        <h2>O luxo de não ter pressa.</h2>
+        <p class="body">Chegou mais cedo ou aguardando seu horário no lounge? Desfrute de um Café Nespresso ou Chopp cortesia e experimente nossos 4 minigames exclusivos de precisão, ritmo e contemplação.</p>
       </div>
-      <div class="row" style="gap:8px;padding-top:10px;align-items:center;">
+      <div class="lounge-game-preview" aria-label="Atalhos dos minigames">
+        <a class="lounge-game-mini" href="#/play/equilibrio"><small>01 · Precisão</small><strong>Equilíbrio</strong></a>
+        <a class="lounge-game-mini" href="#/play/frequencia"><small>02 · Sintonia</small><strong>Frequência</strong></a>
+        <a class="lounge-game-mini" href="#/play/continuum"><small>03 · Lógica</small><strong>Continuum</strong></a>
+        <a class="lounge-game-mini" href="#/play/ondas"><small>04 · Ritmo</small><strong>Ondas</strong></a>
+      </div>
+      <div class="row" style="gap:8px;align-items:center;flex-wrap:wrap;">
         <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;" href="#/play">Jogar no Lounge →</a>
-        <a class="btn" style="background:rgba(255,255,255,0.1);color:#fff;text-decoration:none;min-height:44px;display:flex;align-items:center;justify-content:center;" href="play/" target="_blank" rel="noopener">Tela Cheia ↗</a>
+        <a class="btn" style="background:rgba(255,255,255,0.12);color:#fff;text-decoration:none;min-height:44px;display:flex;align-items:center;justify-content:center;" href="play/" target="_blank" rel="noopener">Tela Cheia ↗</a>
       </div>
-      <div class="row" style="gap:12px;font-size:0.6875rem;color:var(--muted);padding-top:6px;">
+      <div class="lounge-game-meta">
         <span>04 Experiências</span>
-        <span>•</span>
+        <span aria-hidden="true">•</span>
         <span>15–45 segundos</span>
-        <span>•</span>
+        <span aria-hidden="true">•</span>
         <span>Sem anúncios</span>
       </div>
     </section>
@@ -945,7 +1028,7 @@ const screens = {
 	tabela() {
 		return `<header class="col gap4">
       <div class="row between" style="align-items:center;">
-        <div class="row"><span class="eyebrow" style="color:var(--gold);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Tabela Oficial</span></div>
+        <div class="row"><span class="eyebrow" style="color:var(--gold-ink);letter-spacing:1.92px;">Barbearia Motta</span><span class="dot"></span><span class="legend">Tabela Oficial</span></div>
         <img src="assets/logos/motta-symbol-green.png" alt="Motta" style="width:26px;height:26px;object-fit:contain;">
       </div>
       <h1 class="h-display" style="font-size:1.625rem;line-height:1.231;">Tabela de Serviços e Preços</h1>
@@ -1004,7 +1087,7 @@ const screens = {
           </thead>
           <tbody>
             <tr>
-              <th scope="row" style="font-weight:700;color:var(--gold-soft);font-size:0.8125rem;">Club Gold</th>
+              <th scope="row" style="font-weight:700;color:var(--gold-ink);font-size:0.8125rem;">Club Gold</th>
               <td style="color:var(--text-strong);font-size:0.75rem;">Manutenção programada para cabelo e barba.</td>
               <td style="text-align:right;white-space:nowrap;font-weight:700;color:var(--ink);"><b style="font-size:0.9375rem">${formatCurrency(125.99)}</b><small class="legend" style="display:block">/mês</small></td>
             </tr>
@@ -1026,6 +1109,11 @@ const screens = {
 	},
 	novo(step) {
 		const B = state.book;
+		const daySlots = getAvailableDaySlots();
+		const validTimes = getValidTimes();
+		const selectedDaySlot = daySlots.find((d) => d.available && d.day === Number(B.day)) || null;
+		const hasValidTime = validTimes.includes(B.time);
+		const selectedPro = pros.find((p) => p.id === B.pro) || null;
 		const steps = [
 			"Serviços",
 			"Profissional",
@@ -1035,14 +1123,19 @@ const screens = {
 		];
 		const bar = `<div class="col gap8"><div class="row between"><span class="eyebrow">Etapa ${step} de 5</span><span class="legend">${step * 20}% concluído</span></div>
       <div class="bar" role="progressbar" aria-valuenow="${step}" aria-valuemin="1" aria-valuemax="5"><i style="width:${step * 20}%"></i></div>
-      <div class="row between legend">${steps.map((n, i) => `<span style="color:${i + 1 === step ? "var(--forest)" : ""};font-weight:${i + 1 === step ? 700 : 400}">${i + 1}. ${n}</span>`).join("")}</div></div>`;
+      <div class="row between legend" style="gap:4px 8px">${steps.map((n, i) => `<span style="color:${i + 1 === step ? "var(--forest)" : ""};font-weight:${i + 1 === step ? 700 : 400}">${i + 1}. ${n}</span>`).join("")}</div></div>`;
 		const total = services
 			.filter((x) => B.svc.includes(x.id))
 			.reduce((a, x) => a + x.price, 0);
 		const fmt = (n, starting = false) =>
 			(starting ? "A partir de " : "") + formatCurrency(n);
-		const foot = (next, label, back) =>
-			`<div class="col gap8"><div class="row between"><span class="legend">${B.svc.length} serviço(s) selecionado(s)</span><b style="color:var(--ink);font-size:1.1875rem">${fmt(total)}</b></div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/${next}">${label}</a>${back ? `<a class="btn" style="text-align:center;text-decoration:none" href="#/novo/${back}">Voltar</a>` : ""}</div>`;
+		const foot = (next, label, back, canAdvance = true, guidanceMsg = "") =>
+			`<div class="col gap8">
+        ${!canAdvance && guidanceMsg ? `<div class="booking-guidance" role="status">${escapeHtml(guidanceMsg)}</div>` : ""}
+        <div class="row between"><span class="legend">${B.svc.length} serviço(s) selecionado(s)</span><b style="color:var(--ink);font-size:1.1875rem">${fmt(total)}</b></div>
+        <a class="btn primary ${canAdvance ? "" : "is-disabled"}" style="text-align:center;text-decoration:none" href="#/novo/${next}" ${canAdvance ? "" : `aria-disabled="true" data-blocked-msg="${escapeHtml(guidanceMsg)}"`}>${label}</a>
+        ${back ? `<a class="btn" style="text-align:center;text-decoration:none" href="#/novo/${back}">Voltar</a>` : ""}
+      </div>`;
 
 		if (step === 1) {
 			const activeCat = B.cat || "Todos";
@@ -1050,18 +1143,19 @@ const screens = {
 				activeCat === "Todos"
 					? serviceCategories.filter((c) => c !== "Todos")
 					: [activeCat];
+			const canAdvanceStep1 = B.svc.length > 0;
 			return `<header class="col gap4">
         <h1 class="h-page">Novo Agendamento</h1>
         <span class="legend">Seleção de Serviços · Tabela Oficial Unidade Sol &amp; Mar</span>
       </header>${bar}
-      <div class="card" style="flex-direction:row;align-items:center;justify-content:space-between">
+      <div class="card" style="flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
         <div>
           <div class="item" style="color:var(--ink)">Tabela Oficial 2026</div>
           <div class="legend">${B.svc.length} procedimento(s) marcado(s)</div>
         </div>
-        <a class="btn" style="text-decoration:none;font-size:0.75rem;padding:6px 12px;min-height:36px;white-space:nowrap" href="#/tabela">Ver tabela</a>
+        <a class="btn" style="text-decoration:none;font-size:0.75rem;padding:8px 14px;min-height:44px;white-space:nowrap" href="#/tabela">Ver tabela</a>
       </div>
-      <div class="chips" role="group" aria-label="Filtrar por Categoria">
+      <div class="chips chips-wrap" role="group" aria-label="Filtrar por Categoria">
         ${serviceCategories.map((c) => `<button class="chip ${activeCat === c ? "on" : ""}" data-scat="${c}" aria-pressed="${activeCat === c}">${c}</button>`).join("")}
       </div>
       <div class="col gap16">
@@ -1091,48 +1185,45 @@ const screens = {
           </div>`;
 					})
 					.join("")}
-      </div>${foot(2, "Continuar para Profissional")}`;
+      </div>${foot(2, "Continuar para Profissional", null, canAdvanceStep1, "Selecione pelo menos um serviço para continuar.")}`;
 		}
 
-		if (step === 2)
+		if (step === 2) {
+			const canAdvanceStep2 = Boolean(selectedPro);
 			return `<header class="col gap4"><h1 class="h-page">Escolha o Profissional</h1><span class="legend">Selecione o especialista de sua confiança na unidade Sol &amp; Mar.</span></header>${bar}
-      <div class="col gap16">${pros.map((p) => `<button class="card" style="text-align:left;outline:${B.pro === p.id ? "2px solid var(--forest)" : "none"}" data-pro="${p.id}" aria-pressed="${B.pro === p.id}"><div class="row between"><div class="row" style="gap:12px"><div class="avatar" style="overflow:hidden;padding:0;background:#F1F4EF;" aria-hidden="true">${p.photo ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">` : p.name[0]}</div><div><div class="h-section" style="font-size:1rem;line-height:1.5">${p.name}</div><div class="legend">${p.role}</div></div></div><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">★ ${p.rate}</span></div><span class="legend">Próximo livre: <b style="color:var(--text-strong)">${p.next}</b></span></button>`).join("")}</div>${foot(3, "Continuar para Data e Horário", 1)}`;
+      <div class="col gap16">${pros.map((p) => `<button class="card" style="text-align:left;outline:${B.pro === p.id ? "2px solid var(--forest)" : "none"}" data-pro="${p.id}" aria-pressed="${B.pro === p.id}"><div class="pro-card-header"><div class="pro-card-identity"><div class="avatar" style="overflow:hidden;padding:0;background:#F1F4EF;" aria-hidden="true">${p.photo ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">` : p.name[0]}</div><div class="pro-card-info"><div class="h-section" style="font-size:1rem;line-height:1.35">${p.name}</div><div class="legend">${p.role}</div></div></div><span class="badge pro-card-rate" style="background:var(--warn-bg);color:var(--warn-text)">★ ${p.rate}</span></div><span class="legend">Próximo livre: <b style="color:var(--text-strong)">${p.next}</b></span></button>`).join("")}</div>${foot(3, "Continuar para Data e Horário", 1, canAdvanceStep2, "Selecione um profissional para continuar.")}`;
+		}
 
 		if (step === 3) {
-			const daySlots = [0, 1, 2, 3, 4, 5, 6].map((offset) => {
-				const info = formatDynamicDate(offset);
-				const isSunday = info.weekday.toLowerCase().startsWith("dom");
-				return [
-					info.weekday.slice(0, 3).toUpperCase(),
-					parseInt(info.day, 10),
-					isSunday ? "Fechado" : offset === 0 ? "Hoje" : offset > 3 ? "Poucos" : "Livre",
-					info.full,
-				];
-			});
-			const slots = [
-				["Manhã", "08:00 às 12:00", ["09:00", "09:45", "10:30", "11:15"], 3],
-				[
-					"Tarde",
-					"12:00 às 18:00",
-					["13:30", "14:15", "15:00", "15:45", "16:30", "17:15"],
-					0,
-				],
-				["Noite", "18:00 às 21:00", ["18:00", "18:45", "19:30", "20:15"], 0],
-			];
-			const currentPro = pros.find((p) => p.id === B.pro)?.name || "Michel Nogueira";
+			const currentPro = selectedPro?.name || pros[0].name;
+			const canAdvanceStep3 = Boolean(selectedDaySlot && hasValidTime && selectedPro);
+			const summaryText = canAdvanceStep3
+				? `Dia ${selectedDaySlot.dayPadded} (${selectedDaySlot.full}) às ${B.time} • ${currentPro}`
+				: !selectedDaySlot && !hasValidTime
+					? "Selecione uma data e um horário disponíveis acima para continuar."
+					: !selectedDaySlot
+						? "Selecione uma data disponível acima para continuar."
+						: "Selecione um horário disponível acima para continuar.";
+
 			return `<header class="col gap4"><h1 class="h-page">Escolha Data e Horário</h1><span class="legend">Disponibilidade em tempo real · Próximos dias</span></header>${bar}
-      <div class="chips" role="group" aria-label="Dias">${daySlots.map(([d, n, st]) => `<button class="chip" style="min-width:72px;padding:8px 6px;display:flex;flex-direction:column;align-items:center" aria-pressed="${B.day === n}" ${st === "Fechado" ? "disabled" : ""} data-day="${n}"><small>${d}</small><b>${String(n).padStart(2, "0")}</b><small>${B.day === n ? "Selecionado" : st}</small></button>`).join("")}</div>
-      ${slots.map(([n, r, hs, dis]) => `<section class="col gap8"><div class="row between"><span class="eyebrow" style="color:var(--text-strong)">${n}</span><span class="legend">${r}</span></div><div class="time-slots">${hs.map((h, i) => `<button class="chip ${B.time === h ? "on" : ""}" ${i < dis ? 'disabled style="text-decoration:line-through;opacity:.5"' : ""} data-time="${h}">${h}</button>`).join("")}</div></section>`).join("")}
+      <p class="chips-scroll-hint"><span>Escolha o dia do atendimento</span><span aria-hidden="true">Deslize ↔</span></p>
+      <div class="chips" role="group" aria-label="Dias">${daySlots.map((d) => `<button class="chip ${selectedDaySlot?.day === d.day ? "on" : ""}" style="min-width:72px;padding:8px 6px;display:flex;flex-direction:column;align-items:center" aria-pressed="${selectedDaySlot?.day === d.day}" ${!d.available ? "disabled" : ""} data-day="${d.day}"><small>${d.weekdayShort}</small><b>${d.dayPadded}</b><small>${selectedDaySlot?.day === d.day ? "Selecionado" : d.status}</small></button>`).join("")}</div>
+      ${TIME_PERIODS.map(([n, r, hs, dis]) => `<section class="col gap8"><div class="row between"><span class="eyebrow" style="color:var(--text-strong)">${n}</span><span class="legend">${r}</span></div><div class="time-slots">${hs.map((h, i) => `<button class="chip ${hasValidTime && B.time === h ? "on" : ""}" aria-pressed="${hasValidTime && B.time === h}" ${i < dis ? 'disabled style="text-decoration:line-through;opacity:.5"' : ""} data-time="${h}">${h}</button>`).join("")}</div></section>`).join("")}
       <div class="card"><div class="item" style="color:var(--text-strong)">Pontualidade &amp; Cancelamentos</div><div class="legend" style="color:var(--text-2)">Tolerância máxima de 15 minutos. Cancelamento sem custo com até 2 horas de antecedência.</div></div>
-      <div class="col gap8"><div class="legend">Dia ${B.day} às ${B.time} • ${currentPro}</div><a class="btn primary" style="text-align:center;text-decoration:none" href="#/novo/4">Prosseguir para Revisão</a><a class="btn" style="text-align:center;text-decoration:none" href="#/novo/2">Voltar</a></div>`;
+      <div class="col gap8">
+        <div class="${canAdvanceStep3 ? "legend" : "booking-guidance"}" role="status" id="booking-datetime-summary">${escapeHtml(summaryText)}</div>
+        <a class="btn primary ${canAdvanceStep3 ? "" : "is-disabled"}" style="text-align:center;text-decoration:none" href="#/novo/4" ${canAdvanceStep3 ? "" : `aria-disabled="true" data-blocked-msg="${escapeHtml(summaryText)}"`}>Prosseguir para Revisão</a>
+        <a class="btn" style="text-align:center;text-decoration:none" href="#/novo/2">Voltar</a>
+      </div>`;
 		}
 
 		if (step === 4) {
 			const sel = services.filter((x) => B.svc.includes(x.id));
-			const pro = pros.find((p) => p.id === B.pro) || pros[0];
+			const pro = selectedPro || pros[0];
+			const dayLabel = selectedDaySlot ? `Dia ${selectedDaySlot.dayPadded} (${selectedDaySlot.full})` : `Dia ${String(B.day ?? "").padStart(2, "0")}`;
 			const hasStarting = sel.some((x) => x.starting || x.priceDisplay);
 			return `<header class="col gap4"><h1 class="h-page">Revisão e Confirmação</h1><span class="legend">Confira os dados, procedimentos e valores antes de finalizar.</span></header>${bar}
-      <section class="card"><span class="eyebrow" style="color:#4C6455">Quando &amp; onde</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">Data agendada: Dia ${B.day}</div><div class="legend">${B.time} · Unidade Sol &amp; Mar — Av. Carlos Augusto T. Garcia, 2040, Macaé - RJ</div></section>
+      <section class="card"><span class="eyebrow" style="color:#4C6455">Quando &amp; onde</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">Data agendada: ${escapeHtml(dayLabel)}</div><div class="legend">${escapeHtml(B.time)} · Unidade Sol &amp; Mar — Av. Carlos Augusto T. Garcia, 2040, Macaé - RJ</div></section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Profissional especialista</span><div class="item" style="font-size:0.875rem;color:var(--text-strong)">${pro.name}</div><div class="legend">${pro.role}</div></section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Procedimentos selecionados (${sel.length})</span>${sel.map((x) => `<div class="row between"><span class="item" style="color:var(--text-strong)">${x.name}</span><b style="color:var(--ink)">${x.priceDisplay || fmt(x.price, x.starting)}</b></div>`).join("")}</section>
       <section class="card"><span class="eyebrow" style="color:#4C6455">Resumo financeiro</span>
@@ -1144,7 +1235,8 @@ const screens = {
       <div class="col gap8"><button class="btn primary" id="confirm-book">Confirmar Agendamento</button><a class="btn" style="text-align:center;text-decoration:none" href="#/novo/3">Voltar e Modificar Dados</a></div>`;
 		}
 
-		const pro = pros.find((p) => p.id === B.pro) || pros[0];
+		const pro = selectedPro || pros[0];
+		const dayFormatted = selectedDaySlot ? selectedDaySlot.dayPadded : String(B.day ?? "").padStart(2, "0");
 		const svcNames = services
 			.filter((x) => B.svc.includes(x.id))
 			.map((x) => x.name)
@@ -1153,7 +1245,7 @@ const screens = {
 			`Olá, Barbearia Motta! Acabei de agendar pelo aplicativo:\n\n` +
 				`Procedimento(s): ${svcNames}\n` +
 				`Profissional: ${pro.name}\n` +
-				`Data: Dia ${B.day} às ${B.time}h\n` +
+				`Data: Dia ${dayFormatted} às ${B.time}h\n` +
 				`Unidade Sol & Mar — Av. Carlos Augusto T. Garcia, 2040\n` +
 				`Voucher: #MOTTA-2026-8849\n` +
 				`Total: ${fmt(total)}\n\n` +
@@ -1162,7 +1254,7 @@ const screens = {
 		const waUrl = `https://wa.me/5522998389803?text=${waText}`;
 
 		return `<header class="col gap4" style="text-align:center;align-items:center"><span class="badge" style="background:var(--warn-bg);color:var(--warn-text)">MOTTA CLUB PRIORITY • #MOTTA-2026-8849</span><h1 class="h-display" style="font-size:1.875rem;line-height:1.25;color:var(--text-strong)">Agendamento Confirmado!</h1><p class="body">Sua reserva foi processada. Apresente seu voucher digital ao chegar no balcão da unidade Sol &amp; Mar.</p></header>${bar}
-      <section class="hero"><div class="row between"><span class="eyebrow">Unidade Macaé</span><img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:24px;height:24px;object-fit:contain;"></div><h2>Barbearia Motta — Sol &amp; Mar</h2><div class="meta">Dia ${B.day}<b>${B.time}h (comparecimento pontual)</b></div><div class="meta">Profissional<b>${pro.name}</b></div><div class="meta">A pagar no local<b style="color:var(--mint-on-dark);font-size:1rem">${fmt(total)}</b></div></section>
+      <section class="hero"><div class="row between"><span class="eyebrow">Unidade Macaé</span><img src="assets/logos/motta-symbol-gold.png" alt="Motta" style="width:24px;height:24px;object-fit:contain;"></div><h2>Barbearia Motta — Sol &amp; Mar</h2><div class="meta">Dia ${dayFormatted}<b>${B.time}h (comparecimento pontual)</b></div><div class="meta">Profissional<b>${pro.name}</b></div><div class="meta">A pagar no local<b style="color:var(--mint-on-dark);font-size:1rem">${fmt(total)}</b></div></section>
       <section class="card" style="align-items:center;text-align:center;padding:20px;gap:12px;border:1px solid #E6F1E5;">
         <img src="assets/logos/club-motta-transparent.png" alt="Club Motta" style="height:32px;object-fit:contain;">
         <span class="legend" style="color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Voucher Digital • Apresente na Recepção</span>
@@ -1333,11 +1425,34 @@ function render() {
 	}
 
 	let step = Math.min(5, Math.max(1, +arg || 1));
-	if (route === "novo" && step === 5 && !state.book.done) {
-		location.replace("#/novo/4");
-		return;
+	if (route === "novo") {
+		const B = state.book;
+		const daySlots = getAvailableDaySlots();
+		const validTimes = getValidTimes();
+		const hasValidDay = daySlots.some((d) => d.available && d.day === Number(B.day));
+		const hasValidTime = validTimes.includes(B.time);
+		const hasValidPro = pros.some((p) => p.id === B.pro);
+		if (step >= 2 && B.svc.length === 0) {
+			showToast("Selecione pelo menos um serviço");
+			location.replace("#/novo/1");
+			return;
+		}
+		if (step >= 3 && !hasValidPro) {
+			showToast("Selecione um profissional");
+			location.replace("#/novo/2");
+			return;
+		}
+		if (step >= 4 && (!hasValidDay || !hasValidTime)) {
+			showToast("Selecione uma data e um horário disponíveis");
+			location.replace("#/novo/3");
+			return;
+		}
+		if (step === 5 && !B.done) {
+			location.replace("#/novo/4");
+			return;
+		}
+		if (step < 5) B.done = false;
 	}
-	if (route === "novo" && step < 5) state.book.done = false;
 
 	const updateDOM = () => {
 		clearInterval(mimosTimer);
@@ -1421,13 +1536,20 @@ document.addEventListener("keydown", (e) => {
 
 let cancelId = null;
 document.addEventListener("click", (e) => {
+	const blockedLink = e.target.closest('[aria-disabled="true"][data-blocked-msg]');
+	if (blockedLink) {
+		e.preventDefault();
+		showToast(blockedLink.dataset.blockedMsg);
+		return;
+	}
+
 	const t = e.target.closest(
 		"[data-copy],[data-toast],[data-ag],[data-pf],[data-cancel],[data-bf],[data-svc],[data-scat],[data-pro],[data-day],[data-time],#confirm-book,#logout-btn,#tab-login,#tab-register",
 	);
 	if (!t) return;
 
 	// Alternar abas Login / Cadastro
-	if (e.target.id === "tab-login") {
+	if (t.id === "tab-login") {
 		$("#tab-login").classList.add("on");
 		$("#tab-login").setAttribute("aria-selected", "true");
 		$("#tab-login").tabIndex = 0;
@@ -1436,7 +1558,7 @@ document.addEventListener("click", (e) => {
 		$("#tab-register").tabIndex = -1;
 		$("#register-fields").style.display = "none";
 		$("#auth-submit-btn").textContent = "Acessar Minha Conta";
-	} else if (e.target.id === "tab-register") {
+	} else if (t.id === "tab-register") {
 		$("#tab-register").classList.add("on");
 		$("#tab-register").setAttribute("aria-selected", "true");
 		$("#tab-register").tabIndex = 0;
@@ -1469,24 +1591,29 @@ document.addEventListener("click", (e) => {
 		render();
 	} else if (t.dataset.scat) {
 		state.book.cat = t.dataset.scat;
+		savePersistentState();
 		render();
 	} else if (t.dataset.svc) {
 		const a = state.book.svc,
 			k = t.dataset.svc;
 		state.book.svc = a.includes(k)
-			? a.length > 1
-				? a.filter((x) => x !== k)
-				: a
+			? a.filter((x) => x !== k)
 			: [...a, k];
+		savePersistentState();
 		render();
 	} else if (t.dataset.pro) {
 		state.book.pro = t.dataset.pro;
+		savePersistentState();
 		render();
 	} else if (t.dataset.day) {
-		state.book.day = +t.dataset.day;
+		const clickedDay = +t.dataset.day;
+		state.book.day = state.book.day === clickedDay ? null : clickedDay;
+		savePersistentState();
 		render();
 	} else if (t.dataset.time) {
-		state.book.time = t.dataset.time;
+		const clickedTime = t.dataset.time;
+		state.book.time = state.book.time === clickedTime ? null : clickedTime;
+		savePersistentState();
 		render();
 	} else if (t.id === "confirm-book") {
 		if (!$("#agree").checked) {
@@ -1494,11 +1621,12 @@ document.addEventListener("click", (e) => {
 			return;
 		}
 		const B = state.book,
-			pro = pros.find((p) => p.id === B.pro);
+			pro = pros.find((p) => p.id === B.pro) || pros[0],
+			daySlot = getAvailableDaySlots().find((d) => d.available && d.day === Number(B.day));
 		state.appts.push({
 			id: "a" + Date.now(),
-			day: String(B.day).padStart(2, "0"),
-			mon: now.toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""),
+			day: daySlot ? daySlot.dayPadded : String(B.day).padStart(2, "0"),
+			mon: daySlot ? daySlot.mon : now.toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""),
 			time: B.time,
 			barber: pro.name,
 			role: pro.role,
@@ -1512,7 +1640,7 @@ document.addEventListener("click", (e) => {
 					.filter((x) => B.svc.includes(x.id))
 					.reduce((a, x) => a + x.price, 0),
 			),
-			when: `Dia ${B.day}`,
+			when: daySlot ? daySlot.full : `Dia ${B.day}`,
 		});
 		savePersistentState();
 		B.done = true;
