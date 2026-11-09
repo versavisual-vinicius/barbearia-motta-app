@@ -3,8 +3,17 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/play",
+      "destination": "/play/index.html"
+    },
+    {
+      "source": "/play/(.*)",
+      "destination": "/play/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
 }
+

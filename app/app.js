@@ -369,6 +369,9 @@ const state = {
 
 /* ---------- telas ---------- */
 const screens = {
+	play(arg) {
+		return window.MottaPlay ? window.MottaPlay.renderHTML(arg) : '<div class="play-wrapper"><p style="text-align:center;padding:40px;color:var(--muted);">Carregando experiências...</p></div>';
+	},
 	clube() {
 		return `${header("Clube Motta", "Vantagens Exclusivas", "Produtos e benefícios")}
     <p class="body">Aproveite descontos exclusivos em marcas parceiras e privilégios desenhados para elevar o seu ritual de cuidado.</p>
@@ -562,12 +565,30 @@ const screens = {
           <div class="row between"><span class="eyebrow" style="color:#4C6455">Próximo atendimento</span><span class="ok">Confirmado</span></div>
           <div class="row" style="gap:12px"><div class="date"><small>${escapeHtml(a.mon)}</small><b>${escapeHtml(a.day)}</b></div><div><div class="h-section" style="font:400 1.125rem/1.222 var(--serif);color:var(--text-strong)">${escapeHtml(a.when || nextAppt.full)}</div><div class="item" style="color:#003D1B">${escapeHtml(a.time)} · ${escapeHtml(a.note)}</div></div></div>
           <div><div class="item" style="color:var(--text-strong)">${escapeHtml(a.barber)}</div><div class="legend" style="color:var(--text-2)">${escapeHtml(a.role)}</div></div>
-          <div class="legend" style="color:var(--text-2)">${escapeHtml(a.svc)} — Total <b style="color:#003D1B">${escapeHtml(a.total)}</b></div>
+          <div><div class="item" style="color:var(--text-strong)">${escapeHtml(a.svc)} — Total <b style="color:#003D1B">${escapeHtml(a.total)}</b></div></div>
           <div class="row gap8" style="gap:8px;flex-wrap:wrap"><button class="btn" data-toast="Detalhes do agendamento (demo)">Ver detalhes</button><button class="btn" data-toast="Reagendamento (demo)">Reagendar</button><button class="btn danger" data-cancel="${escapeHtml(a.id)}">Cancelar</button></div>
+        </article>
+        <article class="card" style="border:1.5px solid var(--gold);background:radial-gradient(ellipse at 50% 0%, #17241D 0%, #0B1C14 100%);color:#fff;padding:16px;">
+          <div class="row between" style="align-items:center;">
+            <span class="eyebrow" style="color:var(--gold);font-size:0.6875rem;">Aguardando seu horário?</span>
+            <span class="badge" style="background:rgba(199,165,102,0.25);color:var(--gold-soft);font-size:0.6875rem;">Lounge Motta</span>
+          </div>
+          <div class="item" style="color:#fff;font-size:0.9375rem;margin-top:4px;">MOTTA / INTERVALO — 4 Jogos de Precisão</div>
+          <p class="legend" style="color:var(--on-dark);margin-top:2px;">Aproveite o café no lounge e relaxe com nossos minigames táteis de precisão e ritmo enquanto aguarda seu atendimento.</p>
+          <div class="row" style="gap:8px;margin-top:10px;">
+            <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;flex:1;min-height:40px;display:flex;align-items:center;justify-content:center;" href="#/play">Jogar no Lounge →</a>
+            <a class="btn" style="background:rgba(255,255,255,0.1);color:#fff;text-decoration:none;min-height:40px;display:flex;align-items:center;justify-content:center;" href="play/" target="_blank" rel="noopener">Tela Cheia ↗</a>
+          </div>
         </article>`,
 							)
 							.join("")
-					: `<article class="card" style="align-items:center;text-align:center"><h2 class="h-page">Você ainda não tem nenhum agendamento</h2><p class="body">Que tal reservar seu próximo momento de cuidado? Escolha o barbeiro da sua preferência e viva a experiência completa Motta.</p><a class="btn primary" style="text-decoration:none" href="#/novo/1">Novo agendamento</a></article>`
+					: `<article class="card" style="align-items:center;text-align:center"><h2 class="h-page">Você ainda não tem nenhum agendamento</h2><p class="body">Que tal reservar seu próximo momento de cuidado? Escolha o barbeiro da sua preferência e viva a experiência completa Motta.</p><a class="btn primary" style="text-decoration:none" href="#/novo/1">Novo agendamento</a></article>
+        <article class="card" style="border:1.5px solid var(--gold);background:radial-gradient(ellipse at 50% 0%, #17241D 0%, #0B1C14 100%);color:#fff;padding:16px;text-align:center;align-items:center;">
+          <span class="eyebrow" style="color:var(--gold);font-size:0.6875rem;">Lounge &amp; Experiência</span>
+          <div class="item" style="color:#fff;font-size:0.9375rem;margin-top:2px;">Conheça o MOTTA / INTERVALO</div>
+          <p class="legend" style="color:var(--on-dark);max-width:300px;margin-top:2px;">Quatro minigames analógicos desenhados para desacelerar o seu dia com estilo.</p>
+          <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;margin-top:8px;padding:8px 16px;" href="#/play">Jogar Minigames →</a>
+        </article>`
 				: `<div class="row between"><div><h2 class="h-section">Histórico de agendamentos</h2><p class="legend">12 visitas concluídas</p></div></div>` +
 					past
 						.map(
@@ -871,6 +892,33 @@ const screens = {
       </div>
     </section>
 
+    <!-- Card Lounge & Minigames: Enquanto você aguarda -->
+    <section class="card lounge-game-card" style="border:1.5px solid var(--gold);background:radial-gradient(ellipse at 50% 0%, #17241D 0%, #0B1C14 100%);color:#fff;padding:22px 20px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle, rgba(199,165,102,0.2) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
+      <div class="row between" style="align-items:center;">
+        <span class="pill" style="background:rgba(199,165,102,0.2);color:var(--gold);border:1px solid rgba(199,165,102,0.4);">
+          Lounge &amp; Hospitalidade
+        </span>
+        <span class="legend" style="color:var(--gold-soft);font-size:0.6875rem;letter-spacing:1px;font-weight:600;">ENQUANTO AGUARDA</span>
+      </div>
+      <div style="margin-top:8px;">
+        <div class="eyebrow" style="color:var(--gold);letter-spacing:1.5px;font-size:0.6875rem;">MOTTA / INTERVALO</div>
+        <h2 style="font:400 1.35rem/1.25 var(--serif);color:#fff;margin-top:2px;">O luxo de não ter pressa.</h2>
+        <p class="body" style="color:var(--on-dark);margin-top:6px;font-size:0.8125rem;line-height:1.45;">Chegou mais cedo ou aguardando seu horário no lounge? Desfrute de um Café Nespresso ou Chopp cortesia e experimente nossos 4 minigames exclusivos de precisão, ritmo e contemplação.</p>
+      </div>
+      <div class="row" style="gap:8px;padding-top:10px;align-items:center;">
+        <a class="btn primary" style="background:var(--gold);color:var(--ink);font-weight:700;text-decoration:none;flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;" href="#/play">Jogar no Lounge →</a>
+        <a class="btn" style="background:rgba(255,255,255,0.1);color:#fff;text-decoration:none;min-height:44px;display:flex;align-items:center;justify-content:center;" href="play/" target="_blank" rel="noopener">Tela Cheia ↗</a>
+      </div>
+      <div class="row" style="gap:12px;font-size:0.6875rem;color:var(--muted);padding-top:6px;">
+        <span>04 Experiências</span>
+        <span>•</span>
+        <span>15–45 segundos</span>
+        <span>•</span>
+        <span>Sem anúncios</span>
+      </div>
+    </section>
+
     <!-- Hospitalidade e Localização -->
     <section class="card" style="padding:18px;gap:12px;">
       <div class="row" style="gap:10px;align-items:center;">
@@ -889,6 +937,7 @@ const screens = {
     <div class="row home-shortcuts" style="gap:8px;">
       <a class="btn" style="flex:1;text-align:center;text-decoration:none;" href="#/clube">Benefícios e Marcas</a>
       <a class="btn" style="flex:1;text-align:center;text-decoration:none;" href="#/login">Acessar Conta</a>
+      <a class="btn" style="flex:100%;text-align:center;text-decoration:none;border:1px solid rgba(199,165,102,0.4);background:rgba(199,165,102,0.08);color:var(--forest);font-weight:600;" href="#/play">Jogar no Lounge (Motta Play) →</a>
     </div>
 
     <footer class="home-footer"><p class="legend">Barbearia Motta Macaé •  &amp; Estética Masculina</p></footer>`;
@@ -1199,6 +1248,7 @@ const screens = {
 /* ---------- roteador ---------- */
 const titles = {
 	inicio: "Início",
+	play: "Intervalo & Minigames no Lounge",
 	login: "Entrar / Cadastro",
 	boas_vindas: "Boas-vindas",
 	clube: "Produtos e benefícios",
@@ -1292,10 +1342,21 @@ function render() {
 	const updateDOM = () => {
 		clearInterval(mimosTimer);
 		welcomeObserver?.disconnect();
-		view.innerHTML = screens[route](step);
+		if (window.MottaPlay && route !== "play") window.MottaPlay.cleanup();
+		view.innerHTML = screens[route](route === "play" ? arg : step);
+		if (window.MottaPlay && route === "play") window.MottaPlay.init(arg);
 		setupMimos();
 		setupWelcomeReveal();
-		document.title = `Motta — ${titles[route] || "Barbearia"}`;
+		const playSubtitles = {
+			equilibrio: "Equilíbrio · Minigame",
+			frequencia: "Frequência · Minigame",
+			continuum: "Continuum · Minigame",
+			ondas: "Ondas · Minigame"
+		};
+		const pageTitle = route === "play" && arg && playSubtitles[arg]
+			? `Motta — ${playSubtitles[arg]}`
+			: `Motta — ${titles[route] || "Barbearia"}`;
+		document.title = pageTitle;
 
 		// Atualizar Navbar conforme estado de login (arquitetura consistente de 5 abas)
 		const nav = document.querySelector("nav");

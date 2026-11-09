@@ -1,11 +1,22 @@
-const CACHE_NAME = "motta-cache-v27";
+const CACHE_NAME = "motta-cache-v29";
 const ASSETS = [
 	"./",
 	"./index.html",
 	"./styles.css",
-	"./styles.css?v=27",
+	"./styles.css?v=29",
 	"./app.js",
-	"./app.js?v=27",
+	"./app.js?v=29",
+	"./play-game.js",
+	"./play-game.js?v=29",
+	"./icon.svg",
+	"./manifest.webmanifest",
+	"./play/index.html",
+	"./play/_next/static/css/a0deaa1ff7a9a58d.css",
+	"./play/_next/static/chunks/webpack-a7230f1e20f2668d.js",
+	"./play/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
+	"./play/_next/static/chunks/255-1e7798b93640e410.js",
+	"./play/_next/static/chunks/main-app-a65206d79a00ed48.js",
+	"./play/_next/static/chunks/app/page-940a18aaa76400e0.js",
 	"./assets/experiencia/atendimento.jpg",
 	"./assets/experiencia/fundo-motta.svg",
 	"./manifest.json",
@@ -69,7 +80,13 @@ self.addEventListener("fetch", (e) => {
 			.catch(() =>
 				caches
 					.match(e.request)
-					.then((res) => res || caches.match("./index.html")),
+					.then((res) => {
+						if (res) return res;
+						if (e.request.mode === "navigate") {
+							return caches.match("./index.html");
+						}
+						return new Response("", { status: 503, statusText: "Offline" });
+					}),
 			),
 	);
 });

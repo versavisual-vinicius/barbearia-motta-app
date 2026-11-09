@@ -334,4 +334,670 @@ main:has(>.home-footer){min-height:100dvh;padding-bottom:4rem}
   }
 }
 
+/* ==========================================================
+   MOTTA / INTERVALO — 4 Minigames de Precisão no Lounge
+   ========================================================== */
+
+main#view:has(.play-wrapper) {
+  grid-template-columns: 1fr !important;
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+.play-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 36px;
+}
+
+.play-main-header {
+  border-bottom: 1px solid rgba(199, 165, 102, 0.25);
+  padding-bottom: 12px;
+}
+
+.play-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.play-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.play-brand-title {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+  font-weight: 700;
+  text-align: center;
+}
+
+.play-brand-title small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.5625rem;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  margin-top: 2px;
+}
+
+.play-back-portal {
+  background: var(--surface-soft);
+  color: var(--forest);
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--r-md);
+  text-decoration: none;
+}
+
+.play-expand-btn {
+  background: rgba(199, 165, 102, 0.15);
+  color: var(--forest);
+  border: 1px solid rgba(199, 165, 102, 0.3);
+  gap: 5px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--r-md);
+  text-decoration: none;
+}
+
+.play-hero {
+  background: radial-gradient(ellipse at 50% 0%, #1a2920 0%, #0c1511 100%);
+  border: 1.5px solid var(--gold);
+  padding: 24px;
+  border-radius: var(--r-lg);
+  box-shadow: 0 10px 30px rgba(7, 30, 19, 0.25);
+}
+
+.play-hero h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  line-height: 1.15;
+  color: #fff;
+  margin: 6px 0 10px;
+}
+
+.play-hero p {
+  color: var(--on-dark);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  max-width: 520px;
+}
+
+.play-hero-badges {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--gold-soft);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 10px 0 4px;
+}
+
+.section-heading h2 {
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.section-heading span {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.sound {
+  border: 1px solid rgba(199, 165, 102, 0.35);
+  background: var(--surface-soft);
+  color: var(--ink);
+  padding: 6px 10px;
+  border-radius: 50px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sound:hover {
+  border-color: var(--gold);
+  background: #fff;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.game-card {
+  border: 1px solid rgba(199, 165, 102, 0.3);
+  background: linear-gradient(145deg, #18251e, #0e1713);
+  border-radius: var(--r-lg);
+  min-height: 290px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+  color: #fff;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.game-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(7, 30, 19, 0.25);
+}
+
+.card-art {
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle at 50% 60%, #25372c 0%, transparent 68%);
+}
+
+.card-art svg {
+  width: 75%;
+  max-height: 150px;
+}
+
+.card-info {
+  padding: 16px 18px 20px;
+}
+
+.card-no {
+  font-size: 0.625rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.card-title {
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  font-weight: 400;
+  margin: 6px 0 4px;
+  color: #fff;
+}
+
+.card-sub {
+  font-size: 0.75rem;
+  color: var(--on-dark);
+}
+
+.card-arrow {
+  float: right;
+  color: var(--gold);
+  font-size: 1.125rem;
+}
+
+.play-club-footer {
+  margin-top: 16px;
+  border-top: 1px solid rgba(199, 165, 102, 0.2);
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.play-club-footer b {
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.play-club-footer p {
+  font-size: 0.75rem;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+
+.tag {
+  color: var(--gold);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* Play Layout & Shell */
+.play-layout {
+  padding-top: 10px;
+}
+
+.back {
+  border: 0;
+  background: none;
+  color: var(--forest);
+  font-weight: 600;
+  padding: 4px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: var(--ink);
+}
+
+.play-header {
+  margin: 12px 0 16px;
+  text-align: center;
+}
+
+.play-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 400;
+  margin: 4px 0;
+  color: var(--ink);
+}
+
+.play-header p {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto 10px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  padding: 0 4px;
+}
+
+.game-area {
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+  border: 1px solid #34423a;
+  background: radial-gradient(ellipse at 50% 43%, #1b2921 0%, #0d1512 75%);
+  height: min(52vh, 380px);
+  min-height: 310px;
+  border-radius: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 36px rgba(7, 30, 19, 0.3);
+}
+
+.game-area svg {
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(11, 18, 14, 0.94);
+  backdrop-filter: blur(8px);
+  gap: 12px;
+  text-align: center;
+  padding: 24px;
+}
+
+.overlay h2 {
+  font-size: 1.5rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+}
+
+.overlay p {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--on-dark);
+  max-width: 320px;
+  margin: 0;
+}
+
+.overlay .result {
+  font-family: var(--serif);
+  color: var(--gold);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.primary {
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--ink);
+  padding: 10px 20px;
+  border-radius: var(--r-md);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.15s;
+}
+
+.primary:hover {
+  background: #d4b57e;
+  transform: translateY(-1px);
+}
+
+.secondary {
+  background: none;
+  border: 1px solid rgba(199, 165, 102, 0.4);
+  color: var(--ink);
+  padding: 8px 16px;
+  border-radius: var(--r-md);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.under-game {
+  max-width: 680px;
+  margin: 14px auto 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.instruction {
+  color: var(--text-2);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  max-width: 440px;
+}
+
+.tip {
+  font-size: 0.6875rem;
+  color: var(--muted);
+  text-align: center;
+  padding-bottom: 16px;
+}
+
+/* Dots and Indicators */
+.dots {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+}
+
+.dot.filled {
+  background: var(--gold);
+}
+
+.fix-button {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.fix-button--ready {
+  box-shadow: 0 0 0 2px rgba(234, 210, 167, 0.35), 0 0 18px rgba(201, 168, 106, 0.4);
+}
+
+.ripple-button {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Frequency Game Details */
+.frequency-status {
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  color: #aab8a9;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  pointer-events: none;
+}
+
+.frequency-led {
+  height: 7px;
+  width: 7px;
+  border: 1px solid #7d8c79;
+  border-radius: 50%;
+  transition: background 0.18s, box-shadow 0.18s;
+}
+
+.frequency-led.is-near {
+  background: #a58b57;
+  box-shadow: 0 0 8px #b89a65;
+}
+
+.frequency-led.is-aligned {
+  background: #ffe1a2;
+  box-shadow: 0 0 12px #f2cc7b;
+}
+
+.frequency-halo {
+  transform-origin: 300px 172px;
+  animation: frequency-breathe 1.2s ease-in-out infinite;
+}
+
+@keyframes frequency-breathe {
+  0%, 100% { opacity: 0.36; transform: scale(0.99); }
+  50% { opacity: 0.95; transform: scale(1.04); }
+}
+
+/* Continuum Game Details */
+.continuum-wrap {
+  width: min(65vw, 240px);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.tile {
+  padding: 0;
+  border: 1px solid #425249;
+  border-radius: 5px;
+  background: #1e2c24;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.tile:hover {
+  background: #2a3d32;
+}
+
+.tile svg {
+  height: 100%;
+  width: 100%;
+}
+
+.tile--lit {
+  background: #283d30;
+  border-color: #a68c60;
+  box-shadow: inset 0 0 12px rgba(214, 173, 78, 0.15), 0 0 8px rgba(208, 163, 93, 0.15);
+}
+
+.tile--frontier {
+  border-color: #8a865c;
+  box-shadow: inset 0 0 0 1px rgba(169, 141, 104, 0.35);
+}
+
+.continuum-glow {
+  animation: continuum-breathe 1.7s ease-in-out infinite;
+}
+
+.continuum--solved .tile--lit {
+  border-color: #ead6a5;
+  box-shadow: 0 0 16px rgba(239, 199, 124, 0.45);
+  background: #314638;
+}
+
+@keyframes continuum-breathe {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.58; }
+}
+
+.continuum-moves {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+
+.continuum-port {
+  position: absolute;
+  color: var(--gold);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.continuum-port--in {
+  right: calc(100% + 5px);
+  top: 37.5%;
+  transform: translateY(-50%);
+  flex-direction: row-reverse;
+}
+
+.continuum-port--out {
+  left: calc(100% + 5px);
+  top: 62.5%;
+  transform: translateY(-50%);
+}
+
+.continuum-port-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px rgba(199, 165, 102, 0.4);
+}
+
+.continuum-port--out.is-solved .continuum-port-dot {
+  background: #ffedbf;
+  box-shadow: 0 0 16px #ffdc91;
+}
+
+.continuum-feedback {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #b2bdaf;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .play-header-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .play-hero {
+    padding: 18px 16px;
+  }
+  .play-hero h1 {
+    font-size: 1.75rem;
+  }
+  .game-area {
+    min-height: 290px;
+    height: 48svh;
+  }
+  .card-art {
+    height: 140px;
+  }
+  .frequency-status {
+    top: 44px;
+    font-size: 8px;
+  }
+  .continuum-moves {
+    top: 10px;
+  }
+  .continuum-feedback {
+    bottom: 8px;
+    font-size: 8px;
+  }
+}
+
+
 

@@ -1,4 +1,20 @@
 
+## Marco 2026-11-09 — Integração do Game MOTTA / INTERVALO no App & PWA (app/)
+- [x] Integração completa do jogo MOTTA / INTERVALO ("O luxo de não ter pressa") para clientes jogarem enquanto aguardam atendimento no Lounge da barbearia
+- [x] Rota canônica in-app `#/play` implementada nativamente em `app/play-game.js` com zero iframe, 60 FPS, touch/mouse nativo e Web Audio sintetizado
+- [x] Suporte a deep-linking direto (`#/play/equilibrio`, `#/play/frequencia`, `#/play/continuum`, `#/play/ondas`) e histórico do navegador com retorno limpo à coleção
+- [x] 4 minigames funcionais auditados e corrigidos:
+  - Equilíbrio: aspect ratio estritamente 600/350 (esfera perfeitamente circular em mobile, eliminando deformação oval), escala DPR Retina e suporte a setas/teclas A/D
+  - Frequência: persistência de mensagem de feedback fora de sincronia sem sobrescrita no tick do RAF e tratamento seguro de pointer capture
+  - Continuum: resolução de race condition pós-vitória (bloqueio imediato de rotação dos 16 tiles) e ajuste de largura para prevenir truncamento de `INÍCIO` e `FIM`
+  - Ondas: layout refinado de feedback e chamada para ação
+- [x] Correção de colapso de largura na `.status-bar` (`width: 100%`), garantindo separação visual de tempo e recorde
+- [x] Standalone PWA Next.js exportado e sincronizado estaticamente em `app/play/` com rewrites dedicados em `vercel.json` e botão de retorno ao portal (`← PORTAL MOTTA`)
+- [x] Disponibilização de `icon.svg` e `manifest.webmanifest` na raiz para eliminar requisições 404
+- [x] Correção do Service Worker: guarda de fallback de navegação (`e.request.mode === 'navigate'`) para evitar retorno de HTML em requisições de sub-recursos offline, inclusão de assets Next.js e bump para `v29`
+- [x] Cards promocionais de alto padrão no Início (`#/inicio`) e na Agenda (`#/agendamentos`) destacando o café/chopp no lounge e acesso aos minigames
+- [x] Bateria de testes automatizados E2E via Chrome CDP (`tests/test-e2e-gameplay.mjs` e `tests/test-play-integration.mjs`) aprovada com 100% de sucesso em mobile e desktop
+
 ## Marco 2026-11-08 — Tabela Oficial de Valores & Audit A11y/Design v0 (app/)
 - [x] Atualização completa da tabela oficial de serviços avulsos (Cabelo & Barba, Tratamentos & Estética) e planos de recorrência (Club Gold R$ 125,99/mês e Club Black R$ 299,99/mês)
 - [x] Correção do seletor e semântica da tabela `th:nth-of-type(3)` com remoção do container query destrutivo e inclusão de scroll hints visíveis (`.table-hint`) com `aria-describedby`
