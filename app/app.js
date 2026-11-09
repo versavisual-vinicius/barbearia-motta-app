@@ -1002,20 +1002,34 @@ const screens = {
       </div>
     </section>
 
-    <!-- Hospitalidade e Localização -->
-    <section class="card" style="padding:18px;gap:12px;">
-      <div class="row" style="gap:10px;align-items:center;">
-        <div class="avatar" style="background:#E6F1E5;color:var(--forest);display:flex;align-items:center;justify-content:center;" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+    <div class="home-contact-column">
+      <!-- Hospitalidade e Localização -->
+      <section class="card" style="padding:18px;gap:12px;">
+        <div class="row" style="gap:10px;align-items:center;">
+          <div class="avatar" style="background:#E6F1E5;color:var(--forest);display:flex;align-items:center;justify-content:center;" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          </div>
+          <div>
+            <div class="item" style="color:var(--text-strong);">Unidade Sol &amp; Mar (Macaé - RJ)</div>
+            <div class="legend">Av. Carlos Augusto T. Garcia, 2040 • Valet cortesia</div>
+          </div>
         </div>
-        <div>
-          <div class="item" style="color:var(--text-strong);">Unidade Sol &amp; Mar (Macaé - RJ)</div>
-          <div class="legend">Av. Carlos Augusto T. Garcia, 2040 • Valet cortesia</div>
+        <div class="legend" style="color:var(--text-2);line-height:1.4;">Lounge climatizado com Café Nespresso e Chopp Artesanal inclusos em todos os atendimentos.</div>
+        <div class="home-whatsapp"><span class="home-whatsapp-contact">WhatsApp Oficial<br><span>(22) 99838-9803</span></span><a class="btn primary home-whatsapp-action" href="https://wa.me/5522998389803" target="_blank" rel="noopener">Falar agora →</a></div>
+      </section>
+
+      <section class="home-instagram" aria-labelledby="instagram-title">
+        <div class="home-instagram-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg>
         </div>
-      </div>
-      <div class="legend" style="color:var(--text-2);line-height:1.4;">Lounge climatizado com Café Nespresso e Chopp Artesanal inclusos em todos os atendimentos.</div>
-      <div class="home-whatsapp"><span class="home-whatsapp-contact">WhatsApp Oficial<br><span>(22) 99838-9803</span></span><a class="btn primary home-whatsapp-action" href="https://wa.me/5522998389803" target="_blank" rel="noopener">Falar agora →</a></div>
-    </section>
+        <div class="home-instagram-copy">
+          <p class="home-instagram-handle">@barbeariamotta1</p>
+          <h2 id="instagram-title">Acompanhe a Motta no Instagram</h2>
+          <p>Bastidores, transformações e novidades da barbearia direto no seu feed.</p>
+          <a class="home-instagram-link" href="https://instagram.com/barbeariamotta1?vrfl=MXUwdjl1dHYwM2ljaA%3D%3D" target="_blank" rel="noopener noreferrer">Abrir Instagram <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+    </div>
 
     <div class="row home-shortcuts" style="gap:8px;">
       <a class="btn" style="flex:1;text-align:center;text-decoration:none;" href="#/clube">Benefícios e Marcas</a>

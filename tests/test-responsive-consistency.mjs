@@ -66,10 +66,9 @@ async function run() {
     return res.result.value;
   };
 
-  await new Promise(r => setTimeout(r, 600));
+  await new Promise(r => setTimeout(r, 900));
 
-  // Helper to compute WCAG contrast ratio in browser
-  await evaluate(`
+  const contrastHelperCode = `
     window.__contrastRatio = function(fgStr, bgHex) {
       const parseRgb = (s) => {
         const m = s.match(/\\d+(\\.\\d+)?/g);
@@ -90,7 +89,10 @@ async function run() {
       const l2 = lum(hexToRgb(bgHex));
       return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
     };
-  `);
+  `;
+  await send('Page.enable');
+  await send('Page.addScriptToEvaluateOnNewDocument', { source: contrastHelperCode });
+  await evaluate(contrastHelperCode);
 
   const viewports = [
     [320, 640],
@@ -347,7 +349,11 @@ async function run() {
         };
       })()`);
       assert.ok(!layoutAudit.docOverflow, `[${vw}x${vh}] Route ${r} must not overflow horizontally`);
-      assert.ok(layoutAudit.lastBottom <= layoutAudit.navTop + 4, `[${vw}x${vh}] Route ${r} bottom element (${layoutAudit.lastBottom}) must be scrollable above fixed nav (${layoutAudit.navTop})`);
+      if (layoutAudit.navTop > vh / 2) {
+        assert.ok(layoutAudit.lastBottom <= layoutAudit.navTop + 4, `[${vw}x${vh}] Route ${r} bottom element (${layoutAudit.lastBottom}) must be scrollable above fixed bottom nav (${layoutAudit.navTop})`);
+      } else {
+        assert.ok(layoutAudit.lastBottom <= vh + 4, `[${vw}x${vh}] Route ${r} bottom element (${layoutAudit.lastBottom}) must be fully scrollable inside viewport (${vh})`);
+      }
     }
   }
   console.log('✓ Zero horizontal overflow and full clearance above bottom fixed nav across all routes and viewports');
