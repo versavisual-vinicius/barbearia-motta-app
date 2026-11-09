@@ -1,0 +1,26 @@
+{
+  "project": "MOTTA UI and booking audit",
+  "note": "Orchestration reference only; Antigravity discovers .md agents, not this JSON.",
+  "parallel_audit": [
+    "code-investigator",
+    "responsive-auditor",
+    "booking-state-auditor"
+  ],
+  "implementation": "targeted-implementer",
+  "verification": "regression-qa",
+  "browser": "built-in browser subagent through /browser",
+  "viewports_css_px": [
+    320,
+    375,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "report_statuses": [
+    "OBSERVED",
+    "CODE-CONFIRMED",
+    "TESTED",
+    "NOT VERIFIED"
+  ]
+}

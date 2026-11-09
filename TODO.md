@@ -1,4 +1,11 @@
 
+## Marco 2026-11-09 — Pacote de Subagentes Antigravity & Merge com Origin/Main (app/)
+- [x] Integração da suíte de 5 subagentes Antigravity (`code-investigator`, `booking-state-auditor`, `responsive-auditor`, `targeted-implementer`, `regression-qa`) em `.agents/`
+- [x] Conclusão do merge com `origin/main` (`df03af3`), integrando a coluna com destaque do Instagram e atalhos aos cards do Lounge e minigames
+- [x] Correção da asserção de clear da navegação inferior para viewports desktop e tablet em `tests/test-responsive-consistency.mjs`
+- [x] Bateria de testes E2E executada com 100% de sucesso (`test-responsive-consistency.mjs`, `test-e2e-gameplay.mjs`, `test-play-integration.mjs`)
+- [x] Service Worker sincronizado com cache `motta-cache-v30`
+
 ## Marco 2026-11-09 — Integração do Game MOTTA / INTERVALO no App & PWA (app/)
 - [x] Integração completa do jogo MOTTA / INTERVALO ("O luxo de não ter pressa") para clientes jogarem enquanto aguardam atendimento no Lounge da barbearia
 - [x] Rota canônica in-app `#/play` implementada nativamente em `app/play-game.js` com zero iframe, 60 FPS, touch/mouse nativo e Web Audio sintetizado
